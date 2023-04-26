@@ -84,6 +84,7 @@ public class ItemController {
 		model.put("companyList", companyList);
 		List<?> comnCodeList = itemService.selectComnCodeList();
 		model.put("comnCodeList", comnCodeList);
+		System.out.println("맵 : " + map);
 		
 		Map<String, Object> detail = itemService.selectItemInfo(map);
 		model.put("itemVO", detail);
@@ -100,7 +101,7 @@ public class ItemController {
 			return "redirect:/sl/basicInfo/item/registItem.do";
 		}
 				
-		map.put("userid", session.getAttribute("user_id"));
+		map.put("userId", session.getAttribute("user_id"));
 		itemService.modifyItem(map);
 		redirectAttributes.addFlashAttribute("msg","수정 되었습니다.");
 		return "redirect:/sl/basicInfo/item/itemList.do";

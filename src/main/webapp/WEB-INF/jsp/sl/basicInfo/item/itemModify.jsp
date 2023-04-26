@@ -70,7 +70,17 @@
 													</select>
 												</td>
 											</tr>
+											
 											<tr>
+											<th>거래처 <span class="req">*</span></th>
+												<td>
+													<input type="text" class="form-control" name="acCode" id="acCode" value="${itemVO.acCode}" list="acList" autocomplete="off">
+													<datalist id="acList">
+														<c:forEach var="list" items="${accountList}" varStatus="status">
+															<option value="${list.acCode}">${list.acName}</option>
+														</c:forEach>
+													</datalist>
+												</td>
 												<th>공통코드 <span class="req">*</span></th>
 												<td>
 													<input type="text" class="form-control" name="ccCode" id="ccCode" value="${itemVO.ccCode}" list="comnList" autocomplete="off">
@@ -80,14 +90,18 @@
 														</c:forEach>
 													</datalist>
 												</td>
-												<th>품목명 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="itemName" id="itemName" value="${itemVO.itemName}"/></td>
+												
 											</tr>
 											<tr>
+												<th>품목명 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="itemName" id="itemName" value="${itemVO.itemName}"/></td>
 												<th>규격</th>
 												<td><input type="text" class="form-control" name="itemStandard" id="itemStandard" value="${itemVO.itemStandard}"/></td>
+												
+											</tr>
+											<tr>
 												<th>단위 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="itemUom" id="itemUom" value="kg"/></td>
+												<td><input type="text" class="form-control" name="itemUom" id="itemUom" value="kg"></td>
 											</tr>
 											<tr>
 												<th>비고</th>
