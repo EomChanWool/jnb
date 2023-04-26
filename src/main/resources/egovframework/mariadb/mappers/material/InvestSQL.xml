@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.material.invest.service.impl.InvestMapper">
+	<select id="selectInvestListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_insert_info
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectInvestList" resultType="egovMap">
+		SELECT
+			in_idx,
+			wo_idx,
+			item_cd,
+			item_name,
+			DATE_FORMAT(in_dte, '%Y-%m-%d %H:%i:%s') AS in_dte,
+			in_com_manager,
+			in_cnt
+		FROM sm_insert_info
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY in_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectWorkOrderList" resultType="egovMap">
+		SELECT wo_idx, wo_name FROM sm_work_order WHERE wo_state NOT IN('2','3')
+	</select>
+	
+	<select id="selectMaterialList" resultType="egovMap">
+		SELECT item_cd, item_name FROM sm_item WHERE item_type = '자재'
+	</select>
+	
+	<insert id="registInvest">
+		INSERT INTO sm_insert_info
+			(
+			in_idx,
+			wo_idx,
+			item_cd,
+			item_name,
+			in_dte,
+			in_com_manager,
+			in_cnt,
+			in_reg_dte,
+			in_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('IN', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.in_idx),0) FROM sm_insert_info a),'[a-z]','')))+1,10,0))),
+			#{woIdx},
+			#{itemCd},
+			(SELECT item_name FROM sm_item WHERE item_cd = #{itemCd}),
+			#{inDte},
+			#{inComManager},
+			#{inCnt},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<update id="updateMaterialStock">
+		UPDATE sm_item SET
+			item_cnt = (item_cnt + #{cnt})
+		WHERE item_cd = #{itemCd}
+	</update>
+	
+	<update id="updateWorkOrder">
+		UPDATE sm_work_order SET
+			wo_state = #{state}
+		WHERE wo_idx = #{woIdx}
+	</update>
+	
+	<update id="updateOrders">
+		UPDATE sm_orders SET
+			or_state = #{state}
+		WHERE or_idx = (SELECT or_idx FROM sm_work_order WHERE wo_idx = #{woIdx})
+	</update>
+	
+	<select id="selectInvestWorkOrder" resultType="int">
+		SELECT COUNT(*) FROM sm_insert_info WHERE wo_idx = #{curWoIdx}
+	</select>
+	
+	<select id="selectInvestInfo" resultType="egovMap">
+		SELECT
+			a.in_idx,
+			a.wo_idx,
+			(SELECT wo_name FROM sm_work_order WHERE wo_idx = #{woIdx}) AS wo_name,
+			a.item_cd,
+			a.item_name,
+			DATE_FORMAT(a.in_dte, '%Y-%m-%d %H:%i:%s') AS in_dte,
+			a.in_com_manager,
+			a.in_cnt,
+			b.item_std
+		FROM sm_insert_info a
+		JOIN sm_item b
+		ON a.item_cd = b.item_cd
+		WHERE in_idx = #{inIdx}
+	</select>
+	
+	<update id="modifyInvest">
+		UPDATE sm_insert_info SET
+			wo_idx = #{woIdx},
+			item_cd = #{itemCd},
+			item_name = (SELECT item_name FROM sm_item WHERE item_cd = #{itemCd}),
+			in_dte = #{inDte},
+			in_com_manager = #{inComManager},
+			in_cnt = #{inCnt},
+			in_edt_dte = NOW(),
+			in_edt_mem = #{userId}
+		WHERE in_idx = #{inIdx}
+	</update>
+	
+	<delete id="deleteInvest">
+		DELETE FROM sm_insert_info WHERE in_idx = #{inIdx}
+	</delete>
+</mapper>

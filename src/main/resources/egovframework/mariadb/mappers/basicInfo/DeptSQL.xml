@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.dept.service.impl.DeptMapper">
+	<select id="selectDeptListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_dept_code
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND dc_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectDeptList" resultType="egovMap">
+		SELECT
+			a.dc_code,
+			b.c_name,
+			dc_name
+		FROM sm_dept_code a
+		JOIN sm_company b
+		ON a.c_idx = b.c_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND a.dc_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY a.dc_code DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectComnCodeList" resultType="egovMap">
+		SELECT cc_code, cc_name FROM sm_comn_code
+	</select>
+	
+	<select id="selectExistsCompany" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<insert id="registDept">
+		INSERT INTO sm_dept_code
+			(
+			dc_code,
+			c_idx,
+			cc_code,
+			dc_name,
+			dc_reg_dte,
+			dc_reg_mem
+			)
+		VALUES
+			(
+			(SELECT if(
+				(SELECT COUNT(*) FROM sm_dept_code a WHERE a.dc_code LIKE CONCAT(#{cIdx},'%')) = 0,
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-001')),
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-',
+				(SELECT LPAD(
+					(SELECT right(b.dc_code,3)+1 FROM sm_dept_code b WHERE b.dc_code =
+						(SELECT MAX(c.dc_code) FROM sm_dept_code c WHERE c.dc_code LIKE CONCAT(#{cIdx},'%')))
+				,3,0)))
+				))),
+			#{cIdx},
+			#{ccCode},
+			#{dcName},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectDeptInfo" resultType="egovMap">
+		SELECT
+			dc_code,
+			c_idx,
+			cc_code,
+			dc_name
+		FROM sm_dept_code
+		WHERE dc_code = #{dcCode}
+	</select>
+	
+	<update id="modifyDept">
+		UPDATE sm_dept_code SET
+			dc_name = #{dcName},
+			cc_code = #{ccCode},
+			dc_edt_dte = NOW(),
+			dc_edt_mem = #{userId}
+		WHERE dc_code = #{dcCode}
+	</update>
+	
+	<delete id="deleteDept">
+		DELETE FROM sm_dept_code WHERE dc_code = #{dcCode}
+	</delete>
+</mapper>

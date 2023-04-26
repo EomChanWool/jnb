@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.production.nonOperation.service.impl.NonOperMapper">
+	<select id="selectNonOperListToCnt" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM sm_non_operation a
+		JOIN sm_facility b
+		ON a.fa_idx = b.fa_idx
+		JOIN sm_factory c
+		ON b.f_code = c.f_code
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND c.c_idx = #{searchCondition}
+		</if>
+		<if test="searchCondition2 != ''">
+			AND c.f_code = #{searchCondition2}
+		</if>
+	</select>
+	
+	<select id="selectNonOperList" resultType="egovMap">
+		SELECT
+			a.no_idx,
+			DATE_FORMAT(a.no_st_dte, '%Y-%m-%d %H:%i') AS no_st_dte,
+			DATE_FORMAT(a.no_ed_dte, '%Y-%m-%d %H:%i') AS no_ed_dte,
+			b.fa_name,
+			c.f_name,
+			d.c_name
+		FROM sm_non_operation a
+		JOIN sm_facility b
+		ON a.fa_idx = b.fa_idx
+		JOIN sm_factory c
+		ON b.f_code = c.f_code
+		JOIN sm_company d
+		ON c.c_idx = d.c_idx
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND c.c_idx = #{searchCondition}
+		</if>
+		<if test="searchCondition2 != ''">
+			AND c.f_code = #{searchCondition2}
+		</if>
+		ORDER BY no_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectFactoryList" resultType="egovMap">
+		SELECT f_code, f_name FROM sm_factory WHERE c_idx = #{cIdx}
+	</select>
+	
+	<select id="selectFacilityList" resultType="egovMap">
+		SELECT fa_idx, fa_name FROM sm_facility WHERE f_code = #{fCode}
+	</select>
+	
+	<select id="selectCompanyIdx" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<select id="selectFactoryCode" resultType="int">
+		SELECT COUNT(*) FROM sm_factory WHERE f_code = #{fCode}
+	</select>
+	
+	<select id="selectFacilityIdx" resultType="int">
+		SELECT COUNT(*) FROM sm_facility WHERE fa_idx = #{faIdx}
+	</select>
+	
+	<insert id="registNonOper">
+		INSERT INTO sm_non_operation
+			(
+			no_idx,
+			c_idx,
+			f_code,
+			fa_idx,
+			no_st_dte,
+			no_ed_dte,
+			no_manager,
+			<if test="noReason != ''">no_reason,</if>
+			<if test="noNote != ''">no_note,</if>
+			no_reg_dte,
+			no_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('NO', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.no_idx),0) FROM sm_non_operation a),'[a-z]','')))+1,10,0))),
+			#{cIdx},
+			#{fCode},
+			#{faIdx},
+			#{noStDte},
+			#{noEdDte},
+			#{noManager},
+			<if test="noReason != ''">#{noReason},</if>
+			<if test="noNote != ''">#{noNote},</if>
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectNonOperInfo" resultType="egovMap">
+		SELECT
+			no_idx,
+			c_idx,
+			f_code,
+			fa_idx,
+			no_st_dte,
+			no_ed_dte,
+			no_manager,
+			no_reason,
+			no_note
+		FROM sm_non_operation
+		WHERE no_idx = #{noIdx}
+	</select>
+	
+	<update id="modifyNonOper">
+		UPDATE sm_non_operation SET
+			c_idx = #{cIdx},
+			f_code = #{fCode},
+			fa_idx = #{faIdx},
+			no_st_dte = #{noStDte},
+			no_ed_dte = #{noEdDte},
+			<if test="noManager != ''">no_manager = #{noManager},</if><if test="noManager == ''">no_manager = null,</if>
+			<if test="noReason != ''">no_reason = #{noReason},</if><if test="noReason == ''">no_reason = null,</if>
+			<if test="noNote != ''">no_note = #{noNote},</if><if test="noNote == ''">no_note = null,</if>
+			no_edt_dte = NOW(),
+			no_edt_mem = #{userId}
+		WHERE no_idx = #{noIdx}
+	</update>
+	
+	<delete id="deleteNonOper">
+		DELETE FROM sm_non_operation WHERE no_idx = #{noIdx}
+	</delete>
+</mapper>

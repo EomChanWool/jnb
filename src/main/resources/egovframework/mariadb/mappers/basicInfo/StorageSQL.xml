@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.storage.service.impl.StorageMapper">
+	<select id="selectStorageListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_storage
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND c_idx = #{searchCondition}
+		</if>
+		<if test="searchKeyword != ''">
+			AND s_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectStorageList" resultType="egovMap">
+		SELECT
+			a.s_code,
+			b.c_name,
+			a.s_name,
+			a.s_location,
+			a.s_manager
+		FROM sm_storage a
+		JOIN sm_company b
+		ON a.c_idx = b.c_idx
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND c_idx = #{searchCondition}
+		</if>
+		<if test="searchKeyword != ''">
+			AND s_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY s_code DESC
+		LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectComnCodeList" resultType="egovMap">
+		SELECT cc_code, cc_name FROM sm_comn_code
+	</select>
+	
+	<select id="selectExistsCompany" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<insert id="registStorage">
+		INSERT INTO sm_storage
+			(
+			s_code,
+			c_idx,
+			cc_code,
+			s_name,
+			s_location,
+			s_manager,
+			s_note,
+			s_reg_dte,
+			s_reg_mem
+			)
+		VALUES
+			(
+			(SELECT IF(
+				(SELECT COUNT(*) FROM sm_storage a WHERE a.s_code LIKE CONCAT(#{cIdx},'%')) = 0,
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-001')),
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-',
+				(SELECT LPAD(
+					(SELECT right(b.s_code,3)+1 FROM sm_storage b WHERE b.s_code =
+						(SELECT MAX(c.s_code) FROM sm_storage c WHERE c.s_code LIKE CONCAT(#{cIdx},'%')))
+				,3,0)))
+				))),
+			#{cIdx},
+			#{ccCode},
+			#{sName},
+			#{sLocation},
+			#{sManager},
+			#{sNote},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectStorageInfo" resultType="egovMap">
+		SELECT
+			s_code,
+			c_idx,
+			cc_code,
+			s_name,
+			s_location,
+			s_manager,
+			s_note
+		FROM sm_storage
+		WHERE s_code = #{sCode}
+	</select>
+	
+	<update id="modifyStorage">
+		UPDATE sm_storage SET
+			c_idx = #{cIdx},
+			s_name = #{sName},
+			cc_code = #{ccCode},
+			s_location = #{sLocation},
+			s_manager = #{sManager},
+			s_note = #{sNote},
+			s_edt_dte = NOW(),
+			s_edt_mem = #{userId}
+		WHERE s_code = #{sCode}
+	</update>
+	
+	<delete id="deleteStorage">
+		DELETE FROM sm_storage WHERE s_code = #{sCode}
+	</delete>
+</mapper>

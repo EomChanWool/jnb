@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.system.progAuthority.service.impl.ProgAuthorityMapper">
+	<select id="selectProgAuthorityListToCnt" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM sm_prog_authority a
+		JOIN sm_program b
+		ON a.p_idx = b.p_idx
+		JOIN sm_sys_authority c
+		ON a.sa_idx = c.sa_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND b.p_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectProgAuthorityList" resultType="egovMap">
+		SELECT
+			a.p_idx,
+			a.sa_idx,
+			b.p_name,
+			c.sa_name,
+			c.sa_lev
+		FROM sm_prog_authority a
+		JOIN sm_program b
+		ON a.p_idx = b.p_idx
+		JOIN sm_sys_authority c
+		ON a.sa_idx = c.sa_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND b.p_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY a.p_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectProgramList" resultType="egovMap">
+		SELECT p_idx, p_name FROM sm_program WHERE p_use_flag = 'N'
+	</select>
+	
+	<select id="selectSysAuthorityList" resultType="egovMap">
+		SELECT sa_idx, sa_name FROM sm_sys_authority
+	</select>
+	
+	<select id="selectExistsProgramIdx" resultType="int">
+		SELECT COUNT(*) FROM sm_program WHERE p_idx = #{pIdx}
+	</select>
+	
+	<select id="selectExistsSysAuthorityIdx" resultType="int">
+		SELECT COUNT(*) FROM sm_sys_authority WHERE sa_idx = #{saIdx}
+	</select>
+	
+	<insert id="registProgAuthority">
+		INSERT INTO sm_prog_authority
+			(
+			p_idx,
+			sa_idx,
+			pa_reg_dte,
+			pa_reg_mem
+			)
+		VALUES
+			(
+			#{pIdx},
+			#{saIdx},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<update id="updateProgam">
+		UPDATE sm_program SET
+			p_use_flag = #{state}
+		WHERE p_idx = #{pIdx}
+	</update>
+	
+	<select id="selectProgAuthorityInfo" resultType="egovMap">
+		SELECT 
+			a.p_idx,
+			a.sa_idx,
+			b.p_name 
+		FROM sm_prog_authority a
+		JOIN sm_program b
+		ON a.p_idx = b.p_idx
+		WHERE a.p_idx = #{pIdx}
+	</select>
+	
+	<update id="modifyProgAuthority">
+		UPDATE sm_prog_authority SET
+			sa_idx = #{saIdx}
+		WHERE p_idx = #{pIdx}
+	</update>
+	
+	<delete id="deleteProgAuthority">
+		DELETE FROM sm_prog_authority WHERE p_idx = #{pIdx}
+	</delete>
+</mapper>

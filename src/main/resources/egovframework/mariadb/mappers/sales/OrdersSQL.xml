@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.sales.orders.service.impl.OrdersMapper">
+	<select id="selectOrdersListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_orders
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectOrdersList" resultType="egovMap">
+		SELECT
+			or_idx,
+			es_idx,
+			or_name,
+			or_dte,
+			FORMAT(or_money,0) AS or_money,
+			or_manager
+		FROM sm_orders
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY or_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectEstimateList" resultType="egovMap">
+		SELECT
+			* 
+		FROM sm_estimate 
+		WHERE 1=1 
+		AND NOW() <![CDATA[<=]]> DATE_ADD(es_fnl_qut_dte, INTERVAL 1 MONTH)
+		AND es_state = 0
+		<if test="esIdx != ''">
+			AND es_idx = #{esIdx}
+		</if>
+	</select>
+	
+	<select id="selectEstimateInfo" resultType="egovMap">
+		SELECT
+			es_fnl_qut_money AS esFQM,
+			DATE_FORMAT(es_fst_qut_dte, '%Y-%m-%d %H:%i') AS es_fst_qut_dte,
+			FORMAT(es_fst_qut_money, 0) AS es_fst_qut_money,
+			DATE_FORMAT(es_fnl_qut_dte, '%Y-%m-%d %H:%i') AS es_fnl_qut_dte,
+			FORMAT(es_fnl_qut_money, 0) AS es_fnl_qut_money
+		FROM sm_estimate
+		WHERE es_idx = #{esIdx}
+	</select>
+	
+	<insert id="registOrders">
+		INSERT INTO sm_orders
+			(
+			or_idx,
+			es_idx,
+			or_name,
+			or_dte,
+			or_money,
+			or_mny_unit,
+			or_due_dte,
+			or_due_place,
+			or_bid_price,
+			or_manager,
+			or_note,
+			or_reg_dte,
+			or_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('OR', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.or_idx),0) FROM sm_orders a),'[a-z]','')))+1,10,0))),
+			#{esIdx},
+			#{orName},
+			#{orDte},
+			#{orMoney},
+			#{orMnyUnit},
+			#{orDueDte},
+			#{orDuePlace},
+			#{orBidPrice},
+			#{orManager},
+			#{orNote},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<update id="updateEstimate">
+		UPDATE sm_estimate SET
+			es_state = #{state}
+		WHERE es_idx = #{esIdx}
+	</update>
+	
+	<select id="selectOrdersInfo" resultType="egovMap">
+		SELECT
+			a.or_idx,
+			a.es_idx,
+			b.es_name,
+			a.or_name,
+			a.or_dte,
+			a.or_money,
+			a.or_mny_unit,
+			a.or_due_dte,
+			a.or_due_place,
+			a.or_bid_price,
+			a.or_manager,
+			a.or_note,
+			DATE_FORMAT(a.or_reg_dte, '%Y-%m-%d %H:%i') AS or_reg_dte,
+			a.or_reg_mem,
+			DATE_FORMAT(b.es_fst_qut_dte, '%Y-%m-%d %H:%i') AS es_fst_qut_dte,
+			b.es_fst_qut_money,
+			DATE_FORMAT(b.es_fnl_qut_dte, '%Y-%m-%d %H:%i') AS es_fnl_qut_dte,
+			b.es_fnl_qut_money
+		FROM sm_orders a
+		JOIN sm_estimate b
+		ON a.es_idx = b.es_idx
+		WHERE or_idx = #{orIdx}
+	</select>
+	
+	<update id="modifyOrders">
+		UPDATE sm_orders SET
+			or_name = #{orName},
+			or_dte = #{orDte},
+			or_money = #{orMoney},
+			or_mny_unit = #{orMnyUnit},
+			or_due_dte = #{orDueDte},
+			or_due_place = #{orDuePlace},
+			or_bid_price = #{orBidPrice},
+			or_manager = #{orManager},
+			or_note = #{orNote},
+			or_edt_dte = NOW(),
+			or_edt_mem = #{userId}
+		WHERE or_idx = #{orIdx}
+	</update>
+	
+	<delete id="deleteOrders">
+		DELETE FROM sm_orders WHERE or_idx = #{orIdx}
+	</delete>
+</mapper>

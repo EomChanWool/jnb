@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.kpi.service.impl.KpiMapper">
+	<select id="selectKpiListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_kpi
+		WHERE 1=1
+		<if test="searchCondition2 != ''">
+			AND ex_year = #{searchCondition2}
+		</if>
+		<if test="searchCondition3 != ''">
+			AND ex_month = #{searchCondition3}
+		</if>
+	</select>
+	
+	<select id="selectKpiList" resultType="egovMap">
+		SELECT
+			ex_idx,
+			ex_year,
+			ex_month,
+			FORMAT(ex_trg_output, 0) AS ex_trg_output,
+			FORMAT(ex_trg_sales, 0) AS ex_trg_sales
+		FROM sm_kpi
+		WHERE 1=1
+		<if test="searchCondition2 != ''">
+			AND ex_year = #{searchCondition2}
+		</if>
+		<if test="searchCondition3 != ''">
+			AND ex_month = #{searchCondition3}
+		</if>
+		ORDER BY ex_year DESC, ex_month DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectKpiGraphList" resultType="egovMap">
+		SELECT
+			ex_idx,
+			ex_year,
+			ex_month,
+			ex_trg_output,
+			ex_trg_sales
+		FROM sm_kpi
+		WHERE 1=1
+		<if test="searchCondition2 != ''">
+			AND ex_year = #{searchCondition2}
+		</if>
+		<if test="searchCondition3 != ''">
+			AND ex_month = #{searchCondition3}
+		</if>
+	</select>
+	
+	<select id="selectOutput" resultType="egovMap">
+		SELECT
+			DATE_FORMAT(pr_re_ed_dte, '%Y-%m') monthly,
+			DATE_FORMAT(pr_re_ed_dte, '%Y') years,
+			DATE_FORMAT(pr_re_ed_dte, '%m') month,
+			SUM(b.wo_pdt_cnt) AS totalCnt,
+			0 money
+		FROM sm_prod_result a
+		JOIN sm_work_order b
+		ON a.wo_idx = b.wo_idx
+		WHERE 1=1
+		<if test="searchCondition2 != ''">
+			AND DATE_FORMAT(pr_re_ed_dte, '%Y') = #{searchCondition2}
+		</if>
+		<if test="searchCondition3 != ''">
+			AND FORMAT(DATE_FORMAT(pr_re_ed_dte, '%m'),0) = #{searchCondition3}
+		</if>
+		AND pr_list_nm = '저장탱크 이송'
+		GROUP BY monthly
+	</select>
+	
+	<select id="selectSales" resultType="egovMap">
+		SELECT
+			DATE_FORMAT(or_dte, '%Y-%m') monthly,
+			DATE_FORMAT(or_dte, '%Y') years,
+			DATE_FORMAT(or_dte, '%m') MONTH,
+			ROUND(SUM(or_bid_price/10000),1) money,
+			0 totalCnt
+		FROM sm_orders
+		WHERE 1=1
+		<if test="searchCondition2 != ''">
+			AND DATE_FORMAT(or_dte, '%Y') = #{searchCondition2}
+		</if>
+		<if test="searchCondition3 != ''">
+			AND FORMAT(DATE_FORMAT(or_dte, '%m'),0) = #{searchCondition3}
+		</if>
+		GROUP BY monthly
+	</select>
+	
+	<select id="selectExistsKpi" resultType="int">
+		SELECT COUNT(*) FROM sm_kpi WHERE ex_year = #{exYear} AND ex_month = #{exMonth}
+	</select>
+	
+	<insert id="registKpi">
+		INSERT INTO sm_kpi
+			(
+			ex_idx,
+			ex_year,
+			ex_month,
+			ex_trg_output,
+			ex_trg_sales,
+			ex_reg_dte,
+			ex_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('EX', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.ex_idx),0) FROM sm_kpi a),'[a-z]','')))+1,4,0))),
+			#{exYear},
+			#{exMonth},
+			#{exTrgOutput},
+			#{exTrgSales},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectKpiInfo" resultType="egovMap">
+		SELECT
+			ex_idx,
+			ex_year,
+			ex_month,
+			ex_trg_output,
+			ex_trg_sales
+		FROM sm_kpi
+		WHERE ex_idx = #{exIdx}
+	</select>
+	
+	<update id="modifyKpi">
+		UPDATE sm_kpi SET
+			ex_year = #{exYear},
+			ex_month = #{exMonth},
+			ex_trg_output = #{exTrgOutput},
+			ex_trg_sales = #{exTrgSales},
+			ex_edt_dte = NOW(),
+			ex_edt_mem = #{userId}
+		WHERE ex_idx = #{exIdx}
+	</update>
+	
+	<delete id="deleteKpi">
+		DELETE FROM sm_kpi WHERE ex_idx = #{exIdx}
+	</delete>
+</mapper>

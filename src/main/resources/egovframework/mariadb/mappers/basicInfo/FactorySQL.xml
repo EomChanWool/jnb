@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.factory.service.impl.FactoryMapper">
+	<select id="selectFactoryListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_factory
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND f_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectFactoryList" resultType="egovMap">
+		SELECT
+			a.f_code,
+			a.f_name,
+			a.f_location,
+			b.c_name
+		FROM sm_factory a
+		JOIN sm_company b
+		ON a.c_idx = b.c_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND f_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY f_code DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectComnCodeList" resultType="egovMap">
+		SELECT cc_code, cc_name FROM sm_comn_code
+	</select>
+	
+	<select id="selectExistsCompany" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<insert id="registFactory">
+		INSERT INTO sm_factory
+			(
+			f_code,
+			c_idx,
+			cc_code,
+			<if test="fTel != ''">f_tel,</if>
+			f_name,
+			f_location,
+			<if test="fSiteInfo != ''">f_site_info,</if>
+			<if test="fNote != ''">f_note,</if>
+			f_reg_dte,
+			f_reg_mem
+			)
+		VALUES
+			(
+			(SELECT if(
+				(SELECT COUNT(*) FROM sm_factory a WHERE a.f_code LIKE CONCAT(#{cIdx},'%')) = 0,
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-001')),
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-',
+				(SELECT LPAD(
+					(SELECT right(b.f_code,3)+1 FROM sm_factory b WHERE b.f_code =
+						(SELECT MAX(c.f_code) FROM sm_factory c WHERE c.f_code LIKE CONCAT(#{cIdx},'%')))
+						,3,0)))
+				))),
+			#{cIdx},
+			#{ccCode},
+			<if test="fTel != ''">#{fTel},</if>
+			#{fName},
+			#{fLocation},
+			<if test="fSiteInfo != ''">#{fSiteInfo},</if>
+			<if test="fNote != ''">#{fNote},</if>
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectFactory" resultType="egovMap">
+		SELECT
+			f_code,
+			c_idx,
+			cc_code,
+			f_tel,
+			f_name,
+			f_location,
+			f_site_info,
+			f_note
+		FROM sm_factory
+		WHERE f_code = #{fCode}
+	</select>
+	
+	<update id="modifyFactory">
+		UPDATE sm_factory SET
+			c_idx = #{cIdx},
+			<if test="ccCode != ''">cc_code = #{ccCode},</if>
+			<if test="fTel != ''">f_tel = #{fTel},</if>
+			<if test="fTel == ''">f_tel = null,</if>
+			f_name = #{fName},
+			f_location = #{fLocation},
+			<if test="fSiteInfo != ''">f_site_info = #{fSiteInfo},</if>
+			<if test="fSiteInfo == ''">f_site_info = null,</if>
+			<if test="fNote != ''">f_note = #{fNote},</if>
+			<if test="fNote == ''">f_note = null,</if>
+			f_edt_dte = NOW(),
+			f_edt_mem = #{userId}
+		WHERE f_code = #{fCode}
+	</update>
+	
+	<delete id="deleteFactory">
+		DELETE FROM sm_factory WHERE f_code = #{fCode}
+	</delete>
+</mapper>

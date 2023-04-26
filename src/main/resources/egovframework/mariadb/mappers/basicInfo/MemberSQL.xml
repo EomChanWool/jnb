@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.member.service.impl.MemberMapper">
+	<select id="selectMemberListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_member a
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND a.m_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectMemberList" resultType="egovMap">
+		SELECT
+			a.m_idx,
+			a.m_name,
+			a.m_id,
+			a.m_belong,
+			a.m_phone,
+			a.m_emplt_dte,
+			b.sa_name
+		FROM sm_member a
+		JOIN sm_sys_authority b
+		ON a.sa_idx = b.sa_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND a.m_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY a.m_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectMember" resultType="egovMap">
+		SELECT 
+			a.m_name, 
+			a.m_id, 
+			a.m_pwd, 
+			a.m_belong, 
+			b.sa_lev
+		FROM sm_member a
+		JOIN sm_sys_authority b
+		ON a.sa_idx = b.sa_idx 
+		WHERE a.m_id = #{id}
+	</select>
+	
+	<select id="selectAuthorityList" resultType="egovMap">
+		SELECT sa_idx, sa_name FROM sm_sys_authority
+	</select>
+	
+	<select id="selectId" resultType="String">
+		SELECT m_id FROM sm_member WHERE m_id = #{id}
+	</select>
+	
+	<select id="selectExistsAuthority" resultType="int">
+		SELECT COUNT(*) FROM sm_sys_authority WHERE sa_idx = #{saIdx}
+	</select>
+	
+	<insert id="insertSystemLog">
+		INSERT INTO sm_system_log
+			(
+			sl_id,
+			sl_ip,
+			sl_dte,
+			sl_note
+			)
+		VALUES
+			(
+			#{mId},
+			#{ip},
+			NOW(),
+			#{note}
+			)
+	</insert>
+	
+	<insert id="registMemberOk">
+		INSERT INTO sm_member
+			(
+			m_name,
+			m_id,
+			m_pwd,
+			<if test="mPhone != ''">m_phone,</if>
+			<if test="mBelong != ''">m_belong,</if>
+			<if test="mRank != ''">m_rank,</if>
+			sa_idx,
+			<if test="mEmpltDte != ''">m_emplt_dte,</if>
+			<if test="mNote != ''">m_note,</if>
+			m_reg_dte
+			)
+		VALUES
+			(
+			#{mName},
+			#{mId},
+			#{mPwd},
+			<if test="mPhone != ''">#{mPhone},</if>
+			<if test="mBelong != ''">#{mBelong},</if>
+			<if test="mRank != ''">#{mRank},</if>
+			#{saIdx},
+			<if test="mEmpltDte != ''">#{mEmpltDte},</if>
+			<if test="mNote != ''">#{mNote},</if>
+			NOW()
+			)
+	</insert>
+	
+	<select id="selectMemberInfo" resultType="egovMap">
+		SELECT
+			m_idx,
+			m_name,
+			m_id,
+			m_phone,
+			m_belong,
+			m_rank,
+			sa_idx,
+			m_emplt_dte,
+			m_note
+		FROM sm_member WHERE m_idx = #{mIdx}
+	</select>
+	
+	<update id="modifyMember">
+		UPDATE sm_member SET
+			m_name = #{mName},
+			m_pwd = #{mPwd},
+			<if test="mPhone != ''">m_phone = #{mPhone},</if>
+			<if test="mBelong != ''">m_belong = #{mBelong},</if>
+			<if test="mRank != ''">m_rank = #{mRank},</if>
+			sa_idx = #{saIdx},
+			<if test="mEmpltDte != ''">m_emplt_dte = #{mEmpltDte},</if>
+			<if test="mNote != ''">m_note = #{mNote}</if>
+		WHERE m_idx = #{mIdx}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM sm_member WHERE m_idx = #{mIdx}
+	</delete>
+</mapper>

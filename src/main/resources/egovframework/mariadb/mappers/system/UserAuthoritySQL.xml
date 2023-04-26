@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.system.userAuthority.service.impl.UserAuthorityMapper">
+	<select id="selectUserAuthorityListToCnt" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM sm_user_authority a
+		JOIN sm_member b
+		ON a.m_idx = b.m_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND b.m_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectUserAuthorityList" resultType="egovMap">
+		SELECT
+			a.m_idx,
+			a.ua_crud_flag,
+			b.m_id,
+			b.m_name
+		FROM sm_user_authority a
+		JOIN sm_member b
+		ON a.m_idx = b.m_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND b.m_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY a.m_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectMemberList" resultType="egovMap">
+		SELECT m_id, m_name FROM sm_member
+	</select>
+	
+	<select id="selectExistsMemberId" resultType="int">
+		SELECT COUNT(*) FROM sm_member WHERE m_id = #{mId}
+	</select>
+	
+	<select id="selectExistsUserAuthority" resultType="int">
+		SELECT COUNT(*) FROM sm_user_authority WHERE m_idx = (SELECT m_idx FROM sm_member WHERE m_id = #{mId})
+	</select>
+	
+	<insert id="registUserAuthority">
+		INSERT INTO sm_user_authority
+			(
+			m_idx,
+			ua_crud_flag,
+			ua_reg_dte,
+			ua_reg_mem
+			)
+		VALUES
+			(
+			(SELECT m_idx FROM sm_member WHERE m_id = #{mId}),
+			#{uaCrudFlag},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectUserAuthorityInfo" resultType="egovMap">
+		SELECT
+			a.m_idx,
+			a.ua_crud_flag,
+			b.m_id,
+			b.m_name
+		FROM sm_user_authority a
+		JOIN sm_member b
+		ON a.m_idx = b.m_idx
+		WHERE a.m_idx = #{mIdx}
+	</select>
+	
+	<update id="modifyUserAuthority">
+		UPDATE sm_user_authority SET
+			ua_crud_flag = #{uaCrudFlag}
+		WHERE m_idx = #{mIdx}
+	</update>
+	
+	<delete id="deleteUserAuthority">
+		DELETE FROM sm_user_authority WHERE m_idx = #{mIdx}
+	</delete>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.system.authority.service.impl.AuthorityMapper">
+	<select id="selectProgramAccessLev" resultType="int">
+		SELECT
+			c.sa_lev
+		FROM sm_program a
+		JOIN sm_prog_authority b
+		ON a.p_idx = b.p_idx
+		JOIN sm_sys_authority c
+		ON b.sa_idx = c.sa_idx
+		WHERE a.p_url LIKE CONCAT('%',#{str},'%')
+	</select>
+	
+	<select id="selectAccess" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM sm_member a
+		JOIN sm_user_authority b
+		ON a.m_idx = b.m_idx
+		WHERE a.m_id = #{str}
+		AND b.ua_crud_flag = 'Y'
+	</select>
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.item.service.impl.ItemMapper">
+	<select id="selectItemListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_item
+		WHERE 1=1
+		<if test="searchCondition == '제품'">
+			AND item_type = '제품'
+		</if>
+		<if test="searchCondition == '자재'">
+			AND item_type = '자재'
+		</if>
+		<if test="searchCondition2 != ''">
+			AND c_idx = #{searchCondition2}
+		</if>
+		<if test="searchKeyword != ''">
+			AND item_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectItemList" resultType="egovMap">
+		SELECT
+			a.item_cd,
+			a.item_type,
+			a.c_idx,
+			a.item_name,
+			a.item_standard,
+			a.item_note,
+			b.c_name,
+			c.ac_name
+		FROM sm_item a
+		JOIN sm_company b
+		ON a.c_idx = b.c_idx
+		JOIN sm_account c
+		ON a.ac_code = c.ac_code
+		WHERE 1=1
+		<if test="searchCondition == '제품'">
+			AND item_type = '제품'
+		</if>
+		<if test="searchCondition == '자재'">
+			AND item_type = '자재'
+		</if>
+		<if test="searchCondition2 != ''">
+			AND a.c_idx = #{searchCondition2}
+		</if>
+		<if test="searchKeyword != ''">
+			AND item_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY item_cd DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectComnCodeList" resultType="egovMap">
+		SELECT cc_code, cc_name FROM sm_comn_code
+	</select>
+	
+	<select id="selectAccountList" resultType="egovMap">
+		SELECT ac_code, ac_name FROM sm_account
+	</select>
+	
+	<select id="selectExistsCompany" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<insert id="registItem">
+		INSERT INTO sm_item
+			(
+			item_cd,
+			item_type,
+			cc_code,
+			c_idx,
+			ac_code,
+			item_name,
+			<if test="itemStandard != ''">item_standard,</if>
+			item_uom,
+			<if test="itemNote != ''">item_note,</if>
+			item_reg_dte,
+			item_reg_mem
+			)
+		VALUES
+			(
+			(SELECT if(
+				(SELECT COUNT(*) FROM sm_item a WHERE a.item_cd LIKE CONCAT(#{cIdx},'%')) = 0,
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-',#{type},'-001')),
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode}, '-',#{type},'-',
+				(SELECT LPAD(
+					(SELECT if(
+						((SELECT COUNT(*) FROM sm_item a WHERE a.c_idx = #{cIdx} AND a.item_cd LIKE CONCAT('%',#{type},'%')) = 0), 1,
+						(SELECT IFNULL(RIGHT(b.item_cd,3)+1,1) FROM sm_item b WHERE b.item_cd LIKE(
+						(SELECT MAX(c.item_cd) FROM sm_item c WHERE c.item_cd LIKE CONCAT(#{cIdx},'%') 
+											AND c.item_cd LIKE CONCAT('%',#{type},'%'))))
+						))
+				,3,0)))
+				))),
+			#{itemType},
+			#{ccCode},
+			#{cIdx},
+			#{acCode},
+			#{itemName},
+			<if test="itemStandard != ''">#{itemStandard},</if>
+			#{itemUom},
+			<if test="itemNote != ''">#{itemNote},</if>
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectItemInfo" resultType="egovMap">
+		SELECT
+			item_cd,
+			item_type,
+			cc_code,
+			c_idx,
+			ac_code,
+			item_name,
+			item_standard,
+			item_uom,
+			item_note
+		FROM sm_item
+		WHERE item_cd = #{itemCd}
+	</select>
+	
+	<update id="modifyItem">
+		UPDATE sm_item SET
+			item_type = #{itemType},
+			c_idx = #{cIdx},
+			ac_code = #{acCode},
+			cc_code = #{ccCode},
+			item_name = #{itemName},
+			<if test="itemStandard != ''">item_standard = #{itemStandard},</if>
+			item_uom = #{itemUom},
+			<if test="itemNote != ''">item_note = #{itemNote},</if>
+			item_edt_dte = NOW(),
+			item_edt_mem = #{userId}
+		WHERE item_cd = #{itemCd}
+	</update>
+	
+	<delete id="deleteItem">
+		DELETE FROM sm_item WHERE item_cd = #{itemCd}
+	</delete>
+</mapper>

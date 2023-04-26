@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.production.prodPlan.service.impl.ProdPlanMapper">
+	<select id="selectProdPlanListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_prdt_plan
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND pp_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectProdPlanList" resultType="egovMap">
+		SELECT
+			a.pp_idx,
+			a.pp_name,
+			a.or_idx,
+			b.or_name,
+			c.item_name
+		FROM sm_prdt_plan a
+		JOIN sm_orders b
+		ON a.or_idx = b.or_idx
+		JOIN sm_item c
+		ON a.item_cd = c.item_cd
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND pp_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY pp_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectOrdersList" resultType="egovMap">
+		SELECT or_idx, or_name FROM sm_orders WHERE or_state IN ('0', '1')
+	</select>
+	
+	<select id="selectEstimateItemList" resultType="egovMap">
+		SELECT
+			es_prod1, es_cnt1,
+			es_prod2, es_cnt2,
+			es_prod3, es_cnt3,
+			es_prod4, es_cnt4,
+			es_prod5, es_cnt5,
+			es_prod6, es_cnt6,
+			es_prod7, es_cnt7,
+			es_prod8, es_cnt8,
+			es_prod9, es_cnt9,
+			es_prod10, es_cnt10
+		FROM sm_orders a  
+		JOIN sm_estimate b
+		ON a.es_idx = b.es_idx
+		WHERE a.or_idx = #{orIdx}
+	</select>
+	
+	<select id="selectItemName" resultType="String">
+		SELECT item_name FROM sm_item WHERE item_cd = #{prodCd}
+	</select>
+	
+	<select id="selectExistsOrdersIdx" resultType="int">
+		SELECT COUNT(*) FROM sm_orders WHERE or_idx = #{orIdx}
+	</select>
+	
+	<select id="selectExistsItemCode" resultType="int">
+		SELECT COUNT(*) FROM sm_item WHERE item_cd = #{itemCd}
+	</select>
+	
+	<insert id="registProdPlan">
+		INSERT INTO sm_prdt_plan
+			(
+			pp_idx,
+			pp_name,
+			or_idx,
+			item_cd,
+			pp_prdt_cnt,
+			<if test="ppDlvDte != ''">pp_dlv_dte,</if>
+			<if test="ppNote != ''">pp_note,</if>
+			pp_reg_dte,
+			pp_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('PP', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.pp_idx),0) FROM sm_prdt_plan a),'[a-z]','')))+1,10,0))),
+			#{ppName},
+			#{orIdx},
+			#{itemCd},
+			#{ppPrdtCnt},
+			<if test="ppDlvDte != ''">#{ppDlvDte},</if>
+			<if test="ppNote != ''">#{ppNote},</if>
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectProdPlanInfo" resultType="egovMap">
+		SELECT
+			a.pp_idx,
+			a.pp_name,
+			a.or_idx,
+			a.item_cd,
+			a.pp_prdt_cnt,
+			a.pp_dlv_dte,
+			a.pp_note,
+			b.item_name,
+			c.or_name,
+			e.ac_name
+		FROM sm_prdt_plan a
+		JOIN sm_item b
+		ON a.item_cd = b.item_cd
+		JOIN sm_orders c
+		ON a.or_idx = c.or_idx
+		JOIN sm_estimate d
+		ON c.es_idx = d.es_idx
+		JOIN sm_account e
+		ON d.a_idx = e.ac_code
+		WHERE pp_idx = #{ppIdx}
+	</select>
+	
+	<update id="modifyProdPlan">
+		UPDATE sm_prdt_plan SET
+			pp_name = #{ppName},
+			item_cd = #{itemCd},
+			pp_prdt_cnt = #{ppPrdtCnt},
+			pp_dlv_dte = #{ppDlvDte},
+			pp_note = #{ppNote},
+			pp_edt_dte = NOW(),
+			pp_edt_mem = #{userId}
+		WHERE pp_idx = #{ppIdx}
+	</update>
+	
+	<delete id="deleteProdPlan">
+		DELETE FROM sm_prdt_plan WHERE pp_idx = #{ppIdx}
+	</delete>
+</mapper>

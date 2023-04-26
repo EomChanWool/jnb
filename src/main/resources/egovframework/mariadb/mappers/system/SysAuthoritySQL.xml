@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.system.sysAuthority.service.impl.SysAuthorityMapper">
+	<select id="selectSysAuthorityListToCnt" resultType="int">
+		SELECT
+			COUNT(*) 
+		FROM sm_sys_authority 
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND sa_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectSysAuthorityList" resultType="egovMap">
+		SELECT
+			sa_idx,
+			sa_name,
+			sa_lev
+		FROM sm_sys_authority 
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND sa_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY sa_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectExistsSysAuthority" resultType="int">
+		SELECT COUNT(*) FROM sm_sys_authority 
+		WHERE 1=1
+		AND sa_lev = #{saLev}
+		<if test="saIdx != ''">
+			AND sa_lev NOT IN(SELECT sa_lev FROM sm_sys_authority WHERE sa_idx = #{saIdx})
+		</if>
+	</select>
+	
+	<insert id="registSysAuthority">
+		INSERT INTO sm_sys_authority
+			(
+			sa_idx,
+			sa_name,
+			sa_lev,
+			sa_reg_dte,
+			sa_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT('SA', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.sa_idx),0) FROM sm_sys_authority a),'[a-z]','')))+1,3,0))),
+			#{saName},
+			#{saLev},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectSysAuthorityInfo" resultType="egovMap">
+		SELECT sa_idx, sa_name, sa_lev FROM sm_sys_authority WHERE sa_idx = #{saIdx}
+	</select>
+	
+	<update id="modifySysAuthority">
+		UPDATE sm_sys_authority SET
+			sa_name = #{saName},
+			sa_lev = #{saLev},
+			sa_edt_dte = NOW(),
+			sa_edt_mem = #{userId}
+		WHERE sa_idx = #{saIdx}
+	</update>
+	
+	<delete id="deleteSysAuthority">
+		DELETE FROM sm_sys_authority WHERE sa_idx = #{saIdx}
+	</delete>
+</mapper>

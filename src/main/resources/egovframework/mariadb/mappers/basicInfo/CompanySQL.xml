@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.company.service.impl.CompanyMapper">
+
+	<select id="selectCompanyListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_company
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND c_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name, c_addr, c_tel, c_bsns_no FROM sm_company
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND c_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY c_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<insert id="registCompany">
+		INSERT INTO sm_company
+			(
+			c_idx,
+			c_name,
+			<if test="cTel != ''">c_tel,</if>
+			<if test="cFax != ''">c_fax,</if>
+			<if test="cBsnsNo != ''">c_bsns_no,</if>
+			<if test="cSector != ''">c_sector,</if>
+			<if test="cBusiness != ''">c_business,</if>
+			<if test="cOwner != ''">c_owner,</if>
+			<if test="cHomepage != ''">c_homepage,</if>
+			<if test="cEmail != ''">c_email,</if>
+			<if test="cCorNo != ''">c_cor_no,</if>
+			<if test="cPayBank != ''">c_pay_bank,</if>
+			<if test="cPacAccount != ''">c_pay_account,</if>
+			<if test="cAccHolder != ''">c_acc_holder,</if>
+			<if test="cSiteInfo != ''">c_site_info,</if>
+			<if test="cNote != ''">c_note,</if>
+			c_addr
+			)
+		VALUES
+			(
+			(SELECT CONCAT('C', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.c_idx),0) FROM sm_company a),'[a-z]','')))+1,4,0))),
+			#{cName},
+			<if test="cTel != ''">#{cTel},</if>
+			<if test="cFax != ''">#{cFax},</if>
+			<if test="cBsnsNo != ''">#{cBsnsNo},</if>
+			<if test="cSector != ''">#{cSector},</if>
+			<if test="cBusiness != ''">#{cBusiness},</if>
+			<if test="cOwner != ''">#{cOwner},</if>
+			<if test="cHomepage != ''">#{cHomepage},</if>
+			<if test="cEmail != ''">#{cEmail},</if>
+			<if test="cCorNo != ''">#{cCorNo},</if>
+			<if test="cPayBank != ''">#{cPayBank},</if>
+			<if test="cPacAccount != ''">#{cPacAccount},</if>
+			<if test="cAccHolder != ''">#{cAccHolder},</if>
+			<if test="cSiteInfo != ''">#{cSiteInfo},</if>
+			<if test="cNote != ''">#{cNote},</if>
+			#{cAddr}
+			)
+	</insert>
+	
+	<select id="selectCompanyInfo" resultType="egovMap">
+		SELECT
+			c_idx,
+			c_name,
+			c_addr,
+			c_tel,
+			c_fax,
+			c_bsns_no,
+			c_sector,
+			c_business,
+			c_owner,
+			c_homepage,
+			c_email,
+			c_cor_no,
+			c_pay_bank,
+			c_pay_account,
+			c_acc_holder,
+			c_site_info,
+			c_note
+		FROM sm_company
+		WHERE c_idx = #{cIdx}
+	</select>
+	
+	<update id="modifyCompany">
+		UPDATE sm_company SET
+			c_name = #{cName},
+			c_addr = #{cAddr},
+			c_tel = #{cTel},
+			c_fax = #{cFax},
+			c_bsns_no = #{cBsnsNo},
+			c_sector = #{cSector},
+			c_business = #{cBusiness},
+			c_owner = #{cOwner},
+			c_homepage = #{cHomepage},
+			c_email = #{cEmail},
+			c_cor_no = #{cCorNo},
+			c_pay_bank = #{cPayBank},
+			c_pay_account = #{cPayAccount},
+			c_acc_holder = #{cAccHolder},
+			c_site_info = #{cSiteInfo},
+			c_note = #{cNote}
+		WHERE c_idx = #{cIdx}
+	</update>
+	
+	<delete id="deleteCompany">
+		DELETE FROM sm_company WHERE c_idx = #{cIdx}
+	</delete>
+</mapper>

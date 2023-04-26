@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.basicInfo.account.service.impl.AccountMapper">
+	<select id="selectAccountListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_account 
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND c_idx = #{searchCondition}
+		</if>
+		<if test="searchKeyword != ''">
+			AND ac_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+	</select>
+	
+	<select id="selectAccountList" resultType="egovMap">
+		SELECT
+			a.ac_code,
+			a.ac_name,
+			a.ac_ceo,
+			a.ac_pur_manager,
+			a.ac_tel,
+			a.ac_bsns_no,
+			DATE_FORMAT(a.ac_reg_dte, '%Y/%m/%d %H:%i') AS ac_reg_dte,
+			b.c_name
+		FROM sm_account a
+		JOIN sm_company b
+		ON a.c_idx = b.c_idx
+		WHERE 1=1
+		<if test="searchCondition != ''">
+			AND a.c_idx = #{searchCondition}
+		</if>
+		<if test="searchKeyword != ''">
+			AND a.ac_name LIKE CONCAT ('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY a.ac_code DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectCompanyList" resultType="egovMap">
+		SELECT c_idx, c_name FROM sm_company
+	</select>
+	
+	<select id="selectComnCodeList" resultType="egovMap">
+		SELECT cc_code, cc_name FROM sm_comn_code
+	</select>
+	
+	<select id="selectExistsCompany" resultType="int">
+		SELECT COUNT(*) FROM sm_company WHERE c_idx = #{cIdx}
+	</select>
+	
+	<insert id="registAccount">
+		INSERT INTO sm_account
+			(
+			ac_code,
+			c_idx,
+			cc_code,
+			ac_name,
+			ac_ceo,
+			ac_addr1,
+			<if test="acSector != ''">ac_sector,</if>
+			<if test="acBusiness != ''">ac_business,</if>
+			<if test="acBsnsNo != ''">ac_bsns_no,</if>
+			<if test="acPurManager != ''">ac_pur_manager,</if>
+			<if test="acTel != ''">ac_tel,</if>
+			<if test="acFax != ''">ac_fax,</if>
+			<if test="acHomepage != ''">ac_homepage,</if>
+			<if test="acEmail != ''">ac_email,</if>
+			<if test="acPayBank != ''">ac_pay_bank,</if>
+			<if test="acPayAccount != ''">ac_pay_account,</if>
+			<if test="acAccHolder != ''">ac_acc_holder,</if>
+			<if test="acNote != ''">ac_note,</if>
+			ac_reg_dte,
+			ac_reg_mem
+			)
+		VALUES
+			(
+			(SELECT if(
+				(SELECT COUNT(*) FROM sm_account a WHERE a.ac_code LIKE CONCAT(#{cIdx},'%')) = 0,
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-001')),
+				(SELECT CONCAT(#{cIdx},'-',#{ccCode},'-',
+				(SELECT LPAD(
+					(SELECT right(b.ac_code,3)+1 FROM sm_account b WHERE b.ac_code =
+						(SELECT MAX(c.ac_code) FROM sm_account c WHERE c.ac_code LIKE CONCAT(#{cIdx},'%')))
+				,3,0)))
+				))),
+			#{cIdx},
+			#{ccCode},
+			#{acName},
+			#{acCeo},
+			#{acAddr1},
+			<if test="acSector != ''">#{acSector},</if>
+			<if test="acBusiness != ''">#{acBusiness},</if>
+			<if test="acBsnsNo != ''">#{acBsnsNo},</if>
+			<if test="acPurManager != ''">#{acPurManager},</if>
+			<if test="acTel != ''">#{acTel},</if>
+			<if test="acFax != ''">#{acFax},</if>
+			<if test="acHomepage != ''">#{acHomepage},</if>
+			<if test="acEmail != ''">#{acEmail},</if>
+			<if test="acPayBank != ''">#{acPayBank},</if>
+			<if test="acPayAccount != ''">#{acPayAccount},</if>
+			<if test="acAccHolder != ''">#{acAccHolder},</if>
+			<if test="acNote != ''">#{acNote},</if>
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<select id="selectAccountInfo" resultType="egovMap">
+		SELECT * from sm_account WHERE ac_code = #{acCode}
+	</select>
+	
+	<update id="modifyAccount">
+		UPDATE sm_account SET
+			c_idx = #{cIdx},
+			ac_name = #{acName},
+			cc_code = #{ccCode},
+			ac_ceo = #{acCeo},
+			ac_addr1 = #{acAddr1},
+			<if test="acSector != ''">ac_sector = #{acSector},</if><if test="acSector == ''">ac_sector = null,</if>
+			<if test="acBusiness != ''">ac_business = #{acBusiness},</if><if test="acBusiness == ''">ac_business = null,</if>
+			<if test="acBsnsNo != ''">ac_bsns_no = #{acBsnsNo},</if><if test="acBsnsNo == ''">ac_bsns_no = null,</if>
+			<if test="acPurManager != ''">ac_pur_manager = #{acPurManager},</if><if test="acPurManager == ''">ac_pur_manager = null,</if>
+			<if test="acTel != ''">ac_tel = #{acTel},</if><if test="acTel == ''">ac_tel = null,</if>
+			<if test="acFax != ''">ac_fax = #{acFax},</if><if test="acFax == ''">ac_fax = null,</if>
+			<if test="acHomepage != ''">ac_homepage = #{acHomepage},</if><if test="acHomepage == ''">ac_homepage = null,</if>
+			<if test="acEmail != ''">ac_email = #{acEmail},</if><if test="acEmail == ''">ac_email = null,</if>
+			<if test="acPayBank != ''">ac_pay_bank = #{acPayBank},</if><if test="acPayBank == ''">ac_pay_bank = null,</if>
+			<if test="acPayAccount != ''">ac_pay_account = #{acPayAccount},</if><if test="acPayAccount == ''">ac_pay_account = null,</if>
+			<if test="acAccHolder != ''">ac_acc_holder = #{acAccHolder},</if><if test="acAccHolder == ''">ac_acc_holder = null,</if>
+			<if test="acNote != ''">ac_note = #{acNote},</if><if test="acNote == ''">ac_note = null,</if>
+			ac_edt_dte = NOW(),
+			ac_edt_mem = #{userId}
+		WHERE ac_code = #{acCode}
+	</update>
+	
+	<delete id="deleteAccount">
+		DELETE FROM sm_account WHERE ac_code = #{acCode}
+	</delete>
+</mapper>

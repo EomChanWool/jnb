@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.production.workOrder.service.impl.WorkOrderMapper">
+	<select id="selectWorkOrderListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_work_order
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND wo_name = #{searchKeyword}
+		</if>
+	</select>
+	
+	<select id="selectWorkOrderList" resultType="egovMap">
+		SELECT
+			a.wo_idx,
+			a.wo_name,
+			a.wo_state,
+			c.or_name
+		FROM sm_work_order a
+		JOIN sm_prdt_plan b
+		ON a.pp_idx = b.pp_idx
+		JOIN sm_orders c
+		ON b.or_idx = c.or_idx 
+		<if test="searchKeyword != ''">
+			AND wo_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY wo_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectProdPlanList" resultType="egovMap">
+		SELECT
+			a.pp_idx,
+			a.pp_name
+		FROM sm_prdt_plan a
+		JOIN sm_orders b
+		ON a.or_idx = b.or_idx
+		WHERE pp_state = 0
+	</select>
+	
+	<select id="selectProcessGroupList" resultType="egovMap">
+		SELECT DISTINCT(pr_list_group) FROM sm_process_list
+	</select>
+	
+	<select id="selectItemName" resultType="String">
+		SELECT item_name FROM sm_item WHERE item_cd = #{prodCd}
+	</select>
+	
+	<select id="selectWoProdPlanInfo" resultType="egovMap">
+		SELECT
+			a.item_cd,
+			a.pp_prdt_cnt,
+			b.item_name
+		FROM sm_prdt_plan a
+		JOIN sm_item b
+		ON a.item_cd = b.item_cd
+		WHERE pp_idx = #{ppIdx}
+	</select>
+	
+	<select id="selectExistsProdPlan" resultType="int">
+		SELECT COUNT(*) FROM sm_prdt_plan WHERE pp_idx = #{ppIdx}
+	</select>
+	
+	<select id="selectItemCode" resultType="int">
+		SELECT COUNT(*) FROM sm_item WHERE item_cd = #{itemCd}
+	</select>
+	
+	<insert id="registWorkOrder">
+		INSERT INTO sm_work_order
+			(
+			wo_idx,
+			wo_name,
+			pp_idx,
+			item_cd,
+			wo_pdt_cnt,
+			wo_itn_dte,
+			<if test="woCmtDte != ''">wo_cmt_dte,</if>
+			<if test="woDlvDte != ''">wo_dlv_dte,</if>
+			<if test="woNote != ''">wo_note,</if>
+			wo_group,
+			wo_reg_dte,
+			wo_reg_mem
+			)
+		VALUES
+			(
+			(SELECT CONCAT(CONCAT('WO',SUBSTRING(DATE_FORMAT(#{woItnDte},'%Y%m%d'),3,6)),'-',
+				(SELECT LPAD((SELECT IFNULL(MAX(SUBSTRING(a.wo_idx,10,12)),0)+1 
+					FROM sm_work_order a 
+					WHERE a.wo_idx 
+					LIKE CONCAT(CONCAT('WO',SUBSTRING(DATE_FORMAT(#{woItnDte},'%Y%m%d'),3,8)), '%')),3,0))) AS WO),
+			#{woName},
+			#{ppIdx},
+			#{itemCd},
+			#{woPdtCnt},
+			#{woItnDte},
+			<if test="woCmtDte != ''">#{woCmtDte},</if>
+			<if test="woDlvDte != ''">#{woDlvDte},</if>
+			<if test="woNote != ''">#{woNote},</if>
+			#{process},
+			NOW(),
+			#{userId}
+			)
+	</insert>
+	
+	<update id="updateProdPlan">
+		UPDATE sm_prdt_plan SET
+			pp_state = #{state}
+		WHERE pp_idx = #{ppIdx}
+	</update>
+	
+	<select id="selectProcessList" resultType="egovMap">
+		SELECT pr_list_idx, pr_list_seq, pr_list_nm FROM sm_process_list WHERE pr_list_group = #{group}
+	</select>
+	
+	<insert id="registProcess">
+		INSERT INTO sm_process
+			(
+			wo_idx,
+			pr_cur_seq,
+			pr_cur_idx,
+			pr_cur_nm,
+			pr_tot_cnt,
+			pr_fin_cnt,
+			pr_list_idx1, pr_list_nm1, pr_st_time1, pr_ed_time1, pr_cnt1, pr_faulty1,
+			pr_list_idx2, pr_list_nm2, pr_st_time2, pr_ed_time2, pr_cnt2, pr_faulty2,
+			pr_list_idx3, pr_list_nm3, pr_st_time3, pr_ed_time3, pr_cnt3, pr_faulty3,
+			pr_list_idx4, pr_list_nm4, pr_st_time4, pr_ed_time4, pr_cnt4, pr_faulty4,
+			pr_list_idx5, pr_list_nm5, pr_st_time5, pr_ed_time5, pr_cnt5, pr_faulty5,
+			pr_list_idx6, pr_list_nm6, pr_st_time6, pr_ed_time6, pr_cnt6, pr_faulty6,
+			pr_list_idx7, pr_list_nm7, pr_st_time7, pr_ed_time7, pr_cnt7, pr_faulty7,
+			pr_list_idx8, pr_list_nm8, pr_st_time8, pr_ed_time8, pr_cnt8, pr_faulty8,
+			pr_list_idx9, pr_list_nm9, pr_st_time9, pr_ed_time9, pr_cnt9, pr_faulty9,
+			pr_list_idx10, pr_list_nm10, pr_st_time10, pr_ed_time10, pr_cnt10, pr_faulty10,
+			pr_idx
+			)
+		VALUES
+			(
+			(SELECT CONCAT(CONCAT('WO',SUBSTRING(DATE_FORMAT(#{woItnDte},'%Y%m%d'),3,6)),'-',
+				(SELECT LPAD((SELECT IFNULL(MAX(SUBSTRING(a.wo_idx,10,12)),0)
+					FROM sm_work_order a 
+					WHERE a.wo_idx 
+					LIKE CONCAT(CONCAT('WO',SUBSTRING(DATE_FORMAT(#{woItnDte},'%Y%m%d'),3,8)), '%')),3,0))) AS WO),
+			'1',
+			#{idx1},
+			#{nm1},
+			#{totCnt},
+			'0',
+			<if test="idx1 != ''">#{idx1}, #{nm1}, null, null, null, null,</if>
+			<if test="idx2 != ''">#{idx2}, #{nm2}, null, null, null, null,</if>
+			<if test="idx3 != ''">#{idx3}, #{nm3}, null, null, null, null,</if>
+			<if test="idx4 != ''">#{idx4}, #{nm4}, null, null, null, null,</if>
+			<if test="idx5 != ''">#{idx5}, #{nm5}, null, null, null, null,</if>
+			<if test="idx6 != ''">#{idx6}, #{nm6}, null, null, null, null,</if>
+			<if test="idx7 != ''">#{idx7}, #{nm7}, null, null, null, null,</if>
+			<if test="idx8 != ''">#{idx8}, #{nm8}, null, null, null, null,</if>
+			<if test="idx9 != ''">#{idx9}, #{nm9}, null, null, null, null,</if>
+			<if test="idx10 != ''">#{idx10}, #{nm10}, null, null, null, null,</if>
+			(SELECT CONCAT('PR', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.pr_idx),0) FROM sm_process a),'[a-z]','')))+1,10,0)))
+			)
+	</insert>
+	
+	<update id="updateOrder">
+		UPDATE sm_orders SET
+			or_state = #{state}
+		WHERE or_idx = (SELECT or_idx FROM sm_prdt_plan WHERE pp_idx = #{ppIdx})
+	</update>
+	
+	<select id="selectWorkOrderInfo" resultType="egovMap">
+		SELECT
+			a.wo_idx,
+			a.wo_name,
+			a.pp_idx,
+			a.item_cd,
+			a.wo_pdt_cnt,
+			a.wo_itn_dte,
+			a.wo_cmt_dte,
+			a.wo_dlv_dte,
+			a.wo_note,
+			DATE_FORMAT(a.wo_reg_dte, '%Y-%m-%d %H:%i') AS wo_reg_dte,
+			c.or_idx,
+			c.or_name,
+			e.ac_name,
+			e.ac_tel,
+			f.pr_cur_nm
+		FROM sm_work_order a
+		JOIN sm_prdt_plan b
+		ON a.pp_idx = b.pp_idx
+		JOIN sm_orders c
+		ON b.or_idx = c.or_idx
+		JOIN sm_estimate d
+		ON c.es_idx = d.es_idx
+		JOIN sm_account e
+		ON d.a_idx = e.ac_code
+		JOIN sm_process f
+		ON a.wo_idx = f.wo_idx
+		WHERE a.wo_idx = #{woIdx}
+	</select>
+	
+	<update id="modifyWorkOrder">
+		UPDATE sm_work_order SET
+			wo_name = #{woName},
+			wo_itn_dte = #{woItnDte},
+			<if test="woCmtDte != ''">wo_cmt_dte = #{woCmtDte},</if>
+			<if test="woCmtDte == ''">wo_cmt_dte = null,</if>
+			<if test="woDlvDte != ''">wo_dlv_dte = #{woDlvDte},</if>
+			<if test="woDlvDte == ''">wo_dlv_dte = null,</if>
+			<if test="woNote != ''">wo_note = #{woNote},</if>
+			<if test="woNote == ''">wo_note = null,</if>
+			wo_edt_dte = NOW(),
+			wo_edt_mem = #{userId}
+		WHERE wo_idx = #{woIdx}
+	</update>
+	
+	<delete id="deleteWorkOrder">
+		DELETE FROM sm_work_order WHERE wo_idx = #{woIdx}
+	</delete>
+</mapper>
