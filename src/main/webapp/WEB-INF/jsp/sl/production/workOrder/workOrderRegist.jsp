@@ -180,6 +180,7 @@
 				  'ppIdx':$('#ppIdx').val()
 			  },
 			  success:function(result){
+				  console.log(result.pp_info);
 				  $('#itemCd').text(result.pp_info.itemCd+" ("+result.pp_info.itemName+")");
 				  registForm.itemCd.value = result.pp_info.itemCd;
 				  $('#woPdtCnt').text(result.pp_info.ppPrdtCnt);

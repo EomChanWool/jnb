@@ -35,7 +35,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav invest - User Information -->
+                        <!-- Nav Item - User Information -->
                         <%@ include file="../../menu/logout/nav_user.jsp" %>
 
                     </ul>
@@ -47,27 +47,26 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">불출관리</h1>
+                    <h1 class="h3 mb-2 text-gray-800">설비 관리</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/material/invest/investList.do" method="post">
-									<input type="hidden" name="diIdx">
-									<input type="hidden" name="exIdx">									
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/basicInfo/facility/facilityList.do" method="post">
+									<input type="hidden" name="faIdx">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
-						    									value="${searchVO.searchKeyword}" placeholder="작업지시번호를 입력해 주세요"
-						    									style="background-color:#eaecf4; width: 25%; float: left;">
+						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword" 
+						    					value="${searchVO.searchKeyword}" placeholder="설비명을 입력해 주세요" 
+						    					style="background-color:#eaecf4; width: 25%; float: left;">
 						    	</form>
-						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_invest()" style="margin-left: 0.3rem;">
+						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_facility()" style="margin-left: 0.3rem;">
 	                                <span class="text">검색</span>
 	                            </a>
-						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_invest()">
+						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_facility()">
 	                                <span class="text">전체목록</span>
 	                            </a>
-	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_invest()" style="float: right;">
+	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_facility()" style="float: right;">
 	                                <span class="text">등록</span>
 	                            </a>
 							</div>
@@ -77,29 +76,29 @@
                                 <table class="table table-bordered" id="dataTable"  >
                                     <thead>
                                         <tr>
-                                            <th>작업지시번호</th>
-											<th>투입일자</th>
-											<th>담당자</th>
-											<th>수정/삭제</th>
+                                            <th>공장명</th>
+                                            <th>설비명</th>
+                                            <th>등록자</th>
+                                            <th>수정/삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="result" items="${investList}" varStatus="status">
-	                                   		<tr>
-	                                            <td>${result.woIdx}</td>
-												<td>${result.diRegDte}</td>
-												<td>${result.diRegManager}</td>
-	                                            <td class="list_btn" onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
-	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_invest_go('${result.diIdx}')">
-				                                        <span class="text">수정</span>
-				                                    </a>
-				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_invest('${result.diIdx}','${result.itemCd}','${result.inCnt}')">
-				                                        <span class="text">삭제</span>
-				                                    </a>
-	                                            </td>
-	                                        </tr>
+                                    	<c:forEach var="result" items="${facilityList}" varStatus="status">
+                                    		<tr>
+                                            <td>${result.fName}</td>
+                                            <td>${result.faName}</td>
+                                            <td>${result.faRegMem}</td>
+                                            <td style="padding: 5px 0px;">
+                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_facility_go('${result.faIdx}')">
+			                                        <span class="text">수정</span>
+			                                    </a>
+			                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_facility('${result.faIdx}')">
+			                                        <span class="text">삭제</span>
+			                                    </a>
+                                            </td>
+                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty investList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty facilityList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
@@ -139,60 +138,50 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_pageview(pageNo) {
-		listForm.pageIndex.value = pageNo;
-	   	listForm.submit();
-	}
+		function fn_pageview(pageNo) {
+			listForm.pageIndex.value = pageNo;
+		   	listForm.submit();
+		}
 	
-	function fn_search_invest(){
-		listForm.submit();
-	}
-	
-	function fn_searchAll_invest(){
-		listForm.searchKeyword.value = "";
-		listForm.pageIndex.value = 1;
-		listForm.submit();
-	}
-	
-	function fn_regist_invest(){
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/registInvest.do";
-		listForm.submit();
-	}
-	
-	function fn_modify_invest_go(inIdx){
-		listForm.inIdx.value = inIdx;
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/modifyInvest.do";
-		listForm.submit();
-	}
-	
-	function fn_detail_invest(inIdx,woIdx,itemCd){
-		listForm.inIdx.value = inIdx;
-		listForm.woIdx.value = woIdx;
-		listForm.itemCd.value = itemCd;
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/detailInvest.do";
-		listForm.submit();
-	}
-	
-	function fn_delete_invest(inIdx, itemCd, inCnt){
-		if(confirm('해당 내역을 삭제하시겠습니까?')) {
-			listForm.inIdx.value = inIdx;
-			listForm.itemCd.value = itemCd;
-			listForm.inCnt.value = inCnt;
-			listForm.action = "${pageContext.request.contextPath}/sl/material/invest/deleteInvest.do";
+		function fn_search_facility(){
 			listForm.submit();
 		}
-	}
 	
-	$(function() {
-		$('#materialMenu').addClass("active");
-		$('#material').addClass("show");
-		$('#investList').addClass("active");
-		
-		let msg = '${msg}';
-		if(msg) {
-			alert(msg);
+		function fn_searchAll_facility(){
+			listForm.searchKeyword.value = "";
+			listForm.pageIndex.value = 1;
+			listForm.submit();
 		}
-	});
+	
+		function fn_regist_facility(){
+			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/registfacility.do";
+			listForm.submit();
+		}
+	
+		function fn_modify_facility_go(fCd){
+			listForm.fCode.value = fCd;
+			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/modifyfacility.do";
+			listForm.submit();
+		}
+	
+		function fn_delete_facility(fCd){
+			if(confirm('해당 내역을 삭제 하시겠습니까?')) {
+				listForm.fCode.value = fCd;
+				listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/deletefacility.do";
+				listForm.submit();
+			}
+		}
+	
+		$(function() {
+			$('#basicInfoMenu').addClass("active");
+			$('#basicInfo').addClass("show");
+			$('#facilityList').addClass("active");
+			
+			let msg = '${msg}';
+			if(msg) {
+				alert(msg);
+			}
+		});
 	</script>
 </body>
 

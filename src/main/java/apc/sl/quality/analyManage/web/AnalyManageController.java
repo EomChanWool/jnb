@@ -70,11 +70,15 @@ public class AnalyManageController {
 	public String registAnalyManageOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		//작업지시서 체크
 		int exists = analyManageService.selectExistsAzIdx(map);
+		System.out.println("exists값 : " + exists);
 		if(exists == 0) {
 			redirectAttributes.addFlashAttribute("msg", "존재하지 않는 작업지서번호 입니다.");
 			redirectAttributes.addFlashAttribute("analyManageVO", map);
 			return "redirect:/sl/production/analyManage/registAnalyManage.do";
 		}
+		
+		
+		System.out.println("맵안에 doIdx : " + map.get("doIdx"));
 		
 		//성적서 체크
 		if(!map.get("doIdx").equals("")) {

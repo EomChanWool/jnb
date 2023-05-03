@@ -25,6 +25,7 @@ public class InvestController {
 	@RequestMapping("/sl/material/invest/investList.do")
 	public String investList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		int totCnt = investService.selectInvestListToCnt(searchVO);
+		
 		/** pageing setting */
 		searchVO.setPageSize(10);
 		PaginationInfo paginationInfo = new PaginationInfo();

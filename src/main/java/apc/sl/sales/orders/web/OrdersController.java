@@ -51,6 +51,7 @@ public class OrdersController {
 		map.put("esIdx","");
 		List<?> estimateList = ordersService.selectEstimateList(map);
 		model.put("estimateList", estimateList);
+		System.out.println("est리스트 : " + estimateList);
 		return "sl/sales/orders/ordersRegist";
 	}
 	
@@ -68,6 +69,7 @@ public class OrdersController {
 		map.put("userId", session.getAttribute("user_id"));
 		ordersService.registOrders(map);
 		//견적서 상태 갱신
+		//상태가 0인것들만 불러오고 앞서 견적관리에서 등록을 하면 0이된다
 		map.put("state","1");
 		ordersService.updateEstimate(map);
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
@@ -96,6 +98,7 @@ public class OrdersController {
 	public String detailOrders(@RequestParam Map<String, Object> map, ModelMap model) {
 		Map<String, Object> detail = ordersService.selectOrdersInfo(map);
 		model.put("ordersVO", detail);
+		System.out.println("오더브이오 : " + detail);
 		return "sl/sales/orders/ordersDetail";
 	}
 	

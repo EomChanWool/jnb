@@ -63,6 +63,8 @@ public class StockAdjustController {
 	
 	@RequestMapping("/sl/material/stockAdjust/registStockAdjustOk.do")
 	public String registStockAdjustOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
+		System.out.println("맵확인 : " + map.toString());
+		
 		//아이템 코트 확인
 		int exists = stockAdjustService.selectExistsItemCode(map);
 		if(exists == 0) {
@@ -99,6 +101,7 @@ public class StockAdjustController {
 		
 		//수정하려는 항목이 해당 물품 중에서 가장 최근에 등록된 항목이면 sm_item항목도 수정
 		int recentIdx = stockAdjustService.selectChkRecent(map);
+		System.out.println("맵겟adidx : " + map.get("adIdx"));
 		if(Integer.parseInt(map.get("adIdx")+"") == recentIdx) {
 			stockAdjustService.updateItemCnt(map);
 		}

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import apc.sl.production.prodResult.service.ProdResultService;
 import apc.util.SearchVO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -54,10 +55,12 @@ public class ProdResultController {
 	
 	@RequestMapping(value="/sl/production/prodResult/prReWorkOrderInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView prReWorkOrderInfoAjax(@RequestParam Map<String, Object> map) {
+		System.out.println("생산실적등록 맵 : " + map);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> list = prodResultService.selectWorkOrderInfo(map);
 		mav.setViewName("jsonView");
 		mav.addObject("wo_info", list);
+		System.out.println("리스트값 : " + list);
 		return mav;
 	}
 	
@@ -92,8 +95,11 @@ public class ProdResultController {
 			return "redirect:/sl/production/prodResult/prodResultList.do";
 		}
 		
-		map.put("userId", session.getAttribute("user_id"));
-		prodResultService.registProdResult(map);
+		//map.put("userId", session.getAttribute("user_id"));
+		
+		
+		
+		
 		//작업상태가 작업종료일때 sm_process갱신
 		if(map.get("prReState").equals("1")) {
 			//작지에 해당하는 아이템코드의 BOM정보를 토대로 자재의 재고 관리 (재고가 부족할 시 alert)
@@ -118,7 +124,9 @@ public class ProdResultController {
 			map.put("nextNm", "pr_list_nm"+(processSeq+1));
 			map.put("userId", session.getAttribute("user_id"));
 			updateProcess(process,map);
+			prodResultService.registProdResult(map);
 			prodResultService.updateProcess(map);
+			prodResultService.registDispensing(map); // 불출관리 등록
 		}
 		
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
@@ -181,17 +189,45 @@ public class ProdResultController {
 	}
 	
 	private String updateMaterialStock(List<?> list, RedirectAttributes redirectAttributes) {
-		String[] str1 = list.get(0).toString().split(", ");
-		int total = Integer.parseInt(str1[0].split("=")[1]);
-		String woIdx = str1[1].split("=")[1];
+		
+		System.out.println("리스트의 값 :" + list);
+		
+		 EgovMap str1 = (EgovMap) list.get(0);
+		 System.out.println("str : " + str1);
+
+		
+		//String[] str1 = list.get(0).toString().split(", ");
+		
+		System.out.println("eg" + str1.size());
+		//int total = Integer.parseInt(str1[0].split("=")[1]);
+		int total = Integer.parseInt(str1.get("woPdtCnt")+"");
+//		String woIdx = str1[1].split("=")[1];
+		String woIdx = str1.get("woIdx")+"";
 		//재고확인
-		for(int i=2;i<str1.length;i+=2) {
+		//for(int i=2;i<str1.length;i+=2) {
+			//Map<String, Object> map = new HashMap<>();
+			//String[] temp1 = str1[i].split("=");
+			//String[] temp2 = str1[i+1].split("=");
+//			float cnt = total/100*(Float.parseFloat(temp2[1].replace("}", "")));
+//			map.put("itemCd", temp1[1]);
+//			map.put("cnt", cnt);
+//			Map<String, Object> enough = prodResultService.selectEnoughStock(map);
+//			int num = Integer.parseInt(enough.get("count")+"");
+//			if(num == 1) {
+				//재고가 없으면 자재명 리턴
+//				return enough.get("itemName")+"";
+//			}
+//		}
+		
+		for(int i=2; i<str1.size(); i+=2) {
 			Map<String, Object> map = new HashMap<>();
-			String[] temp1 = str1[i].split("=");
-			String[] temp2 = str1[i+1].split("=");
-			float cnt = total/100*(Float.parseFloat(temp2[1].replace("}", "")));
-			map.put("itemCd", temp1[1]);
+			System.out.println("위치체크" + i);
+			System.out.println(str1.get(str1.get(i)));
+			
+			float cnt = total/100*(Float.parseFloat(str1.get(str1.get(i+1))+""));
+			map.put("itemCd", str1.get(str1.get(i))+"");
 			map.put("cnt", cnt);
+			System.out.println("씨엔티값 : " + cnt);
 			Map<String, Object> enough = prodResultService.selectEnoughStock(map);
 			int num = Integer.parseInt(enough.get("count")+"");
 			if(num == 1) {
@@ -200,12 +236,22 @@ public class ProdResultController {
 			}
 		}
 		//재고 갱신
-		for(int i=2;i<str1.length;i+=2) {
+//		for(int i=2;i<str1.length;i+=2) {
+//			Map<String, Object> map = new HashMap<>();
+//			String[] temp1 = str1[i].split("=");
+//			String[] temp2 = str1[i+1].split("=");
+//			float cnt = total/100*(Float.parseFloat(temp2[1].replace("}", "")));
+//			map.put("itemCd", temp1[1]);
+//			map.put("cnt", cnt);
+//			prodResultService.updateItem(map);
+//		}
+		
+		for(int i=2;i<str1.size();i+=2) {
+			
 			Map<String, Object> map = new HashMap<>();
-			String[] temp1 = str1[i].split("=");
-			String[] temp2 = str1[i+1].split("=");
-			float cnt = total/100*(Float.parseFloat(temp2[1].replace("}", "")));
-			map.put("itemCd", temp1[1]);
+			
+			float cnt = total/100*(Float.parseFloat(str1.get(str1.get(i+1))+""));
+			map.put("itemCd", str1.get(str1.get(i))+"");
 			map.put("cnt", cnt);
 			prodResultService.updateItem(map);
 		}

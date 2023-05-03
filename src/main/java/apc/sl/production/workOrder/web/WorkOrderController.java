@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import apc.sl.production.workOrder.service.WorkOrderService;
 import apc.util.SearchVO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -57,6 +58,7 @@ public class WorkOrderController {
 	
 	@RequestMapping(value="/sl/production/workOrder/workOrderProdPlanInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView workOrderProdPlanInfoAjax(@RequestParam Map<String, Object> map) {
+		System.out.println("작업지시 등록 맵 : " + map);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> info = workOrderService.selectWoProdPlanInfo(map);
 		mav.setViewName("jsonView");
@@ -101,6 +103,7 @@ public class WorkOrderController {
 	
 	@RequestMapping("/sl/production/workOrder/modifyWorkOrder.do")
 	public String modifyWorkOrder(@RequestParam Map<String, Object> map, ModelMap model) {
+		System.out.println("작업지시 수정 : " + map);
 		if(!map.isEmpty()) {
 			Map<String, Object> detail = workOrderService.selectWorkOrderInfo(map);
 			model.put("workOrderVO", detail);
@@ -135,15 +138,30 @@ public class WorkOrderController {
 	
 	private void createProcess(Map<String, Object> map, HttpSession session) {
 		//해당 작지에 대한 공정목록 생성
+		System.out.println("프로세스 : " + map);
 		map.put("group", map.get("process"));
+		System.out.println(map.get("process"));
 		List<?> processList = workOrderService.selectProcessList(map);
+		System.out.println(processList);
 		Map<String, Object> process = new HashMap<>();
 		for(int i=0;i<processList.size();i++) {
-			String[] str1 = processList.get(i).toString().split(", ");
-			String[] idx = str1[0].split("=");
-			String[] nm = str1[2].split("=");
-			process.put("idx"+(i+1), idx[1]);
-			process.put("nm"+(i+1), nm[1].substring(0, nm[1].length()-1));
+			/*
+			 * System.out.println("확인 : " + processList.get(i).toString()); EgovMap eg =
+			 * (EgovMap)processList.get(i); String strValue = eg.get("prListIdx")+"";
+			 * System.out.println(strValue);
+			 */
+			EgovMap eg = (EgovMap) processList.get(i);
+			String idx = eg.get("prListIdx")+"";
+			String nm = eg.get("prListNm")+"";
+			process.put("idx"+(i+1) , idx);
+			process.put("nm"+(i+1), nm);
+			
+			
+			//String[] str1 = processList.get(i).toString().split(", ");
+			//String[] idx = str1[0].split("="); //ex [pr_list_idx, PR-001-001]
+			//String[] nm = str1[2].split("="); //ex [pr_list_nm, 원자재 이송]
+			//process.put("idx"+(i+1), idx[1]); //ex PR-001-001
+			//process.put("nm"+(i+1), nm[1].substring(0, nm[1].length()-1)); // 원자재 이송
 		}
 		process.put("woItnDte", map.get("woItnDte"));
 		process.put("totCnt", processList.size());

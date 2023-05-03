@@ -203,6 +203,7 @@
 			  },
 			  success:function(result){
 				  $('#ppPrdtCnt').val(result.item_cnt.itemCnt);
+				
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

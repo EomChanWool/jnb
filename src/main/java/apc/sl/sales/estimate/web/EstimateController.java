@@ -76,6 +76,7 @@ public class EstimateController {
 		List<?> list = estimateService.selectProdPerPrice(map);
 		mav.setViewName("jsonView");
 		mav.addObject("item_info", list);
+		System.out.println("리스트값 : " + list);
 		return mav;
 	}
 	

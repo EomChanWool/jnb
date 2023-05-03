@@ -69,12 +69,17 @@ public class ProdPlanController {
 			mav.addObject("item_ajax", itemList);
 			return mav;
 		}
+		
+		System.out.println("이에스티 : " + estimateItemList);
+		System.out.println("이에스티 사이즈 : " + estimateItemList.size());
+		
 		for(int i=1;i<estimateItemList.size();i+=2) {
 			Map<String, Object> temp = new HashMap<>();
 			int num = Math.abs(i/2)+1;
 			String prod = "esProd"+num;
 			String cnt = "esCnt"+num;
 			String prodCd = estimateItemList.get(prod)+"";
+			
 			String prodCnt = estimateItemList.get(cnt)+"";
 			String prodName = prodPlanService.selectItemName(prodCd);
 			temp.put("prodCd", prodCd);
@@ -84,14 +89,19 @@ public class ProdPlanController {
 		}
 		mav.setViewName("jsonView");
 		mav.addObject("item_ajax", itemList);
+		
 		return mav;
 	}
 	
 	@RequestMapping(value="/sl/production/prodPlan/prodPlanItemCntAjax.do", method=RequestMethod.POST)
 	public ModelAndView prodPlanItemCntAjax(@RequestParam Map<String, Object> map) {
+		
+		System.out.println("맵확인 : " + map);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> temp = new HashMap<>();
 		Map<String, Object> estimateItemList = prodPlanService.selectEstimateItemList(map);
+		
+		
 		for(int i=1;i<estimateItemList.size();i+=2) {
 			temp = new HashMap<>();
 			int num = Math.abs(i/2)+1;
@@ -106,12 +116,14 @@ public class ProdPlanController {
 		}
 		mav.setViewName("jsonView");
 		mav.addObject("item_cnt", temp);
+		System.out.println("템프 : " + temp);
 		return mav;
 	}
 	
 	@RequestMapping("/sl/production/prodPlan/registProdPlanOk.do")
 	public String registProdPlanOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		//수주코드 확인
+		System.out.println("맵확인2 : " + map);
 		int exists = prodPlanService.selectExistsOrdersIdx(map);
 		if(exists == 0) {
 			redirectAttributes.addFlashAttribute("msg", "존재하지 않는 수주번호입니다.");
@@ -138,7 +150,7 @@ public class ProdPlanController {
 	public String modifyProdPlan(@RequestParam Map<String, Object> map, ModelMap model) {
 //		List<?> itemList = prodPlanService.selectItemList();
 //		model.put("itemList", itemList);
-		
+		System.out.println("생산계획수정 맵 : " + map);
 		if(!map.isEmpty()) {
 			Map<String, Object> detail = prodPlanService.selectProdPlanInfo(map);
 			model.put("prodPlanVO", detail);

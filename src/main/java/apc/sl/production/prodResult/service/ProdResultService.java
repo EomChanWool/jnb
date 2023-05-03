@@ -46,5 +46,7 @@ public interface ProdResultService {
 	Map<String, Object> selectEnoughStock(Map<String, Object> map);
 
 	void updateItem(Map<String, Object> map);
+	
+	void registDispensing(Map<String, Object> map);
 
 }

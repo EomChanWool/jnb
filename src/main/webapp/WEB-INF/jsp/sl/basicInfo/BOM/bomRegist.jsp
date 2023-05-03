@@ -205,7 +205,7 @@
 		changeChk();
 	});
 	
-	function changeChk(){
+/* 	function changeChk(){
 		$('#itemCd1').change(function(){ bomItemInfoAjax($('#itemCd1').val(),1);	});
 		$('#itemCd2').change(function(){ bomItemInfoAjax($('#itemCd2').val(),2);	});
 		$('#itemCd3').change(function(){ bomItemInfoAjax($('#itemCd3').val(),3);	});
@@ -221,7 +221,15 @@
 		$('#itemCd13').change(function(){ bomItemInfoAjax($('#itemCd13').val(),13);	});
 		$('#itemCd14').change(function(){ bomItemInfoAjax($('#itemCd14').val(),14);	});
 		$('#itemCd15').change(function(){ bomItemInfoAjax($('#itemCd15').val(),15);	});
-	}
+	} */
+	function changeChk() {
+		  for (let i = 1; i <= 15; i++) {
+		    $('#itemCd' + i).change(function() {
+		      bomItemInfoAjax($('#itemCd' + i).val(), i);
+		    });
+		  }
+		}
+	
 	
 	function bomItemInfoAjax(value, index){
 		$.ajax({
@@ -234,6 +242,7 @@
 			  success:function(result){
 				  var str = '#itemName'+index;
 				  $(str).val(result.item_info[0].itemName);
+				  
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

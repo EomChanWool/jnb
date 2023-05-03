@@ -166,7 +166,7 @@
 		
 		$('#prReState').change(function(){
 			if($('#prReState').val() == "0"){
-				$('#prReEdTime').val("");
+				$('#prReEdDte').val("");
 			}
 		});
 	});

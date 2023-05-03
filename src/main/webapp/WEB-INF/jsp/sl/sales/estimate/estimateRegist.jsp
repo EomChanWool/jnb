@@ -126,8 +126,10 @@
 														<datalist id="prList">
 															<c:forEach var="list" items="${prodList}" varStatus="stat">
 																<option value="${list.itemCd}">${list.itemName}</option>
+																
 															</c:forEach>
 														</datalist>
+														
 													</td>
 													<td><input type="text" class="form-control cnt" name="cnt${status.count}" id="cnt${status.count}" style="text-align: center;"></td>
 													<td><input type="text" class="form-control perPrice" name="perPrice${status.count}" id="perPrice${status.count}" style="text-align: right;"></td>

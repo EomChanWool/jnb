@@ -104,6 +104,7 @@ public class DeliveryController {
 	public String detailDelivery(@RequestParam Map<String, Object> map, ModelMap model) {
 		Map<String, Object> detail = deliveryService.selectDeliveryInfo(map);
 		model.put("deliveryVO", detail);
+		System.out.println("디테일 확인 : " + detail);
 		return "sl/sales/delivery/deliveryDetail";
 	}
 	

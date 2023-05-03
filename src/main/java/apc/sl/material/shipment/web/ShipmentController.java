@@ -48,6 +48,7 @@ public class ShipmentController {
 		List<?> shipmentList = shipmentService.selectShipmentList(searchVO);
 		model.put("shipmentList", shipmentList);
 		model.put("paginationInfo", paginationInfo);
+		System.out.println("쉽먼트리스트 : " + shipmentList);
 		return "sl/material/shipment/shipmentList";
 	}
 	
@@ -60,6 +61,7 @@ public class ShipmentController {
 	
 	@RequestMapping(value="/sl/material/shipment/shipmentOrdersInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView shipmentOrdersInfoAjax(@RequestParam Map<String, Object> map) {
+		System.out.println("에이젝 맵확인 : " + map.toString());
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> list = shipmentService.selectOrdersInfo(map);
 		mav.setViewName("jsonView");
@@ -90,6 +92,7 @@ public class ShipmentController {
 	
 	@RequestMapping("/sl/material/shipment/modifyShipment.do")
 	public String modifyShipment(@RequestParam Map<String, Object> map, ModelMap model) {
+		System.out.println("출고 수정 맵 확인 : " + map.toString());
 		if(!map.isEmpty()) {
 			Map<String, Object> detail = shipmentService.selectShipmentInfo(map);
 			detail.put("curOrIdx", detail.get("orIdx"));
@@ -101,6 +104,9 @@ public class ShipmentController {
 	@RequestMapping("/sl/material/shipment/modifyShipmentOk.do")
 	public String modifyShipmentOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		map.put("userId", session.getAttribute("user_id"));
+		
+		System.out.println("모디파이오케이 : " + map.toString());
+		
 		shipmentService.modifyShipment(map);
 		
 		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
@@ -109,6 +115,7 @@ public class ShipmentController {
 	
 	@RequestMapping("/sl/material/shipment/detailShipment.do")
 	public String detailShipment(@RequestParam Map<String, Object> map, ModelMap model) {
+		System.out.println("맵확인 : " + map.toString());
 		Map<String, Object> detail = shipmentService.selectShipmentInfo(map);
 		model.put("shipmentVO", detail);
 		return "sl/material/shipment/shipmentDetail";
@@ -119,6 +126,7 @@ public class ShipmentController {
 		shipmentService.deleteShipment(map);
 
 		map.put("state", "2");
+		
 		shipmentService.updateOrders(map);
 		
 		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");

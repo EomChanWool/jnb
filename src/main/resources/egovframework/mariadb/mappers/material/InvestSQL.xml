@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="apc.sl.material.invest.service.impl.InvestMapper">
 	<select id="selectInvestListToCnt" resultType="int">
-		SELECT COUNT(*) FROM sm_insert_info
+		SELECT COUNT(*) FROM sm_dispensing
 		WHERE 1=1
 		<if test="searchKeyword != ''">
 			AND wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -11,19 +11,20 @@
 	
 	<select id="selectInvestList" resultType="egovMap">
 		SELECT
-			in_idx,
+			di_idx,
 			wo_idx,
-			item_cd,
-			item_name,
-			DATE_FORMAT(in_dte, '%Y-%m-%d %H:%i:%s') AS in_dte,
-			in_com_manager,
-			in_cnt
-		FROM sm_insert_info
+			ex_idx,
+			DATE_FORMAT(di_reg_dte, '%Y/%m/%d %H:%i:%s') AS di_reg_dte,
+			di_reg_mem,
+			di_edt_dte,
+			di_edt_mem,
+			di_reg_manager
+		FROM sm_dispensing
 		WHERE 1=1
 		<if test="searchKeyword != ''">
 			AND wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		ORDER BY in_idx DESC
+		ORDER BY di_idx DESC
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 	

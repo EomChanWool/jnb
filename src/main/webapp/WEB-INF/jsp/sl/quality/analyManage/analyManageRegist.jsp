@@ -255,8 +255,8 @@
 	}
 	
 	$(function() {
-		$('#productionMenu').addClass("active");
-		$('#production').addClass("show");
+		$('#qualityMenu').addClass("active");
+		$('#quality').addClass("show");
 		$('#analyManageList').addClass("active");
 		
 		let msg = '${msg}';

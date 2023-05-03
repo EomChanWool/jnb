@@ -114,4 +114,10 @@ public class ProdResultServieImpl implements ProdResultService {
 		prodResultMapper.updateItem(map);
 	}
 
+	@Override
+	public void registDispensing(Map<String, Object> map) {
+		prodResultMapper.registDispensing(map);
+		
+	}
+
 }

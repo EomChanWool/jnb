@@ -55,6 +55,7 @@
 												<th>사업장코드 <span class="req">*</span></th>
 												<td>
 													<input type="text" class="form-control" name="cIdx" id="cIdx" value="${itemVO.cIdx}" list="coList" autocomplete="off">
+													
 													<datalist id="coList">
 														<c:forEach var="list" items="${companyList}" varStatus="state">
 															<option value="${list.cIdx}">${list.cName}</option>
@@ -72,7 +73,7 @@
 											<tr>
 												<th>거래처 <span class="req">*</span></th>
 												<td>
-													<input type="text" class="form-control" name="acCode" id="acCode" list="acList" autocomplete="off">
+													<input type="text" class="form-control" name="acCode" id="acCode" value="${itemVO.acCode}" list="acList" autocomplete="off">
 													<datalist id="acList">
 														<c:forEach var="list" items="${accountList}" varStatus="status">
 															<option value="${list.acCode}">${list.acName}</option>
