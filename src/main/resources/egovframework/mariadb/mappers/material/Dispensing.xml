@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.material.invest.service.impl.InvestMapper">
-	<select id="selectInvestListToCnt" resultType="int">
+<mapper namespace="apc.sl.material.dispensing.service.impl.DispensingMapper">
+	<select id="selectDispensingListToCnt" resultType="int">
 		SELECT COUNT(*) FROM sm_dispensing
 		WHERE 1=1
 		<if test="searchKeyword != ''">
@@ -9,7 +9,7 @@
 		</if>
 	</select>
 	
-	<select id="selectInvestList" resultType="egovMap">
+	<select id="selectDispensingList" resultType="egovMap">
 		SELECT
 			di_idx,
 			wo_idx,
@@ -18,9 +18,10 @@
 			di_reg_mem,
 			di_edt_dte,
 			di_edt_mem,
-			di_reg_manager
+			di_manager
 		FROM sm_dispensing
-		WHERE 1=1
+		WHERE 1=1			
+		
 		<if test="searchKeyword != ''">
 			AND wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
@@ -36,30 +37,26 @@
 		SELECT item_cd, item_name FROM sm_item WHERE item_type = '자재'
 	</select>
 	
-	<insert id="registInvest">
-		INSERT INTO sm_insert_info
+	<insert id="registDispensing">
+		INSERT INTO sm_dispensing
 			(
-			in_idx,
+			di_idx,
 			wo_idx,
-			item_cd,
-			item_name,
-			in_dte,
-			in_com_manager,
-			in_cnt,
-			in_reg_dte,
-			in_reg_mem
+			di_manager,
+			di_reg_dte,
+			di_reg_mem			
 			)
 		VALUES
 			(
-			(SELECT CONCAT('IN', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.in_idx),0) FROM sm_insert_info a),'[a-z]','')))+1,10,0))),
+			(SELECT CONCAT(CONCAT('DI',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,6)),'-',
+				(SELECT LPAD((SELECT IFNULL(MAX(SUBSTRING(a.di_idx,10,12)),0)+1 
+					FROM sm_dispensing a 
+					WHERE a.di_idx 
+					LIKE CONCAT(CONCAT('DI',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,8)), '%')),3,0))) AS DI),
 			#{woIdx},
-			#{itemCd},
-			(SELECT item_name FROM sm_item WHERE item_cd = #{itemCd}),
-			#{inDte},
-			#{inComManager},
-			#{inCnt},
-			NOW(),
-			#{userId}
+			#{diManager},
+			#{diRegDte},
+			#{userId}			
 			)
 	</insert>
 	
@@ -81,41 +78,34 @@
 		WHERE or_idx = (SELECT or_idx FROM sm_work_order WHERE wo_idx = #{woIdx})
 	</update>
 	
-	<select id="selectInvestWorkOrder" resultType="int">
+	<select id="selectDispensingWorkOrder" resultType="int">
 		SELECT COUNT(*) FROM sm_insert_info WHERE wo_idx = #{curWoIdx}
 	</select>
 	
-	<select id="selectInvestInfo" resultType="egovMap">
+	<select id="selectDispensingInfo" resultType="egovMap">
 		SELECT
-			a.in_idx,
+			a.di_idx,
 			a.wo_idx,
-			(SELECT wo_name FROM sm_work_order WHERE wo_idx = #{woIdx}) AS wo_name,
-			a.item_cd,
-			a.item_name,
-			DATE_FORMAT(a.in_dte, '%Y-%m-%d %H:%i:%s') AS in_dte,
-			a.in_com_manager,
-			a.in_cnt,
-			b.item_std
-		FROM sm_insert_info a
-		JOIN sm_item b
-		ON a.item_cd = b.item_cd
-		WHERE in_idx = #{inIdx}
+			(SELECT item_cd FROM sm_work_order WHERE wo_idx = #{woIdx}) AS item_cd,
+			(SELECT WO_PDT_CNT FROM sm_work_order WHERE wo_idx = #{woIdx}) AS cnt ,
+			DATE_FORMAT(a.di_reg_dte, '%Y-%m-%d %H:%i:%s') AS di_reg_dte,
+			a.di_manager,
+			(SELECT b_idx FROM sm_bom 
+			WHERE ITEM_CD = (SELECT item_cd FROM sm_work_order WHERE wo_idx = #{woIdx})) AS b_idx			
+		FROM sm_dispensing a
+		WHERE di_idx = #{diIdx}
 	</select>
 	
-	<update id="modifyInvest">
-		UPDATE sm_insert_info SET
-			wo_idx = #{woIdx},
-			item_cd = #{itemCd},
-			item_name = (SELECT item_name FROM sm_item WHERE item_cd = #{itemCd}),
-			in_dte = #{inDte},
-			in_com_manager = #{inComManager},
-			in_cnt = #{inCnt},
-			in_edt_dte = NOW(),
-			in_edt_mem = #{userId}
-		WHERE in_idx = #{inIdx}
+	<update id="modifyDispensing">
+		UPDATE sm_dispensing SET
+			DI_REG_DTE = #{diRegDte},
+			DI_MANAGER = #{diManager},
+			DI_EDT_DTE = NOW(),
+			DI_EDT_MEM = #{userId}
+		WHERE di_idx = #{diIdx}
 	</update>
 	
-	<delete id="deleteInvest">
-		DELETE FROM sm_insert_info WHERE in_idx = #{inIdx}
+	<delete id="deleteDispensing">
+		DELETE FROM sm_dispensing WHERE di_idx = #{diIdx}
 	</delete>
 </mapper>

@@ -72,7 +72,7 @@
     <div id="material" class="collapse" aria-labelledby="headingMaterial" data-parent="#accordionSidebar">
     	<div class="bg-white py-2 collapse-inner rounded">
 		    <a class="collapse-item" id="incomeList" href="${pageContext.request.contextPath}/sl/material/income/incomeList.do">입고관리</a>
-		    <a class="collapse-item" id="investList" href="${pageContext.request.contextPath}/sl/material/invest/investList.do">불출관리</a>
+		    <a class="collapse-item" id="investList" href="${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do">불출관리</a>
 		    <a class="collapse-item" id="stockReturnList" href="${pageContext.request.contextPath}/sl/material/stockReturn/stockReturnList.do">환입관리</a>
 		    <a class="collapse-item" id="stockStateList" href="${pageContext.request.contextPath}/sl/material/mtStockState/stockStateList.do">재고현황</a>
 		    <a class="collapse-item" id="stockAdjustList" href="${pageContext.request.contextPath}/sl/material/stockAdjust/stockAdjustList.do">재고조정관리</a>

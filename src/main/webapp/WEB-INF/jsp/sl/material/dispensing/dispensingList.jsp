@@ -53,21 +53,22 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/material/invest/investList.do" method="post">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do" method="post">
 									<input type="hidden" name="diIdx">
-									<input type="hidden" name="exIdx">									
+									<input type="hidden" name="exIdx">
+									<input type="hidden" name="woIdx">									
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
 						    									value="${searchVO.searchKeyword}" placeholder="작업지시번호를 입력해 주세요"
 						    									style="background-color:#eaecf4; width: 25%; float: left;">
 						    	</form>
-						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_invest()" style="margin-left: 0.3rem;">
+						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_dispensing()" style="margin-left: 0.3rem;">
 	                                <span class="text">검색</span>
 	                            </a>
-						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_invest()">
+						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_dispensing()">
 	                                <span class="text">전체목록</span>
 	                            </a>
-	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_invest()" style="float: right;">
+	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_dispensing()" style="float: right;">
 	                                <span class="text">등록</span>
 	                            </a>
 							</div>
@@ -84,24 +85,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="result" items="${investList}" varStatus="status">
+                                    	<c:forEach var="result" items="${dispensingList}" varStatus="status">
 	                                   		<tr>
 	                                            <td>${result.woIdx}</td>
 												<td>${result.diRegDte}</td>
-												<td>${result.diRegManager}</td>
+												<td>${result.diManager}</td>
 	                                            <td class="list_btn" onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
-	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_invest_go('${result.diIdx}')">
+	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_dispensing_go('${result.diIdx}','${result.woIdx}')">
 				                                        <span class="text">수정</span>
 				                                    </a>
-				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_invest('${result.diIdx}','${result.itemCd}','${result.inCnt}')">
+				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_dispensing('${result.diIdx}')">
 				                                        <span class="text">삭제</span>
 				                                    </a>
 	                                            </td>
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty investList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty dispensingList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
+                                
                                 <div class="btn_page">
 									<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_pageview"/>
 							    </div>
@@ -144,41 +146,41 @@
 	   	listForm.submit();
 	}
 	
-	function fn_search_invest(){
+	function fn_search_dispensing(){
 		listForm.submit();
 	}
 	
-	function fn_searchAll_invest(){
+	function fn_searchAll_dispensing(){
 		listForm.searchKeyword.value = "";
 		listForm.pageIndex.value = 1;
 		listForm.submit();
 	}
 	
-	function fn_regist_invest(){
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/registInvest.do";
+	function fn_regist_dispensing(){
+		listForm.action = "${pageContext.request.contextPath}/sl/material/dispensing/registDispensing.do";
 		listForm.submit();
 	}
 	
-	function fn_modify_invest_go(inIdx){
-		listForm.inIdx.value = inIdx;
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/modifyInvest.do";
+	function fn_modify_dispensing_go(diIdx,woIdx){
+		listForm.diIdx.value = diIdx;
+		listForm.woIdx.value = woIdx;
+		listForm.action = "${pageContext.request.contextPath}/sl/material/dispensing/modifyDispensing.do";
 		listForm.submit();
 	}
 	
-	function fn_detail_invest(inIdx,woIdx,itemCd){
+	function fn_detail_dispensing(inIdx,woIdx,itemCd){
 		listForm.inIdx.value = inIdx;
 		listForm.woIdx.value = woIdx;
 		listForm.itemCd.value = itemCd;
-		listForm.action = "${pageContext.request.contextPath}/sl/material/invest/detailInvest.do";
+		listForm.action = "${pageContext.request.contextPath}/sl/material/dispensing/detailDispensing.do";
 		listForm.submit();
 	}
 	
-	function fn_delete_invest(inIdx, itemCd, inCnt){
+	function fn_delete_dispensing(diIdx){
 		if(confirm('해당 내역을 삭제하시겠습니까?')) {
-			listForm.inIdx.value = inIdx;
-			listForm.itemCd.value = itemCd;
-			listForm.inCnt.value = inCnt;
-			listForm.action = "${pageContext.request.contextPath}/sl/material/invest/deleteInvest.do";
+			listForm.diIdx.value = diIdx;
+			
+			listForm.action = "${pageContext.request.contextPath}/sl/material/dispensing/deleteDispensing.do";
 			listForm.submit();
 		}
 	}
@@ -186,7 +188,7 @@
 	$(function() {
 		$('#materialMenu').addClass("active");
 		$('#material').addClass("show");
-		$('#investList').addClass("active");
+		$('#dispensingList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {

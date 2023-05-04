@@ -47,53 +47,82 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">투입 수정</h1>
+                    <h1 class="h3 mb-2 text-gray-800">불출 수정</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/material/invest/modifyInvestOk.do" name="modifyForm" method="post">
-                            		<input type="hidden" name="inIdx" value="${investVO.inIdx}">
-                            		<input type="hidden" name="curItemCd" value="${investVO.curItemCd}">
-                            		<input type="hidden" name="curCnt" value="${investVO.curCnt}">
+                            	<form action="${pageContext.request.contextPath}/sl/material/dispensing/modifyDispensingOk.do" name="modifyForm" method="post">
+                            		<input type="hidden" name="diIdx" value="${dispensingVO.diIdx}">
+                            		<%-- <input type="hidden" name="curItemCd" value="${investVO.curItemCd}">
+                            		<input type="hidden" name="curCnt" value="${investVO.curCnt}"> --%>
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
 												<th>작업지시번호  <span class="req">*</span></th>
 												<td><span></span>
-													<input type="text" class="form-control" name="woIdx" id="woIdx" value="${investVO.woIdx}" list="workOrderList" autocomplete="off"/>
-													<datalist id="workOrderList">
+													<input type="text" class="form-control" name="woIdx" id="woIdx" value="${dispensingVO.woIdx}" list="workOrderList" autocomplete="off" readonly/>
+													<%-- <datalist id="workOrderList">
 														<c:forEach var="list" items="${workOrderList}" varStatus="status">
 															<option value="${list.woIdx}">${list.woName}</option>
 														</c:forEach>
-													</datalist>
+													</datalist> --%>
 												</td>
 												<th>자재코드  <span class="req">*</span></th>
 												<td>
-													<input type="text" class="form-control" name="itemCd" id="itemCd" value="${investVO.itemCd}" list="materialList" autocomplete="off"/>
+													<input type="text" class="form-control" name="itemCd" id="itemCd" value="${dispensingVO.itemCd}" list="materialList" autocomplete="off" readonly/>
 													<datalist id="materialList">
-														<c:forEach var="list" items="${materialList}" varStatus="status">
+														<%-- <c:forEach var="list" items="${materialList}" varStatus="status">
 															<option value="${list.itemCd}">${list.itemName}</option>
-														</c:forEach>
+														</c:forEach> --%>
 													</datalist>
 												</td>
 											</tr>
 											<tr>
-												<th>투입수량  <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="inCnt" id="inCnt" value="${investVO.inCnt}"></td>
+												<th>투입수량(kg)  <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="cnt" id="cnt" value="${dispensingVO.cnt}" readonly/></td>
 												<th>투입일  <span class="req">*</span></th>
-												<td><input type="datetime-local" class="form-control" name="inDte" id="inDte" value="${investVO.inDte}"></td>
+												<td><input type="datetime-local" class="form-control" name="diRegDte" id="diRegDte" value="${dispensingVO.diRegDte}"></td>
 											</tr>
 											<tr>
 												<th>담당자  <span class="req">*</span></th>
-												<td colspan="3"><input type="text" class="form-control" name="inComManager" id="inComManager" value="${investVO.inComManager}"></td>
+												<td colspan="3"><input type="text" class="form-control" name="diManager" id="diManager" value="${dispensingVO.diManager}"></td>
 											</tr>
 										</tbody>
 	                                </table>
+	                                
+	                                <table class="table table-bordered" id="dataTable">
+	                                	<thead>
+	                                		<tr>
+                                   		 	 	<th style="padding-top: 1rem; width: 29%;">품목코드</th>
+	                                            <th style="padding-top: 1rem; width: 31%;">품명</th>
+												<th style="padding-top: 1rem;">소모비율</th>
+												<th style="padding-top: 1rem;">실제소모량</th>
+	                                        </tr>
+	                                	</thead>
+                                   		<tbody>
+                                   			<c:forEach var="list" items="${bomMtList}" varStatus="status">
+                                   				<tr>
+                                   					<td>
+	                                   					<input type="text" class="form-control" name="itemCd${status.count}" id="itemCd${status.count}" value="${list.itemCd}" list="mtList" autocomplete="off" disabled style="text-align: center;">
+	                                   					<%-- <datalist id="mtList">
+	                                   						<c:forEach var="list2" items="${materialList}">
+	                                   							<option value="${list2.itemCd}">${list2.itemName}</option>
+	                                   						</c:forEach>
+	                                   					</datalist> --%>
+	                                   				</td>
+	                                   				<td><input type="text" class="form-control" name="itemName${status.count}" id="itemName${status.count}" value="${list.itemName}" disabled style="text-align: center;"></td>
+	                                   				<td><input type="text" class="form-control" name="cnt${status.count}" id="cnt${status.count}" value="${list.cnt}" disabled style="text-align: right;"></td>
+	                                   				<td><input type="text" class="form-control" name="rcnt" id="rcnt" value="${dispensingVO.cnt*list.cnt/100}" disabled style="text-align: right;" ></td>
+                                   				</tr>
+                                   			</c:forEach>
+                                   		</tbody>
+	                                </table>
+	                                
                                 </form>
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_modify_invest()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/invest/investList.do'">취소</span>
+									<button type="submit" class="btn_ok" onclick="fn_modify_dispensing()" style="border:none;">확인</button>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do'">취소</span>
 								</div>
                             </div>
                         </div>
@@ -129,29 +158,16 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_modify_invest(){
+	function fn_modify_dispensing(){
 		var num = /^\d+$/;
-		if($('#woIdx').val() == ''){
-			alert("작업지시번호를 확인 바랍니다.");
-			return;
-		}
 		
-		if($('#itemCd').val() == ''){
-			alert("자재코드를 확인 바랍니다.");
-			return;
-		}
 		
-		if(!num.test($('#inCnt').val())){
-			alert("투입수량을 확인 바랍니다.");
-			return;
-		}
-		
-		if($('#inDte').val() == ''){
+		if($('#diRegDte').val() == ''){
 			alert("투입일을 확인 바랍니다.");
 			return;
 		}
 		
-		if($('#inComManager').val() == ''){
+		if($('#diManager').val() == ''){
 			alert("담당자를 확인 바랍니다.");
 			return;
 		}
@@ -159,16 +175,25 @@
 		modifyForm.submit();
 	}
 	
+	
+	
+	
 	$(function() {
+		
 		$('#materialMenu').addClass("active");
 		$('#material').addClass("show");
-		$('#investList').addClass("active");
+		$('#dispensingList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {
 			alert(msg);
 		}
+						
 	});
+	
+
+	
+	
 	</script>
 </body>
 

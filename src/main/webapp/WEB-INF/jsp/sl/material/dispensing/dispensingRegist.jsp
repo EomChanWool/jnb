@@ -47,12 +47,12 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">투입 등록</h1>
+                    <h1 class="h3 mb-2 text-gray-800">불출 등록</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/material/invest/registInvestOk.do" name="registForm" method="post">
+                            	<form action="${pageContext.request.contextPath}/sl/material/dispensing/registDispensingOk.do" name="registForm" method="post">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -65,32 +65,23 @@
 														</c:forEach>
 													</datalist>
 												</td>
-												<th>자재코드  <span class="req">*</span></th>
-												<td>
-													<input type="text" class="form-control" name="itemCd" id="itemCd" list="mtList" autocomplete="off"/>
-													<datalist id="mtList">
-														<c:forEach var="list" items="${materialList}" varStatus="status">
-															<option value="${list.itemCd}">${list.itemName}</option>
-														</c:forEach>
-													</datalist>
-												</td>
+												
 											</tr>
 											<tr>
-												<th>투입수량  <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="inCnt" id="inCnt"></td>
-												<th>투입일  <span class="req">*</span></th>
-												<td><input type="datetime-local" class="form-control" name="inDte" id="inDte"></td>
-											</tr>
-											<tr>
+												
+												<th>등록일  <span class="req">*</span></th>
+												<td><input type="datetime-local" class="form-control" name="diRegDte" id="diRegDte"></td>
+												
 												<th>담당자  <span class="req">*</span></th>
-												<td colspan="3"><input type="text" class="form-control" name="inComManager" id="inComManager"></td>
+												<td><input type="text" class="form-control" name="diManager" id="diManager"></td>
 											</tr>
+											
 										</tbody>
 	                                </table>
                                 </form>
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_regist_invest()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/invest/investList.do'">취소</span>
+									<button type="submit" class="btn_ok" onclick="fn_regist_dispensing()" style="border:none;">확인</button>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do'">취소</span>
 								</div>
                             </div>
                         </div>
@@ -126,29 +117,20 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_regist_invest(){
+	function fn_regist_dispensing(){
 		var num = /^\d+$/;
 		if(registForm.woIdx.value == ''){
 			alert("작업지시번호를 확인 바랍니다.");
 			return;
 		}
 		
-		if(registForm.itemCd.value == ''){
-			alert("자재코드를 확인 바랍니다.");
+		
+		if(registForm.diRegDte.value == ''){
+			alert("등록일을 확인 바랍니다.");
 			return;
 		}
 		
-		if(!num.test(registForm.inCnt.value)){
-			alert("투입수량을 확인 바랍니다.");
-			return;
-		}
-		
-		if(registForm.inDte.value == ''){
-			alert("투입일을 확인 바랍니다.");
-			return;
-		}
-		
-		if(registForm.inComManager.value == ''){
+		if(registForm.diManager.value == ''){
 			alert("담당자를 확인 바랍니다.");
 			return;
 		}
@@ -159,7 +141,7 @@
 	$(function() {
 		$('#materialMenu').addClass("active");
 		$('#material').addClass("show");
-		$('#investList').addClass("active");
+		$('#dispensingList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {
