@@ -126,7 +126,10 @@ public class ProdResultController {
 			updateProcess(process,map);
 			prodResultService.registProdResult(map);
 			prodResultService.updateProcess(map);
-			prodResultService.registDispensing(map); // 불출관리 등록
+			if(map.get("prListNm").equals("원자재 이송")) {
+				prodResultService.registDispensing(map); // 불출관리 등록;
+			}
+			
 		}
 		
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");

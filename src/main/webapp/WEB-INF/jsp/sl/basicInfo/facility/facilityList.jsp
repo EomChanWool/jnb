@@ -55,6 +55,7 @@
 							<div class="search">
 								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/basicInfo/facility/facilityList.do" method="post">
 									<input type="hidden" name="faIdx">
+									<input type="hidden" name="fCode">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword" 
 						    					value="${searchVO.searchKeyword}" placeholder="설비명을 입력해 주세요" 
@@ -78,18 +79,20 @@
                                         <tr>
                                             <th>공장명</th>
                                             <th>설비명</th>
-                                            <th>등록자</th>
-                                            <th>수정/삭제</th>
-                                        </tr>
+                                            <th>담당자</th>
+                                            <th>가동상태</th>
+                                            <th>수정/삭제</th>                                            
+      	                               </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${facilityList}" varStatus="status">
                                     		<tr>
                                             <td>${result.fName}</td>
                                             <td>${result.faName}</td>
-                                            <td>${result.faRegMem}</td>
+                                            <td>${result.faManager}</td>
+                                            <td>${result.faStatus}</td>
                                             <td style="padding: 5px 0px;">
-                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_facility_go('${result.faIdx}')">
+                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_facility_go('${result.faIdx}','${result.fCode}')">
 			                                        <span class="text">수정</span>
 			                                    </a>
 			                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_facility('${result.faIdx}')">
@@ -154,20 +157,21 @@
 		}
 	
 		function fn_regist_facility(){
-			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/registfacility.do";
+			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/registFacility.do";
 			listForm.submit();
 		}
 	
-		function fn_modify_facility_go(fCd){
-			listForm.fCode.value = fCd;
-			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/modifyfacility.do";
+		function fn_modify_facility_go(faIdx, fCode){
+			listForm.faIdx.value = faIdx;
+			listForm.fCode.value = fCode;
+			listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/modifyFacility.do";
 			listForm.submit();
 		}
 	
-		function fn_delete_facility(fCd){
+		function fn_delete_facility(faIdx){
 			if(confirm('해당 내역을 삭제 하시겠습니까?')) {
-				listForm.fCode.value = fCd;
-				listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/deletefacility.do";
+				listForm.faIdx.value = faIdx;
+				listForm.action = "${pageContext.request.contextPath}/sl/basicInfo/facility/deleteFacility.do";
 				listForm.submit();
 			}
 		}

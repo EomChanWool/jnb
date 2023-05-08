@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.quality.incongruent.service.impl.IncongruentMapper">
+
+<select id="selectIncongruentListToCnt" resultType="int">
+	SELECT COUNT(*) FROM sm_incongruity
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND in_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchStDate != ''">
+			AND ti_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND ti_dte <![CDATA[<=]]> #{searchEdDate}
+		</if>	
+
+</select>
+
+<select id="selectIncongruentList" resultType="egovMap">
+		SELECT
+			in_idx,
+			ti_idx,
+			in_name,
+			ti_analyst,
+			ti_dte,
+			ti_state
+		FROM sm_analysis_info
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND ti_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchStDate != ''">
+			AND ti_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND ti_dte <![CDATA[<=]]> #{searchEdDate}
+		</if>
+		ORDER BY ti_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+</select>
+
+
+</mapper>

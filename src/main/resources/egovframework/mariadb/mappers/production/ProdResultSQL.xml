@@ -93,7 +93,7 @@
 			di_idx,
 			wo_idx,
 			<if test="prReStDte != ''"> di_reg_dte,</if>
-			<if test="prReManager != ''"> di_reg_manager, </if>
+			<if test="prReManager != ''"> di_manager, </if>
 			di_reg_mem
 			)
 			VALUES

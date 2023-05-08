@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.basicInfo.facility.service.impl.FacilityMapper">
+<mapper
+	namespace="apc.sl.basicInfo.facility.service.impl.FacilityMapper">
 
-<select id="selectFacilityListToCnt" resultType="int">
+	<select id="selectFacilityListToCnt" resultType="int">
 		SELECT COUNT(*) FROM sm_facility
 		WHERE 1=1
 		<if test="searchKeyword != ''">
@@ -10,12 +11,14 @@
 		</if>
 	</select>
 
-<select id="selectFacilityList" resultType="egovMap">
+	<select id="selectFacilityList" resultType="egovMap">
 		SELECT
-			a.fa_idx,
-			a.fa_name,
-			a.fa_reg_mem,
-			b.f_name
+		a.fa_idx,
+		a.fa_name,
+		a.fa_manager,
+		b.f_name,
+		a.f_code,
+		a.fa_status
 		FROM sm_facility a
 		JOIN sm_factory b
 		ON a.f_code = b.f_code
@@ -28,6 +31,135 @@
 	</select>
 
 
+	<select id="selectFactoryList" resultType="egovMap">
+
+		SELECT f_code, f_name
+		FROM sm_factory
+
+
+
+	</select>
+
+	<select id="selectFacility" resultType="egovMap">
+
+		select
+		a.fa_idx,
+		a.f_code,
+		a.fa_name,
+		a.fa_status,
+		a.fa_reg_dte,
+		a.fa_manager,
+		b.f_name,
+		a.fa_note,
+		a.no_reason
+		from sm_facility a
+		JOIN sm_factory b
+		ON a.f_code=b.f_code
+		where fa_idx=
+		#{faIdx}
+		AND b.f_code= #{fCode}
+
+	</select>
+
+	<select id="selectExistsFacility" resultType="int">
+
+		SELECT COUNT(*)
+		FROM sm_facility WHERE fa_name = #{faName}
+
+	</select>
+
+	<update id="modifyFacility">
+
+		UPDATE sm_facility SET
+		fa_name = #{faName},
+		fa_status =
+		#{faStatus},
+		fa_manager = #{faManager},
+		fa_note = #{faNote},
+		fa_edt_dte=
+		NOW(),
+		fa_edt_mem = #{userId}
+		<if test='faStatus == "가동"'>
+			, no_reason = null
+		</if>
+		<if test="faStatus == '비가동'">
+			, no_reason = #{noReason}
+		</if>
+		WHERE fa_idx = #{faIdx}
+
+	</update>
+
+	<update id="modifyNonOp">
+		UPDATE sm_non_operation
+		SET no_ed_dte = now()
+		WHERE no_idx = (SELECT MAX(no_idx) FROM (SELECT * FROM sm_non_operation WHERE
+		fa_idx = #{faIdx}) AS t);
+
+	</update>
+
+	<insert id="registFacility">
+		Insert INTO sm_facility
+		(fa_idx,
+		f_code,
+		fa_name,
+		fa_status,
+		fa_reg_dte,
+		fa_reg_mem,
+		fa_manager,
+		fa_note)
+		VALUES(
+		(SELECT
+		CONCAT('FA', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT
+		IFNULL(MAX(a.fa_idx),0)
+		FROM sm_facility a),'[a-z]','')))+1,10,0))),
+		#{fCode},
+		#{faName},
+		#{faStatus},
+		NOW(),
+		#{userId},
+		#{faManager},
+		#{faNote})
+
+	</insert>
+
+
+	<delete id="deleteFacility">
+		DELETE FROM sm_facility WHERE fa_idx = #{faIdx}
+
+	</delete>
+
+
+	<insert id="registNonOpSt">
+		Insert into sm_non_operation (
+		no_idx,
+		c_idx,
+		f_code,
+		fa_idx,
+		no_st_dte,
+		no_manager,
+		no_reason,
+		no_reg_dte,
+		no_reg_mem
+		)
+		VALUE(
+		(SELECT CONCAT
+		('NO', LPAD
+		((SELECT (SELECT REGEXP_REPLACE((SELECT
+		IFNULL(MAX(a.no_idx),0)
+		FROM sm_non_operation
+		a),'[a-z]','')))+1,10,0))),
+		(SELECT C_IDX FROM sm_factory WHERE f_code
+		= #{fCode}),
+		#{fCode},
+		#{faIdx},
+		now(),
+		#{faManager},
+		#{noReason},
+		now(),
+		#{userId}
+		)
+
+	</insert>
 
 
 </mapper>

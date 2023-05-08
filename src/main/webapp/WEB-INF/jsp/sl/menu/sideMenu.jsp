@@ -38,7 +38,7 @@
 		    <a class="collapse-item" id="memberList" href="${pageContext.request.contextPath}/sl/basicInfo/member/memberList.do">사용자정보관리</a>
 		    <a class="collapse-item" id="companyList" href="${pageContext.request.contextPath}/sl/basicInfo/company/companyList.do">사업장관리</a>
 		    <a class="collapse-item" id="factoryList" href="${pageContext.request.contextPath}/sl/basicInfo/factory/factoryList.do">공장관리</a>
-		    <a class="collapse-item" id="factoryList" href="${pageContext.request.contextPath}/sl/basicInfo/facility/facilityList.do">설비관리</a>
+		    <a class="collapse-item" id="facilityList" href="${pageContext.request.contextPath}/sl/basicInfo/facility/facilityList.do">설비관리</a>
 		    <a class="collapse-item" id="deptList" href="${pageContext.request.contextPath}/sl/basicInfo/dept/deptList.do">부서코드관리</a>
 		    <a class="collapse-item" id="itemList" href="${pageContext.request.contextPath}/sl/basicInfo/item/itemList.do">품목코드관리</a>
 		    <a class="collapse-item" id="accountList" href="${pageContext.request.contextPath}/sl/basicInfo/account/accountList.do">거래처관리</a>
@@ -72,7 +72,7 @@
     <div id="material" class="collapse" aria-labelledby="headingMaterial" data-parent="#accordionSidebar">
     	<div class="bg-white py-2 collapse-inner rounded">
 		    <a class="collapse-item" id="incomeList" href="${pageContext.request.contextPath}/sl/material/income/incomeList.do">입고관리</a>
-		    <a class="collapse-item" id="investList" href="${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do">불출관리</a>
+		    <a class="collapse-item" id="dispensingList" href="${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do">불출관리</a>
 		    <a class="collapse-item" id="stockReturnList" href="${pageContext.request.contextPath}/sl/material/stockReturn/stockReturnList.do">환입관리</a>
 		    <a class="collapse-item" id="stockStateList" href="${pageContext.request.contextPath}/sl/material/mtStockState/stockStateList.do">재고현황</a>
 		    <a class="collapse-item" id="stockAdjustList" href="${pageContext.request.contextPath}/sl/material/stockAdjust/stockAdjustList.do">재고조정관리</a>

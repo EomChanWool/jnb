@@ -1,6 +1,7 @@
 package apc.sl.basicInfo.facility.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,8 +28,50 @@ public class FacilityServieImpl implements FacilityService {
 	
 	@Override
 	public List<?> selectFactoryList() {
-		// TODO Auto-generated method stub
-		return null;
+		return facilityMapper.selectFactoryList();
+	}
+
+	@Override
+	public Map<String, Object> selectFacility(Map<String, Object> map) {
+		
+		return facilityMapper.selectFacility(map);
+	}
+
+	@Override
+	public int selectExistsFacility(Map<String, Object> map) {
+		
+		return facilityMapper.selectExistsFacility(map);
+	}
+
+	@Override
+	public void modifyFacility(Map<String, Object> map) {
+		facilityMapper.modifyFacility(map);
+		
+	}
+
+	@Override
+	public void registFacility(Map<String, Object> map) {
+		facilityMapper.registFacility(map);
+		
+	}
+
+	@Override
+	public void deleteFacility(Map<String, Object> map) {
+		facilityMapper.deleteFacility(map);
+		
+	}
+
+	@Override
+	public void registNonOpSt(Map<String, Object> map) {
+		facilityMapper.registNonOpSt(map);
+		
+	}
+
+
+	@Override
+	public void modifyNonOp(Map<String, Object> map) {
+		facilityMapper.modifyNonOp(map);
+		
 	}
 
 }
