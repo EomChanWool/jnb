@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="apc.sl.sales.state.service.impl.StateMapper">
+
+	<select id="selectStateListToCnt" resultType="int">
+
+
+		<if test="searchKeyword == ''">
+			SELECT COUNT(1) FROM dual
+		</if>
+
+
+
+		<if test="searchKeyword != ''">
+			SELECT COUNT(or_name) AS total_count FROM sm_orders
+			WHERE
+			1=1
+			AND or_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</select>
+
+	<select id="selectStateList" resultType="egovMap">
+		SELECT
+		<if test="searchKeyword != ''">
+			or_name,
+		</if>
+
+		COUNT(or_name) AS total_count,
+		FORMAT(IFNULL(SUM(OR_MONEY),0),0) AS
+		total_or_money,
+		COUNT(CASE WHEN OR_STATE = 3 THEN OR_STATE END) AS
+		state_count
+		FROM sm_orders
+		where 1=1
+		<if test="searchStDate != ''">
+			AND OR_DTE >= #{searchStDate}
+
+		</if>
+		<if test="searchEdDate !=''">
+			AND OR_DTE <![CDATA[<=]]>
+			#{searchEdDate}
+
+		</if>
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%',#{searchKeyword},'%')
+			GROUP BY
+			or_name
+		</if>
+		ORDER BY or_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+
+	</select>
+
+	<select id="selectNoPayListToCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM sm_orders WHERE 1=1 and OR_PAYMENT = '미납'
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+		<if test="searchStDate != ''">
+			AND OR_DTE >= #{searchStDate}
+
+		</if>
+		<if test="searchEdDate !=''">
+			AND OR_DTE <![CDATA[<=]]>
+			#{searchEdDate}
+
+		</if>
+
+	</select>
+
+	<select id="selectNoPayList" resultType="egovMap">
+
+
+		SELECT
+		(SELECT a.ac_name
+		FROM sm_estimate e
+		INNER JOIN sm_account a ON
+		e.a_idx = a.ac_code
+		WHERE e.es_idx = o.es_idx) AS or_ac_name,
+		or_name,
+		or_dte, or_manager, FORMAT(or_money,0) AS or_money
+		FROM sm_orders o
+		WHERE 1=1
+		AND o.OR_payment = '미납'
+
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+		<if test="searchStDate != ''">
+			AND OR_DTE >= #{searchStDate}
+
+		</if>
+		<if test="searchEdDate !=''">
+			AND OR_DTE <![CDATA[<=]]>
+			#{searchEdDate}
+
+		</if>
+
+	</select>
+
+	<select id="selectStateMonthListToCnt" resultType="int">
+
+		SELECT
+		COUNT(1) FROM dual
+
+
+	</select>
+
+	<select id="selectStateMonthList" resultType="egovMap">
+		SELECT
+		months.month,
+		IFNULL(order_counts.order_count, 0) AS or_count,
+		FORMAT(IFNULL(total_moneys.total_money, 0),0) AS total_money
+		FROM (
+		SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION
+		SELECT 9
+		UNION SELECT 10 UNION SELECT 11 UNION SELECT 12
+		) AS months
+		LEFT JOIN (
+		SELECT
+		MONTH(or_dte) AS month,
+		COUNT(*) AS order_count
+		FROM
+		sm_orders
+		WHERE
+		YEAR(or_dte) = #{searchCondition2} AND MONTH(or_dte) BETWEEN 1
+		AND 12
+		GROUP BY
+		MONTH(or_dte)
+		) AS order_counts ON months.month =
+		order_counts.month
+		LEFT JOIN (
+		SELECT
+		MONTH(or_dte) AS month,
+		SUM(or_money) AS total_money
+		FROM
+		sm_orders
+		WHERE
+		YEAR(or_dte) =
+		#{searchCondition2} AND MONTH(or_dte) BETWEEN 1 AND 12
+		GROUP BY
+		MONTH(or_dte)
+		) AS total_moneys ON months.month = total_moneys.month
+		ORDER BY
+		months.month
+
+
+	</select>
+
+	<select id="selectOrYearList" resultType="egovMap">
+
+		SELECT
+		DATE_FORMAT(or_dte, '%Y') AS or_year
+		FROM sm_orders
+		GROUP BY
+		DATE_FORMAT(or_dte, '%Y')
+		ORDER BY or_year DESC
+
+	</select>
+
+	<select id="selectDeliveryStateList" resultType="egovMap">
+		SELECT
+		COUNT(*) AS total_delivery,
+		SUM(CASE WHEN sm_delivery.de_state = 0 THEN 1 ELSE 0 END) AS de_state_0_count,
+		SUM(CASE WHEN sm_delivery.de_state = 1 THEN 1 ELSE 0 END) AS
+		de_state_1_count,
+		format(SUM(CASE WHEN sm_delivery.de_state = 1 THEN sm_orders.or_money ELSE 0 END),0)
+		AS total_or_money
+		FROM sm_delivery
+		LEFT JOIN sm_orders ON sm_delivery.or_idx = sm_orders.or_idx
+		WHERE sm_delivery.de_state IN (0, 1)
+	</select>
+
+
+</mapper>

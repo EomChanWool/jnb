@@ -109,7 +109,8 @@
 			DATE_FORMAT(b.es_fst_qut_dte, '%Y-%m-%d %H:%i') AS es_fst_qut_dte,
 			b.es_fst_qut_money,
 			DATE_FORMAT(b.es_fnl_qut_dte, '%Y-%m-%d %H:%i') AS es_fnl_qut_dte,
-			b.es_fnl_qut_money
+			b.es_fnl_qut_money,
+			a.or_payment
 		FROM sm_orders a
 		JOIN sm_estimate b
 		ON a.es_idx = b.es_idx
@@ -128,7 +129,8 @@
 			or_manager = #{orManager},
 			or_note = #{orNote},
 			or_edt_dte = NOW(),
-			or_edt_mem = #{userId}
+			or_edt_mem = #{userId},
+			or_payment = #{payment}
 		WHERE or_idx = #{orIdx}
 	</update>
 	

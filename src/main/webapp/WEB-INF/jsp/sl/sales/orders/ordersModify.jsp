@@ -89,6 +89,13 @@
 											<td><input type="text" class="form-control" id="esFnlQutMoney" disabled="disabled"></td>
 										</tr>
 										<tr>
+											<th>상태 <span class="req">*</span></th>
+												<td>
+													<select name="payment" id="payment" class="form-control">
+														<option value="납부" <c:if test="${ordersVO.payment eq '납부'}">selected="selected"</c:if>>납부</option>
+														<option value="미납" <c:if test="${ordersVO.payment eq '미납'}">selected="selected"</c:if>>미납</option>
+													</select>
+												</td>	
 											<th>납품지 <span class="req">*</span></th>
 											<td colspan="3"><input type="text" class="form-control" name="orDuePlace" id="orDuePlace" value="${ordersVO.orDuePlace}"/></td>
 										</tr>
