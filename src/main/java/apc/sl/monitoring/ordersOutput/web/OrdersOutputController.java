@@ -27,7 +27,7 @@ public class OrdersOutputController {
 		List<?> orderCntList = ordersOutputService.selectOrdersCnt(searchVO);
 		model.put("orderCntList", orderCntList);
 		//생산량(제품 종류 상관없이 총 제품 생산량)
-		List<?> prodCntList = ordersOutputService.selectProdCnt(searchVO);
+		List<?> prodCntList = ordersOutputService.selectOrdersCnt(searchVO);
 		model.put("prodCntList",prodCntList);
 		//출하량
 		List<?> deliveryCntList = ordersOutputService.selectOrdersCnt(searchVO);

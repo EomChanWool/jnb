@@ -55,6 +55,7 @@
                             	<form action="${pageContext.request.contextPath}/sl/production/workOrder/registWorkOrderOk.do" name="registForm" method="post">
                             		<input type="hidden" name="itemCd">
                             		<input type="hidden" name="woPdtCnt">
+                            		<input type="hidden" name="orIdx">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -155,6 +156,7 @@
 	}
 	
 	$(function() {
+		
 		$('#productionMenu').addClass("active");
 		$('#production').addClass("show");
 		$('#workOrderList').addClass("active");
@@ -163,6 +165,8 @@
 		if(msg) {
 			alert(msg);
 		}
+		
+		console.log(registForm.orIdx.value);
 		
 		$('#woItnDte').val(new Date().toISOString().slice(0,10));
 		
@@ -185,6 +189,7 @@
 				  registForm.itemCd.value = result.pp_info.itemCd;
 				  $('#woPdtCnt').text(result.pp_info.ppPrdtCnt);
 				  registForm.woPdtCnt.value = result.pp_info.ppPrdtCnt;
+				  registForm.orIdx.value = result.pp_info.orIdx;
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

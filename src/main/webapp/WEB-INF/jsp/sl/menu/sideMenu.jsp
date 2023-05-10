@@ -91,7 +91,7 @@
 		    <a class="collapse-item" id="prodPlanList" href="${pageContext.request.contextPath}/sl/production/prodPlan/prodPlanList.do">생산계획</a>
 		    <a class="collapse-item" id="workOrderList" href="${pageContext.request.contextPath}/sl/production/workOrder/workOrderList.do">작업지시</a>
 		    <a class="collapse-item" id="prodResultList" href="${pageContext.request.contextPath}/sl/production/prodResult/prodResultList.do">생산실적</a>
-		    <a class="collapse-item" id="prodCurStateList" href="${pageContext.request.contextPath}/sl/production/prodCurState/prodCurStateList.do">생산현황관리</a>
+		    <a class="collapse-item" id="prodCurStateList" href="${pageContext.request.contextPath}/sl/production/prodCurState/prodCurStateList.do">생산실적현황</a>
 		    <a class="collapse-item" id="lotList" href="${pageContext.request.contextPath}/sl/production/lot/lotList.do">로트관리</a>
 		    <a class="collapse-item" id="nonOperList" href="${pageContext.request.contextPath}/sl/production/nonOper/nonOperList.do">비가동관리</a>
 		</div>

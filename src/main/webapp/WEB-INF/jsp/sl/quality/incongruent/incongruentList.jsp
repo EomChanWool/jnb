@@ -54,10 +54,10 @@
                         <div class="card-header py-3">
 							<div class="search">
 								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/quality/incongruent/incongruentList.do" method="post">
-									<input type="hidden" name="chIdx">
+									<input type="hidden" name="inIdx">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
-						    									value="${searchVO.searchKeyword}" placeholder="~~명을 입력해 주세요"
+						    									value="${searchVO.searchKeyword}" placeholder="부적합명을 입력해 주세요"
 						    									style="background-color:#eaecf4; width: 25%; float: left;">
 						    	</form>
 						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_incongruent()" style="margin-left: 0.3rem;">
@@ -76,23 +76,25 @@
                                 <table class="table table-bordered" id="dataTable"  >
                                     <thead>
                                         <tr>
-                                            <th>문서명</th>
-											<th>작성자</th>
+                                            <th>부적합명</th>
+											<th>검사명</th>
+											<th>불량항목</th>
 											<th>등록일</th>
 											<th>수정/삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${incongruentList}" varStatus="status">
-	                                   		<tr onclick="fn_detail_incongruent('${result.chIdx}')" style="cursor: pointer;">
-	                                            <td>${result.doName}</td>
-												<td>${result.doManager}</td>	
-												<td>${result.doDte}</td>
+	                                   		<%-- <tr onclick="fn_detail_incongruent('${result.chIdx}')" style="cursor: pointer;"> --%>
+	                                            <td>${result.inName}</td>
+												<td>${result.tiName}</td>	
+												<td>${result.biName}</td>
+												<td>${result.inRegDte}</td>
 	                                            <td onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
-	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_incongruent_go('${result.chIdx}')">
+	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_incongruent_go('${result.inIdx}')">
 				                                        <span class="text">수정</span>
 				                                    </a>
-				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_incongruent('${result.chIdx}')">
+				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_incongruent('${result.inIdx}')">
 				                                        <span class="text">삭제</span>
 				                                    </a>
 	                                            </td>
@@ -157,8 +159,8 @@
 			listForm.submit();
 		}
 	
-		function fn_modify_incongruent_go(doIdx){
-			listForm.doIdx.value = doIdx;
+		function fn_modify_incongruent_go(inIdx){
+			listForm.inIdx.value = inIdx;
 			listForm.action = "${pageContext.request.contextPath}/sl/quality/incongruent/modifyIncongruent.do";
 			listForm.submit();
 		}

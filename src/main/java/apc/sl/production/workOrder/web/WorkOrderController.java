@@ -58,11 +58,12 @@ public class WorkOrderController {
 	
 	@RequestMapping(value="/sl/production/workOrder/workOrderProdPlanInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView workOrderProdPlanInfoAjax(@RequestParam Map<String, Object> map) {
-		System.out.println("작업지시 등록 맵 : " + map);
+		
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> info = workOrderService.selectWoProdPlanInfo(map);
 		mav.setViewName("jsonView");
 		mav.addObject("pp_info", info);
+		System.out.println("작업지시 등록 맵 : " + mav);
 		return mav;
 	}
 	

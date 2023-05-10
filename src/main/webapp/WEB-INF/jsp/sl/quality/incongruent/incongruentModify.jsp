@@ -47,44 +47,50 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">작업표준서 수정</h1>
+                    <h1 class="h3 mb-2 text-gray-800">부적합관리 수정</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/quality/wost/modifyWostOk.do" name="modifyForm" method="post" encType="multipart/form-data">
-                            		<input type="hidden" name="doIdx" value="${documentVO.doIdx}">
-                            		<input type="hidden" name="doFilNm" value="${documentVO.doFilNm}">
+                            	<form action="${pageContext.request.contextPath}/sl/quality/incongruent/modifyIncongruentOk.do" name="modifyForm" method="post" encType="multipart/form-data">
+                            		<input type="hidden" name="inIdx" value="${incoVO.inIdx}">
+                            		<%-- <input type="hidden" name="doFilNm" value="${documentVO.doFilNm}"> --%>
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
-												<th>문서명 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="doName" id="doName" value="${documentVO.doName}"></td>
-												<th>작성자 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="doManager" id="doManager" value="${documentVO.doManager}"></td>
+												<th>부적합명 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="inName" id="inName" value="${incoVO.inName}"></td>
+												<th>검사번호 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="tiIdx" id="tiIdx" value="${incoVO.tiIdx}" readonly></td>
 											</tr>
 											<tr>
-												<th>작성일 <span class="req">*</span></th>
-												<td><input type="date" class="form-control" name="doDte" id="doDte" value="${documentVO.doDte}"></td>
+												<th>검사명 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="tiName" id="tiName" value="${incoVO.tiName}" readonly></td>
+												<th>분석번호 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="azIdx" id="azIdx" value="${incoVO.azIdx}" readonly></td>
+											</tr>
+											<tr>
+											<th>불량항목 번호 <span class="req">*</span></th>
+												<td>
+												<input type="text" class="form-control" name="biIdx" id="biIdx" list="biList" value="${incoVO.biIdx}" autocomplete="off">
+													<datalist id="biList">
+														<c:forEach var="list" items="${biList}" varStatus="status">
+															<option value="${list.biIdx}">${list.biName}</option>
+														</c:forEach>
+													</datalist>
+												</td>
 											</tr>
 											<tr>
 												<th>비고</th>
-												<td colspan="3"><textArea name="doNote" id="doNote">${documentVO.doNote}</textArea></td>
+												<td colspan="3"><textArea name="inNote" id="inNote">${incoVO.inNote}</textArea></td>
 											</tr>
-											<tr>
-												<th>파일업로드 <span class="req">*</span></th>
-												<td colspan="3">
-													<label class="file_label" for="input_file">업로드</label>
-													<input type="text" class="form-control file-name-form" id="fileName" value="${documentVO.doOriginFilNm}" readonly="readonly">
-													<input type="file" name="uploadFile" id="input_file" style="display: none;">
-												</td>
-											</tr>
+											
 										</tbody>
 	                                </table>
                                 </form>
                                 <div class="btn_bottom_wrap">
 									<button type="submit" class="btn_ok" onclick="fn_modify_document()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/wost/wostList.do'">취소</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/incongruent/incongruentList.do'">취소</span>
 								</div>
                             </div>
                         </div>
@@ -121,20 +127,17 @@
 
 	<script>
 	function fn_modify_document(){
-		if($('#doName').val() == ''){
-			alert("문서명을 확인 바랍니다.");
+		if($('#inName').val() == ''){
+			alert("부적합명을 확인 바랍니다.");
 			return;
 		}
 		
-		if($('#doManager').val() == ''){
-			alert("작성자를 확인 바랍니다.");
+		if($('#biIdx').val() == ''){
+			alert("불량 항목 번호를 확인 바랍니다.");
 			return;
 		}
 		
-		if($('#doDte').val() == ''){
-			alert("작성일을 확인 바랍니다.");
-			return;
-		}
+		
 		
 		modifyForm.submit();
 	}
@@ -142,16 +145,14 @@
 	$(function() {
 		$('#qualityMenu').addClass("active");
 		$('#quality').addClass("show");
-		$('#wostList').addClass("active");
+		$('#incongruentList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {
 			alert(msg);
 		}
 		
-		$('#input_file').change(function(){
-			$('#fileName').val($('#input_file').val().split('\\')[2]);
-		});
+		
 	});
 	</script>
 </body>

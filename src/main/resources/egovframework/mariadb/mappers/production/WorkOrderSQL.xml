@@ -49,7 +49,8 @@
 		SELECT
 			a.item_cd,
 			a.pp_prdt_cnt,
-			b.item_name
+			b.item_name,
+			a.or_idx
 		FROM sm_prdt_plan a
 		JOIN sm_item b
 		ON a.item_cd = b.item_cd
@@ -78,7 +79,8 @@
 			<if test="woNote != ''">wo_note,</if>
 			wo_group,
 			wo_reg_dte,
-			wo_reg_mem
+			wo_reg_mem,
+			or_idx
 			)
 		VALUES
 			(
@@ -97,7 +99,8 @@
 			<if test="woNote != ''">#{woNote},</if>
 			#{process},
 			NOW(),
-			#{userId}
+			#{userId},
+			#{orIdx}
 			)
 	</insert>
 	

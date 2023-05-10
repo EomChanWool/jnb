@@ -35,7 +35,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav prodCurState - User Information -->
+                        <!-- Nav ProdResult - User Information -->
                         <%@ include file="../../menu/logout/nav_user.jsp" %>
 
                     </ul>
@@ -47,24 +47,27 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">생산실적현황</h1>
+                    <h1 class="h3 mb-2 text-gray-800">생산실적 관리</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/production/prodCurState/prodCurStateList.do" method="post">
-									<input type="hidden" name=faCd>
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/production/prodResult/prodResultList.do" method="post">
+									<input type="hidden" name="prReIdx">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
 						    									value="${searchVO.searchKeyword}" placeholder="작업지시번호를 입력해 주세요"
 						    									style="background-color:#eaecf4; width: 25%; float: left;">
 						    	</form>
-						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_prodCurState()" style="margin-left: 0.3rem;">
+						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_ProdResult()" style="margin-left: 0.3rem;">
 	                                <span class="text">검색</span>
 	                            </a>
-						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_prodCurState()">
+						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_ProdResult()">
 	                                <span class="text">전체목록</span>
+	                            </a>
+	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_ProdResult()" style="float: right;">
+	                                <span class="text">등록</span>
 	                            </a>
 							</div>
                         </div>
@@ -74,26 +77,31 @@
                                     <thead>
                                         <tr>
                                             <th>작업지시번호</th>
-											<th>작업지시명</th>
-											<th>진행중인 공정명</th>
-											<th>총 공정수</th>
-											<th>완료된 공정수</th>
+											<th>공정명</th>
+											<th>작업상태</th>
+											<th>수정/삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="result" items="${prodCurStateList}" varStatus="status">
+                                    	<c:forEach var="result" items="${prResultList}" varStatus="status">
 	                                   		<tr>
 	                                            <td>${result.woIdx}</td>
-												<td>${result.woName}</td>
+												<td>${result.prListNm}</td>
 												<td>
-													<c:if test="${result.prCurNm eq null}">작업완료</c:if>
-													<c:if test="${result.prCurNm ne null}">${result.prCurNm}</c:if>
+													<c:if test="${result.prReState eq '0'}">작업중</c:if>
+													<c:if test="${result.prReState eq '1'}">작업종료</c:if>
 												</td>
-												<td>${result.prTotCnt}</td>
-												<td>${result.prFinCnt}</td>
+	                                            <td style="padding: 5px 0px;">
+	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_ProdResult_go('${result.prReIdx}')">
+				                                        <span class="text">수정</span>
+				                                    </a>
+				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_ProdResult('${result.prReIdx}')">
+				                                        <span class="text">삭제</span>
+				                                    </a>
+	                                            </td>
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty prodCurStateList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty prResultList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
@@ -138,20 +146,39 @@
 	   	listForm.submit();
 	}
 	
-	function fn_search_prodCurState(){
+	function fn_search_ProdResult(){
 		listForm.submit();
 	}
 	
-	function fn_searchAll_prodCurState(){
+	function fn_searchAll_ProdResult(){
 		listForm.searchKeyword.value = "";
 		listForm.pageIndex.value = 1;
 		listForm.submit();
 	}
 	
+	function fn_regist_ProdResult(){
+		listForm.action = "${pageContext.request.contextPath}/sl/production/prodResult/registProdResult.do";
+		listForm.submit();
+	}
+	
+	function fn_modify_ProdResult_go(prReIdx){
+		listForm.prReIdx.value = prReIdx;
+		listForm.action = "${pageContext.request.contextPath}/sl/production/prodResult/modifyProdResult.do";
+		listForm.submit();
+	}
+	
+	function fn_delete_ProdResult(prReIdx){
+		if(confirm('해당 내역을 삭제하시겠습니까?')) {
+			listForm.prReIdx.value = prReIdx;
+			listForm.action = "${pageContext.request.contextPath}/sl/production/prodResult/deleteProdResult.do";
+			listForm.submit();
+		}
+	}
+	
 	$(function() {
 		$('#productionMenu').addClass("active");
 		$('#production').addClass("show");
-		$('#prodCurStateList').addClass("active");
+		$('#prodResultList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {

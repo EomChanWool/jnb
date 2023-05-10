@@ -47,42 +47,57 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">작업표준서 등록</h1>
+                    <h1 class="h3 mb-2 text-gray-800">부적합관리 등록</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/quality/wost/registWostOk.do" name="registForm" method="post" encType="multipart/form-data">
+                            	<form action="${pageContext.request.contextPath}/sl/quality/incongruent/registIncongruentOk.do" name="registForm" method="post" encType="multipart/form-data">
+	                                <input type="hidden" name="azIdx">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
-												<th>문서명 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="doName" id="doName"></td>
-												<th>작성자 <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="doManager" id="doManager"></td>
+												<th>부적합명 <span class="req">*</span></th>
+												<td><input type="text" class="form-control" name="inName" id="inName"></td>
+												<th>검사번호 <span class="req">*</span></th>
+												<td>
+												<input type="text" class="form-control" name="tiIdx" id="tiIdx" list="tiList" autocomplete="off">
+													<datalist id="tiList">
+														<c:forEach var="list" items="${tiList}" varStatus="status">
+															<option value="${list.tiIdx}">${list.tiName}</option>
+														</c:forEach>
+													</datalist>
+													</td>
 											</tr>
 											<tr>
-												<th>작성일 <span class="req">*</span></th>
-												<td><input type="date" class="form-control" name="doDte" id="doDte"></td>
+												<th>검사명 <span class="req">*</span></th>
+												<td><span class="form-control val-area" id="tiName"></span></td>
+												<th>분석번호 <span class="req">*</span></th>
+												<td><span class="form-control val-area" id="azIdx"></span></td>
+												
+												
+											<tr>
+												<th>불량항목 번호 <span class="req">*</span></th>
+												<td>
+												<input type="text" class="form-control" name="biIdx" id="biIdx" list="biList" autocomplete="off">
+													<datalist id="biList">
+														<c:forEach var="list" items="${biList}" varStatus="status">
+															<option value="${list.biIdx}">${list.biName}</option>
+														</c:forEach>
+													</datalist>
+												</td>
 											</tr>
 											<tr>
 												<th>비고</th>
-												<td colspan="3"><textArea name="doNote" id="doNote"></textArea></td>
+												<td colspan="3"><textArea name="inNote" id="inNote"></textArea></td>
 											</tr>
-											<tr>
-												<th>파일업로드 <span class="req">*</span></th>
-												<td colspan="3">
-													<label class="file_label" for="input_file">업로드</label>
-													<input type="text" class="form-control file-name-form" id="fileName" readonly="readonly">
-													<input type="file" name="uploadFile" id="input_file" style="display: none;">
-												</td>
-											</tr>
+											
 										</tbody>
 	                                </table>
                                 </form>
                                 <div class="btn_bottom_wrap">
 									<button type="submit" class="btn_ok" onclick="fn_regist_document()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/wost/wostList.do'">취소</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/incongruent/incongruentList.do">취소</span>
 								</div>
                             </div>
                         </div>
@@ -119,23 +134,19 @@
 
 	<script>
 	function fn_regist_document(){
-		if($('#doName').val() == ''){
-			alert("문서명을 확인 바랍니다.");
+		if($('#inName').val() == ''){
+			alert("부적합명을 확인 바랍니다.");
 			return;
 		}
 		
-		if($('#doManager').val() == ''){
-			alert("작성자를 확인 바랍니다.");
+		if($('#tiIdx').val() == ''){
+			alert("검사명을 확인 바랍니다.");
 			return;
 		}
 		
-		if($('#doDte').val() == ''){
-			alert("작성일을 확인 바랍니다.");
-			return;
-		}
 		
-		if($('#input_file').val() == ''){
-			alert("파일을 확인 바랍니다.");
+		if($('#biIdx').val() == ''){
+			alert("불량항목 번호를 확인 바랍니다.");
 			return;
 		}
 		
@@ -145,19 +156,41 @@
 	$(function() {
 		$('#qualityMenu').addClass("active");
 		$('#quality').addClass("show");
-		$('#wostList').addClass("active");
+		$('#incongruentList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {
 			alert(msg);
 		}
 		
-		$('#doDte').val(new Date().toISOString().slice(0,10));
-		
-		$('#input_file').change(function(){
-			$('#fileName').val($('#input_file').val().split('\\')[2]);
+		$('#tiIdx').change(function(){
+			incongruentInfoAjax();
 		});
+		
+		
 	});
+
+	function incongruentInfoAjax(){
+		$.ajax({
+			  type:"POST",
+			  url:"<c:url value='${pageContext.request.contextPath}/sl/quality/incongruent/incongruentInfoAjax.do'/>",	  		  			  
+			  dataType:"JSON",
+			  data:{
+				  'tiIdx':$('#tiIdx').val()
+			  },
+			  success:function(result){
+				  
+				  $('#tiName').text(result.tiInfo.tiName)
+				  $('#azIdx').text(result.tiInfo.azIdx)
+				  registForm.azIdx.value = result.tiInfo.azIdx;
+			  },
+			  error:function(request,status,error){ 
+				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  
+			  }
+		  });
+	}	
+	
+	
 	</script>
 </body>
 
