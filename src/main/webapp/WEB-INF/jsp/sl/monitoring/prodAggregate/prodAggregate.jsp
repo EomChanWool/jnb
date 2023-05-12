@@ -6,6 +6,7 @@
 <%@ include file="../../header.jsp" %>
 
 <body id="page-top">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -35,7 +36,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav ProdResult - User Information -->
+                        <!-- Nav member - User Information -->
                         <%@ include file="../../menu/logout/nav_user.jsp" %>
 
                     </ul>
@@ -47,58 +48,34 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">로트목록</h1>
+                    <h1 class="h3 mb-2 text-gray-800">생산실적 현황</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/production/lot/lotList.do" method="post">
+                        
+                        <div class="search">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/prodAggregate/prodAggregate.do" method="post">
 									
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						    		<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
-						    									value="${searchVO.searchKeyword}" placeholder="작업지시번호를 입력해 주세요"
-						    									style="background-color:#eaecf4; width: 25%; float: left;">
+									
+									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
+						    			
+						    			<c:forEach var="list" items="${prYearList}" varStatus="status">
+						    				<option value="${list.prYear}" <c:if test="${searchVO.searchCondition2 eq list.prYear or status.count eq 1}">selected="selected"</c:if>>${list.prYear}년도</option>
+						    			</c:forEach>
+						    		</select>
+						    								
+   									
 						    	</form>
-						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_lot()" style="margin-left: 0.3rem;">
-	                                <span class="text">검색</span>
-	                            </a>
-						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_lot()">
-	                                <span class="text">전체목록</span>
-	                            </a>
+						    	
 	                           
-							</div>
+							</div> 
+                        
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable"  >
-                                    <thead>
-                                        <tr>
-                                            <th>로트번호</th>
-											<th>제품명</th>
-											<th>수량(kg)</th>
-											<th>작업시작시간</th>
-											<th>작업완료시간</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    	<c:forEach var="result" items="${lotList}" varStatus="status">
-	                                   		<tr>
-	                                            <td>${result.woIdx}</td>
-												<td>${result.itemName}</td>
-												<td>${result.woPdtCnt}kg</td>
-												<td>${result.prReStDte}</td>
-												<td>${result.prReEdDte}</td>
-												
-	                                          
-	                                        </tr>
-                                    	</c:forEach>
-                                    	<c:if test="${empty lotList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
-                                    </tbody>
-                                </table>
-                                <div class="btn_page">
-									<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_pageview"/>
-							    </div>
+								<div id="graph" style="width: 100%; height:500px;"></div>
                             </div>
                         </div>
                     </div>
@@ -133,33 +110,102 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_pageview(pageNo) {
-		listForm.pageIndex.value = pageNo;
-	   	listForm.submit();
-	}
-	
-	function fn_search_lot(){
-		listForm.submit();
-	}
-	
-	function fn_searchAll_lot(){
-		listForm.searchKeyword.value = "";
-		listForm.pageIndex.value = 1;
-		listForm.submit();
-	}
-	
-	
-	
 	$(function() {
-		$('#productionMenu').addClass("active");
-		$('#production').addClass("show");
-		$('#lotList').addClass("active");
+		$('#monitoringMenu').addClass("active");
+		$('#monitoring').addClass("show");
+		$('#prodAggregate').addClass("active");
+		 $('#searchCondition2').change(function(){
+				listForm.submit();
+			});
 		
-		let msg = '${msg}';
-		if(msg) {
-			alert(msg);
+		window.onresize = function() {
+			location.reload();
 		}
 	});
+	
+	var chartDom = document.getElementById('graph');
+	var myChart = echarts.init(chartDom);
+	var option;
+	
+	let date = [];
+	
+
+	let prodCnt = [];
+
+	
+	const dataMin = 0;
+	const dataMax = 0;
+	const dataInterval = 1000;
+	
+	
+	
+	<c:forEach items="${prodList}" var="list">
+		date.push('${list.month}월');
+		prodCnt.push('${list.prCnt}');
+	</c:forEach>
+	
+	
+	console.log(prodCnt);
+	
+	option = {
+			  tooltip: {
+			    trigger: 'axis',
+// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
+				},
+			    axisPointer: {
+			    	type: 'cross',
+			    	axis: "auto",
+			    	crossStyle: {
+			        	color: '#999'
+		    	}
+			  },
+			  toolbox: {
+			    feature: {
+			      dataView: { show: false, readOnly: false },
+			      magicType: { show: false, type: ['line', 'bar'] },
+			      restore: { show: false },
+			      saveAsImage: { show: true }
+			    }
+			  },
+			  legend: {
+			    data: ['수주량']
+			  },
+			  xAxis: [
+			    {
+			      type: 'category',
+			      data: date,
+			      axisPointer: {
+			        type: 'shadow'
+			      }
+			    }
+			  ],
+			  yAxis: [
+			    {
+			      type: 'value',
+			      name: '개수',
+			     
+			      
+			      axisLabel: {
+			        formatter: '{value} EA'
+			      }
+			    }
+			  ],
+			  series: [
+			  
+			    {
+		    	name: '생산량',
+			    type: 'bar',
+			    tooltip: {
+			      valueFormatter: function (value) {
+			        return value + ' EA';
+			      }
+			    },
+			    data: prodCnt
+			    }
+			   
+			  ]
+			};
+	option && myChart.setOption(option);
 	</script>
 </body>
 

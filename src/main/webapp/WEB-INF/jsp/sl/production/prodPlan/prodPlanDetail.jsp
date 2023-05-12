@@ -70,7 +70,7 @@
 											</tr>
 											<tr>
 												<th>생산량 (kg)</th>
-												<td><span class="form-control val-area" id="ppPrdtCnt">${prodPlanVO.ppPrdtCnt}</span></td>
+												<td><span class="form-control val-area" id="ppPrdtCnt">${prodPlanVO.ppPrdtCnt}kg</span></td>
 												<th>납품예정일</th>
 												<td><span class="form-control val-area">${prodPlanVO.ppDlvDte}</span></td>
 											</tr>

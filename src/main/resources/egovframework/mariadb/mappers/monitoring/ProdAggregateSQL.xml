@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="apc.sl.monitoring.prodAggregate.service.impl.ProdAggregateMapper">
+
+	<select id="selectProd" resultType="egovMap">
+
+		<!-- SELECT months.m AS month, COALESCE(pr_cnt, 0) AS pr_cnt FROM (SELECT 
+			1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION 
+			SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION 
+			SELECT 11 UNION SELECT 12) AS months LEFT JOIN ( SELECT DATE_FORMAT(PR_RE_ED_DTE, 
+			'%m') AS MONTH, COUNT(*) AS pr_cnt FROM sm_prod_result WHERE PR_LIST_NM = 
+			'저장탱크 이송' AND YEAR(PR_RE_ED_DTE) = #{searchCondition2} GROUP BY MONTH ) AS 
+			subquery ON months.m = subquery.MONTH ORDER BY months.m -->
+		SELECT
+		months.m AS month,
+		COALESCE(pr_cnt, 0) AS pr_cnt
+		FROM
+		(SELECT 1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+		UNION SELECT 6
+		UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT
+		11 UNION SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(PR_RE_ED_DTE, '%m') AS MONTH,
+		COUNT(*) AS pr_cnt
+		FROM
+		sm_prod_result a
+		JOIN sm_work_order b ON a.wo_idx=b.WO_IDX
+		JOIN sm_orders c ON b.OR_IDX=c.OR_IDX
+		WHERE
+		PR_LIST_NM = '저장탱크 이송'
+		AND YEAR(PR_RE_ED_DTE) = #{searchCondition2}
+		GROUP BY
+		MONTH
+		) AS subquery
+		ON months.m = subquery.MONTH
+		ORDER BY
+		months.m
+
+
+	</select>
+
+	<select id="selectPrYearList" resultType="egovMap">
+		SELECT
+		DATE_FORMAT(PR_RE_ED_DTE, '%Y') AS pr_year
+		FROM sm_prod_result
+		WHERE
+		PR_LIST_NM = '저장탱크 이송'
+		GROUP BY
+		DATE_FORMAT(PR_RE_ED_DTE, '%Y')
+		ORDER BY
+		pr_year DESC
+	</select>
+
+</mapper>

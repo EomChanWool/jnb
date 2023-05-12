@@ -12,5 +12,7 @@ public interface OrdersOutputService {
 	List<?> selectOrdersCnt(SearchVO searchVO);
 
 	List<?> selectProdCnt(SearchVO searchVO);
+	
+	List<?> selectOrYearList(SearchVO searchVO);
 
 }

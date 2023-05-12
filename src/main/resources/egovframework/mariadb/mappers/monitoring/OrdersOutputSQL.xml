@@ -1,74 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.monitoring.ordersOutput.service.impl.OrdersOutputMapper">
+<mapper
+	namespace="apc.sl.monitoring.ordersOutput.service.impl.OrdersOutputMapper">
+
+
+	<select id="selectOrYearList" resultType="egovMap">
+		SELECT
+		DATE_FORMAT(or_dte, '%Y') AS or_year
+		FROM sm_orders
+		GROUP BY
+		DATE_FORMAT(or_dte, '%Y')
+		ORDER BY or_year DESC
+
+	</select>
+
+
 	<select id="selectOrderOutputData" resultType="egovMap">
+		<!-- SELECT a.es_idx, b.or_dte, DATE_FORMAT(or_dte, '%Y') AS years, DATE_FORMAT(or_dte, 
+			'%m') AS MONTH, SUM( IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+ IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+ 
+			IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+ IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+ 
+			IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0) ) AS orderCnt, SUM(pr_re_cnt) AS prodCnt 
+			from sm_estimate a JOIN sm_orders b ON a.es_idx = b.es_idx JOIN sm_work_order 
+			c ON b.or_idx = c.or_idx JOIN sm_prod_result d ON c.wo_idx = d.wo_idx JOIN 
+			sm_delivery e ON b.or_idx = e.or_idx WHERE DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), 
+			'%Y') GROUP BY MONTH ORDER BY or_dte -->
 		SELECT
-			a.es_idx,
-			b.or_dte,
-			DATE_FORMAT(or_dte, '%Y') AS years,
-			DATE_FORMAT(or_dte, '%m') AS MONTH,
-			SUM(
-				IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+
-				IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+
-				IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+
-				IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+
-				IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0)
-			) AS orderCnt,
-			SUM(pr_re_cnt) AS prodCnt
-		from sm_estimate a
-		JOIN sm_orders b
-		ON a.es_idx = b.es_idx
-		JOIN sm_work_order c
-		ON b.or_idx = c.or_idx
-		JOIN sm_prod_result d
-		ON c.wo_idx = d.wo_idx
-		JOIN sm_delivery e
-		ON b.or_idx = e.or_idx
-		WHERE DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		GROUP BY MONTH 
-		ORDER BY or_dte
+		months.m AS month,
+		COALESCE(SUM(orderCnt), 0) AS orderCnt
+		FROM
+		(SELECT 1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10 UNION SELECT 11 UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(b.or_dte, '%m') AS MONTH,
+		SUM(
+		IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+
+		IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+
+		IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+
+		IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+
+		IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0)
+		) AS orderCnt
+		FROM
+		sm_estimate a
+		JOIN sm_orders b ON a.es_idx = b.es_idx
+		JOIN sm_delivery c ON
+		b.OR_IDX=c.OR_IDX
+		WHERE
+		(DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(),
+		'%Y') AND YEAR(or_dte) = #{searchCondition2})
+		AND b.OR_STATE=3
+		GROUP BY
+		MONTH
+		) AS subquery
+		ON months.m = subquery.MONTH
+		GROUP BY months.m
+		ORDER
+		BY months.m
+
 	</select>
-	
+
 	<select id="selectOrdersCnt" resultType="egovMap">
+		<!-- SELECT a.es_idx, b.or_dte, DATE_FORMAT(or_dte, '%Y') AS years, DATE_FORMAT(or_dte, 
+			'%m') AS MONTH, SUM( IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+ IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+ 
+			IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+ IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+ 
+			IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0) ) AS orderCnt from sm_estimate a JOIN 
+			sm_orders b ON a.es_idx = b.es_idx WHERE DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), 
+			'%Y') GROUP BY MONTH ORDER BY or_dte -->
 		SELECT
-			a.es_idx,
-			b.or_dte,
-			DATE_FORMAT(or_dte, '%Y') AS years,
-			DATE_FORMAT(or_dte, '%m') AS MONTH,
-			SUM(
-				IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+
-				IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+
-				IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+
-				IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+
-				IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0)
-			) AS orderCnt
-		from sm_estimate a
-		JOIN sm_orders b
-		ON a.es_idx = b.es_idx
-		WHERE DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		GROUP BY MONTH 
-		ORDER BY or_dte
+		months.m AS month,
+		COALESCE(SUM(orderCnt), 0) AS orderCnt
+		FROM
+		(SELECT 1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10 UNION SELECT 11 UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(b.or_dte, '%m') AS MONTH,
+		SUM(
+		IFNULL(es_cnt1,0)+IFNULL(es_cnt2,0)+
+		IFNULL(es_cnt3,0)+IFNULL(es_cnt4,0)+
+		IFNULL(es_cnt5,0)+IFNULL(es_cnt6,0)+
+		IFNULL(es_cnt7,0)+IFNULL(es_cnt8,0)+
+		IFNULL(es_cnt9,0)+IFNULL(es_cnt10,0)
+		) AS orderCnt
+		FROM
+		sm_estimate a
+		JOIN sm_orders b ON a.es_idx = b.es_idx
+		WHERE
+		(DATE_FORMAT(or_dte, '%Y')
+		= DATE_FORMAT(NOW(), '%Y') AND YEAR(or_dte) = #{searchCondition2})
+		GROUP BY MONTH
+		) AS subquery
+		ON months.m = subquery.MONTH
+		GROUP BY
+		months.m
+		ORDER BY months.m
+
 	</select>
-	
+
 	<select id="selectProdCnt" resultType="egovMap">
+		<!-- SELECT b.or_dte, DATE_FORMAT(or_dte, '%Y') AS years, DATE_FORMAT(or_dte, 
+			'%m') AS MONTH, SUM(pr_re_cnt) AS prodCnt from sm_estimate a JOIN sm_orders 
+			b ON a.es_idx = b.es_idx JOIN sm_work_order c ON b.or_idx = c.or_idx JOIN 
+			sm_prod_result d ON c.wo_idx = d.wo_idx JOIN sm_delivery e ON b.or_idx = 
+			e.or_idx WHERE 1=1 AND a.es_state = 1 AND DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), 
+			'%Y') GROUP BY MONTH ORDER BY or_dte -->
+		<!-- SELECT a.ES_IDX, b.or_dte, DATE_FORMAT(or_dte, '%Y') AS years, DATE_FORMAT(or_dte, 
+			'%m') AS MONTH, SUM(WO_PDT_CNT) AS prodCnt from sm_estimate a JOIN sm_orders 
+			b ON a.es_idx = b.es_idx JOIN sm_work_order c ON b.or_idx = c.or_idx JOIN 
+			sm_prod_result d ON c.wo_idx = d.wo_idx WHERE 1=1 AND a.es_state = 1 AND 
+			DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), '%Y') GROUP BY MONTH ORDER 
+			BY or_dte -->
 		SELECT
-			b.or_dte,
-			DATE_FORMAT(or_dte, '%Y') AS years,
-			DATE_FORMAT(or_dte, '%m') AS MONTH,
-			SUM(pr_re_cnt) AS prodCnt
-		from sm_estimate a
-		JOIN sm_orders b
-		ON a.es_idx = b.es_idx
-		JOIN sm_work_order c
-		ON b.or_idx = c.or_idx
-		JOIN sm_prod_result d
-		ON c.wo_idx = d.wo_idx
-		JOIN sm_delivery e
-		ON b.or_idx = e.or_idx
-		WHERE 1=1
-		AND a.es_state = 1
-		AND DATE_FORMAT(or_dte, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		GROUP BY MONTH 
-		ORDER BY or_dte
+		months.m AS month,
+		COALESCE(SUM(prodCnt), 0) AS prodCnt
+		FROM
+		(SELECT 1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10 UNION SELECT 11 UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(b.PR_RE_ED_DTE, '%m') AS MONTH,
+		SUM(WO_PDT_CNT) AS prodCnt
+		FROM sm_prod_result b
+		JOIN
+		sm_work_order c ON b.wo_idx = c.wo_idx
+		JOIN sm_orders d ON
+		c.or_idx = d.or_idx
+		WHERE
+		PR_LIST_NM = '저장탱크 이송'
+		AND YEAR(b.PR_RE_ED_DTE) =
+		#{searchCondition2}
+		GROUP BY MONTH
+		) AS subquery
+		ON months.m =
+		subquery.MONTH
+		GROUP BY months.m
+		ORDER BY months.m
+
+
 	</select>
 </mapper>

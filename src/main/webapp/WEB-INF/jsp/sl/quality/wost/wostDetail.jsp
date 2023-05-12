@@ -81,7 +81,7 @@
 									</tbody>
                                 </table>
                                 <div class="btn_bottom_wrap">
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/inst/instList.do'">목록</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/wost/wostList.do'">목록</span>
 								</div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
 	$(function() {
 		$('#qualityMenu').addClass("active");
 		$('#quality').addClass("show");
-		$('#instList').addClass("active");
+		$('#wostList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {

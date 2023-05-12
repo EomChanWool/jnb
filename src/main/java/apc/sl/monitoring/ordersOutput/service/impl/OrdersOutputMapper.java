@@ -14,5 +14,7 @@ public interface OrdersOutputMapper {
 	List<?> selectOrdersCnt(SearchVO searchVO);
 
 	List<?> selectProdCnt(SearchVO searchVO);
+	
+	List<?> selectOrYearList(SearchVO searchVO);
 
 }

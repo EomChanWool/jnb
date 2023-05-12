@@ -1,5 +1,7 @@
 package apc.sl.production.lot.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -16,5 +18,11 @@ public class LotServieImpl implements LotService{
 	public int selectLotListToCnt(SearchVO searchVO) {
 		
 		return lotMapper.selectLotListToCnt(searchVO);
+	}
+
+	@Override
+	public List<?> selectLotList(SearchVO searchVO) {
+		
+		return lotMapper.selectLotList(searchVO);
 	}
 }

@@ -28,4 +28,6 @@ public interface IncongruentMapper {
 	
 	void modifyIncongruent(Map<String, Object> map);
 	
+	void deleteIncongruent(Map<String, Object> map);
+	
 }

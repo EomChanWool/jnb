@@ -70,7 +70,7 @@
 											<th>작업지시명</th>
 											<td><span class="form-control val-area">${workOrderVO.woName}</span></td>
 											<th>계획량 (kg)</th>
-											<td><span class="form-control val-area" id="woPdtCnt">${workOrderVO.woPdtCnt}</span></td>
+											<td><span class="form-control val-area" id="woPdtCnt">${workOrderVO.woPdtCnt}kg</span></td>
 										</tr>
 										<tr>
 											<th>작업지시일</th>

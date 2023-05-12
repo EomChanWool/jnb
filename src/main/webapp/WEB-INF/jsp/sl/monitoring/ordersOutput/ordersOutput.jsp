@@ -53,6 +53,25 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
+                        
+                        <div class="search">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/ordersOutput/ordersOutput.do" method="post">
+									
+									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
+									
+									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
+						    			
+						    			<c:forEach var="list" items="${orYearList}" varStatus="status">
+						    				<option value="${list.orYear}" <c:if test="${searchVO.searchCondition2 eq list.orYear or status.count eq 1}">selected="selected"</c:if>>${list.orYear}년도</option>
+						    			</c:forEach>
+						    		</select>
+						    								
+   									
+						    	</form>
+						    	
+	                           
+							</div>
+                        
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -95,6 +114,9 @@
 		$('#monitoringMenu').addClass("active");
 		$('#monitoring').addClass("show");
 		$('#ordersOutput').addClass("active");
+		 $('#searchCondition2').change(function(){
+				listForm.submit();
+			});
 		
 		window.onresize = function() {
 			location.reload();
@@ -112,13 +134,14 @@
 	let deliveryCnt = [];
 	
 	const dataMin = 0;
-	const dataMax = 500;
-	const dataInterval = 100;
+	const dataMax = 0;
+	const dataInterval = 1000;
 	
 	<c:forEach items="${orderCntList}" var="list">
-		date.push('${list.years}년 ' + '${list.month}월');
+		date.push('${list.month}월');
 		orderCnt.push('${list.orderCnt}');
 	</c:forEach>
+	
 	
 	<c:forEach items="${prodCntList}" var="list">
 		prodCnt.push('${list.prodCnt}');
@@ -127,10 +150,11 @@
 	<c:forEach items="${deliveryCntList}" var="list">
 		deliveryCnt.push('${list.orderCnt}');
 	</c:forEach>
-
+	
+	
 	option = {
 			  tooltip: {
-			    trigger: 'item',
+			    trigger: 'axis',
 // 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
 				},
 			    axisPointer: {
@@ -164,11 +188,10 @@
 			    {
 			      type: 'value',
 			      name: '개수',
-			      min: dataMin,
-			      max: dataMax,
-			      interval: dataInterval,
+			     
+			      
 			      axisLabel: {
-			        formatter: '{value} EA'
+			        formatter: '{value} kg'
 			      }
 			    }
 			  ],
@@ -178,7 +201,7 @@
 			      type: 'bar',
 			      tooltip: {
 			        valueFormatter: function (value) {
-			          return value + ' EA';
+			          return value + ' kg';
 			        }
 			      },
 			      data: orderCnt
@@ -188,7 +211,7 @@
 			    type: 'bar',
 			    tooltip: {
 			      valueFormatter: function (value) {
-			        return value + ' EA';
+			        return value + ' kg';
 			      }
 			    },
 			    data: prodCnt
@@ -198,7 +221,7 @@
 			    type: 'bar',
 			    tooltip: {
 			      valueFormatter: function (value) {
-			        return value + ' EA';
+			        return value + ' kg';
 			      }
 			    },
 			    data: deliveryCnt

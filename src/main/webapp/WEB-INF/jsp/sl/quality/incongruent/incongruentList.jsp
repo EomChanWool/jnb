@@ -171,10 +171,10 @@
 			listForm.submit();
 		}
 	
-		function fn_delete_incongruent(doIdx, nm){
+		function fn_delete_incongruent(inIdx){
 			if(confirm('해당 내역을 삭제 하시겠습니까?')) {
-				listForm.doIdx.value = doIdx;
-				listForm.doFilNm.value = nm;
+				listForm.inIdx.value = inIdx;
+			
 				listForm.action = "${pageContext.request.contextPath}/sl/quality/incongruent/deleteIncongruent.do";
 				listForm.submit();
 			}

@@ -67,5 +67,11 @@ public class IncongruentServieImpl implements IncongruentService {
 		incongruentMapper.modifyIncongruent(map);
 	}
 
+	@Override
+	public void deleteIncongruent(Map<String, Object> map) {
+		incongruentMapper.deleteIncongruent(map);
+		
+	}
+
 	
 }

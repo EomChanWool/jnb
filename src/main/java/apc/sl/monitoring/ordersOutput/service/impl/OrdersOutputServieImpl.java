@@ -29,4 +29,9 @@ public class OrdersOutputServieImpl implements OrdersOutputService {
 		return ordersOutputMapper.selectProdCnt(searchVO);
 	}
 
+	@Override
+	public List<?> selectOrYearList(SearchVO searchVO) {
+		return ordersOutputMapper.selectOrYearList(searchVO);
+	}
+
 }

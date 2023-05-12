@@ -10,5 +10,7 @@ public interface StockStateService {
 	int selectStockStateListToCnt(SearchVO searchVO);
 
 	List<?> selectStockStateList(SearchVO searchVO);
+	
+	List<?> selectMoStockStateList(SearchVO searchVO);
 
 }

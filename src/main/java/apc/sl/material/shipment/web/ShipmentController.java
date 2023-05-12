@@ -48,7 +48,7 @@ public class ShipmentController {
 		List<?> shipmentList = shipmentService.selectShipmentList(searchVO);
 		model.put("shipmentList", shipmentList);
 		model.put("paginationInfo", paginationInfo);
-		System.out.println("쉽먼트리스트 : " + shipmentList);
+		
 		return "sl/material/shipment/shipmentList";
 	}
 	
@@ -61,7 +61,7 @@ public class ShipmentController {
 	
 	@RequestMapping(value="/sl/material/shipment/shipmentOrdersInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView shipmentOrdersInfoAjax(@RequestParam Map<String, Object> map) {
-		System.out.println("에이젝 맵확인 : " + map.toString());
+		
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> list = shipmentService.selectOrdersInfo(map);
 		mav.setViewName("jsonView");
@@ -115,7 +115,7 @@ public class ShipmentController {
 	
 	@RequestMapping("/sl/material/shipment/detailShipment.do")
 	public String detailShipment(@RequestParam Map<String, Object> map, ModelMap model) {
-		System.out.println("맵확인 : " + map.toString());
+		
 		Map<String, Object> detail = shipmentService.selectShipmentInfo(map);
 		model.put("shipmentVO", detail);
 		return "sl/material/shipment/shipmentDetail";

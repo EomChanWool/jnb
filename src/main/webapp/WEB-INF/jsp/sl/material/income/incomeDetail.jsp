@@ -68,7 +68,7 @@
 										</tr>
 										<tr>
 											<th>입고량(kg)</th>
-											<td><span class="form-control val-area" id="stCnt">${incomeVO.stCnt}</span></td>
+											<td><span class="form-control val-area" id="stCnt">${incomeVO.stCnt}kg</span></td>
 											<th>위치</th>
 											<td><span class="form-control val-area">${incomeVO.stLocation}</span></td>
 										</tr>

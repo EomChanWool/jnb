@@ -2,5 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="apc.sl.production.lot.service.impl.LotMapper">
 
+	<select id="selectLotListToCnt" resultType="int">
+		select COUNT(*) from
+		sm_prod_result a join sm_work_order b on
+		a.wo_idx=b.wo_idx
+		where
+		a.pr_list_nm = '저장탱크 이송'
+		<if test="searchKeyword != ''">
+			AND a.wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+
+	</select>
+
+	<select id="selectLotList" resultType="egovMap">
+		SELECT
+		a.wo_idx,
+		c.item_name,
+		b.wo_pdt_cnt,
+		DATE_FORMAT(pr_re_st_dte, '%Y-%m-%d %H:%i') AS pr_re_st_dte,
+		DATE_FORMAT(pr_re_ed_dte, '%Y-%m-%d %H:%i') AS pr_re_ed_dte
+		FROM
+		sm_prod_result a
+		JOIN sm_work_order b ON a.wo_idx = b.wo_idx
+		JOIN sm_item c ON b.ITEM_CD = c.ITEM_CD
+		WHERE
+		a.pr_list_nm = '저장탱크 이송'
+		<if test="searchKeyword != ''">
+			AND a.wo_idx LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		ORDER BY wo_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
 
 </mapper>

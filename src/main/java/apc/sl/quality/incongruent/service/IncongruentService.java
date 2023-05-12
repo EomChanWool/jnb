@@ -24,5 +24,7 @@ public interface IncongruentService {
 	Map<String, Object> selectInco(Map<String, Object> map);
 	
 	void modifyIncongruent(Map<String, Object> map);
+	
+	void deleteIncongruent(Map<String, Object> map);
 
 }

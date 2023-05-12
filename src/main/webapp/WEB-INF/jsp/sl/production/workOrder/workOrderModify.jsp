@@ -66,7 +66,7 @@
 												<th>제품코드</th>
 												<td><span class="form-control val-area" id="itemCd">${workOrderVO.itemCd}</span></td>
 												<th>계획량 (kg)</th>
-												<td><span class="form-control val-area" id="woPdtCnt">${workOrderVO.woPdtCnt}</span></td>
+												<td><span class="form-control val-area" id="woPdtCnt">${workOrderVO.woPdtCnt}kg</span></td>
 											</tr>
 											<tr>
 												<th>작업지시일 <span class="req">*</span></th>

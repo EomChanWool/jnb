@@ -92,7 +92,7 @@
                                     	<c:forEach var="result" items="${incomeList}" varStatus="status">
 	                                   		<tr onclick="fn_detail_income('${result.stIdx}')" style="cursor: pointer;">
 	                                            <td>${result.itemName}</td>
-												<td>${result.stCnt}</td>
+												<td>${result.stCnt}kg</td>
 												<td>${result.stDte}</td>
 	                                            <td onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
 	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_income_go('${result.stIdx}')">

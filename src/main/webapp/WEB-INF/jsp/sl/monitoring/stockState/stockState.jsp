@@ -47,7 +47,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">재고 현황</h1>
+                    <h1 class="h3 mb-2 text-gray-800">제품 재고 현황</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -76,7 +76,7 @@
                                         <tr>
                                             <th>품명</th>
 											<th>규격</th>
-											<th>재고</th>
+											<th>재고(kg)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,7 +84,7 @@
 	                                   		<tr>
 	                                            <td>${result.itemName}</td>
 												<td>${result.itemStandard}</td>
-												<td>${result.itemStock}</td>
+												<td>${result.itemStock}kg</td>
 	                                        </tr>
                                     	</c:forEach>
                                     	<c:if test="${empty stockStateList}"><tr><td colspan='3'>결과가 없습니다.</td><del></del></c:if>

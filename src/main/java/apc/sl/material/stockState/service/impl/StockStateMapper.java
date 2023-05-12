@@ -12,5 +12,7 @@ public interface StockStateMapper {
 	int selectStockStateListToCnt(SearchVO searchVO);
 
 	List<?> selectStockStateList(SearchVO searchVO);
+	
+	List<?> selectMoStockStateList(SearchVO searchVO);
 
 }

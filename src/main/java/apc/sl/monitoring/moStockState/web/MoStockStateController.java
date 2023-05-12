@@ -23,7 +23,7 @@ public class MoStockStateController {
 	@RequestMapping("/sl/monitoring/moStockState/moStockState.do")
 	public String stockStateList1(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		if(searchVO.getSearchCondition() == "") {
-			searchVO.setSearchCondition("자재");
+			searchVO.setSearchCondition("제품");
 		}
 		
 		int totCnt = stockStateService.selectStockStateListToCnt(searchVO);
@@ -38,7 +38,7 @@ public class MoStockStateController {
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		List<?> stockStateList = stockStateService.selectStockStateList(searchVO);
+		List<?> stockStateList = stockStateService.selectMoStockStateList(searchVO);
 		model.put("stockStateList", stockStateList);
 		model.put("paginationInfo", paginationInfo);
 		

@@ -23,4 +23,11 @@ public class StockStateServieImpl implements StockStateService {
 		return stockStateMapper.selectStockStateList(searchVO);
 	}
 
+	@Override
+	public List<?> selectMoStockStateList(SearchVO searchVO) {
+		// TODO Auto-generated method stub
+		return stockStateMapper.selectMoStockStateList(searchVO);
+	}
+
+	
 }

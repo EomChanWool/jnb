@@ -49,8 +49,12 @@
 	</select>
 
 	<select id="selectTiList" resultType="egovMap">
-		SELECT ti_idx, ti_name FROM
-		sm_analysis_info WHERE ti_state = '부적합'
+		SELECT ti_idx, ti_name
+		FROM sm_analysis_info
+		WHERE ti_state = '부적합' AND ti_idx NOT IN (
+		SELECT ti_IDX
+		FROM sm_incongruity
+		)
 	</select>
 
 	<select id="selectBiList" resultType="egovMap">
@@ -120,5 +124,11 @@
 		in_edt_mem = #{userId}
 		WHERE in_idx = #{inIdx}
 	</update>
+
+	<delete id="deleteIncongruent">
+
+		DELETE FROM sm_incongruity WHERE in_idx = #{inIdx}
+
+	</delete>
 
 </mapper>

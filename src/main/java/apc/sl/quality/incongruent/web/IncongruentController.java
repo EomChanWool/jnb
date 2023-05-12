@@ -123,4 +123,16 @@ public class IncongruentController {
 		return "redirect:/sl/quality/incongruent/incongruentList.do";
 	}
 	
+	@RequestMapping("/sl/quality/incongruent/deleteIncongruent.do")
+	public String deleteIncongruent(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
+		
+		
+		incongruentService.deleteIncongruent(map);
+		
+		System.out.println("삭제확인 맵2 : " + map);
+		
+		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");
+		return "redirect:/sl/quality/incongruent/incongruentList.do";
+	}
+	
 }
