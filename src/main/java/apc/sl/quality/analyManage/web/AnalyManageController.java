@@ -95,6 +95,14 @@ public class AnalyManageController {
 		map.put("userId", session.getAttribute("user_id"));
 		analyManageService.registAnalyManage(map);
 		
+		System.out.println("검사수정 맵 이프문  : " + map);
+		
+		
+		
+	
+		 
+		 
+		
 		//sm_prod_result에 wo_idx가 없으면 생산실적에도 등록
 		map.put("prNm","품질검사");
 		exists = analyManageService.selectExistsProdResult(map);
@@ -159,6 +167,9 @@ public class AnalyManageController {
 			map.replace("doIdx", map.get("curDoIdx"));
 			analyManageService.updateDocumnetState(map);
 		}
+		if(map.get("tiState").equals("부적합")) { 
+			analyManageService.updatePrReReSt(map);
+		}
 				
 		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
 		return "redirect:/sl/quality/analyManage/analyManageList.do";
@@ -181,7 +192,20 @@ public class AnalyManageController {
 	}
 	
 	private void updateProcess(Map<String, Object> map) {
+		
+		System.out.println("프로세스안에 맵 : " + map.get("tiState"));
+		
+		if(map.get("tiState").equals("부적합")) {
+			
+			map.put("prReReSt", map.get("tiState"));
+			
+			
+		}
+		
+		
 		prodResultService.registProdResult(map);
+		
+		System.out.println("확인");
 		
 		map.put("modify","true");
 		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
@@ -194,5 +218,7 @@ public class AnalyManageController {
 		map.put("nextIdx", "pr_list_idx"+(processSeq+1));
 		map.put("nextNm", "pr_list_nm"+(processSeq+1));
 		prodResultService.updateProcess(map);
+		System.out.println("확인2");
+		
 	}
 }

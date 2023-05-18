@@ -54,6 +54,7 @@
                             <div class="table-responsive">
                             	<form action="${pageContext.request.contextPath}/sl/production/prodResult/registProdResultOk.do" name="registForm" method="post">
                             		<input type="hidden" name="curSeq">
+                            		<input type="hidden" name="prReReSt" id="prReReSt">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -142,10 +143,24 @@
 			return;
 		}
 		
-		if($('#prReState').val() == '1' && $('#prReEdTime').val() == ''){
+		
+		if($('#prReStDte').val() == ''){
+			alert("작업시작일을 확인 바랍니다.");
+			return;
+		}
+		
+		
+		
+		if($('#prReState').val() == '1' && $('#prReEdDte').val() == ''){
 			alert("작업종료일을 확인 바랍니다.");
 			return;
 		}
+		
+		if($('#prReReSt').val() == 'Y'){
+			alert("부적합 판정제품 입니다.");
+			return;
+		}
+		
 		
 		registForm.submit();
 	}
@@ -169,6 +184,7 @@
 				$('#prReEdDte').val("");
 			}
 		});
+		
 	});
 	
 	function prodResultWorkOrderInfoAjax(){
@@ -183,6 +199,8 @@
 				  $('#prListNm').text(result.wo_info.prCurNm);
 				  registForm.prListNm.value = result.wo_info.prCurNm;
 				  registForm.curSeq.value = result.wo_info.prCurSeq;
+				  registForm.prReReSt.value = result.pr_info.prReReSt;
+				  
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

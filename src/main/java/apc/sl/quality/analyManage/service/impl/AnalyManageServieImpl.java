@@ -94,4 +94,9 @@ public class AnalyManageServieImpl implements AnalyManageService {
 	public void updateDocumnetState(Map<String, Object> map) {
 		analyManageMapper.updateDocumnetState(map);
 	}
+
+	@Override
+	public void updatePrReReSt(Map<String, Object> map) {
+		analyManageMapper.updatePrReReSt(map);
+	}
 }

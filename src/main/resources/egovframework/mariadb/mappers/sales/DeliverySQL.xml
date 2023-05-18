@@ -1,152 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.sales.delivery.service.impl.DeliveryMapper">
-<select id="selectDeliveryListToCnt" resultType="int">
-		SELECT 
-			COUNT(*) 
-		FROM sm_delivery a
-		JOIN sm_orders b
-		ON a.or_idx = b.or_idx	
-		WHERE 1=1
-		<if test="searchKeyword != ''">
-			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
-		</if>
-		<if test="searchStDate != ''">
-			AND de_dte >= #{searchStDate}
-		</if>
-		<if test="searchEdDate !=''">
-			AND de_dte <![CDATA[<=]]> #{searchEdDate}
-		</if>
-	</select>
-	
-	<select id="selectDeliveryList" resultType="egovMap">
+<mapper
+	namespace="apc.sl.sales.delivery.service.impl.DeliveryMapper">
+	<select id="selectDeliveryListToCnt" resultType="int">
 		SELECT
-			a.de_idx,
-			a.or_idx,
-			a.de_chk_manager,
-			a.de_dte,
-			a.de_state,
-			b.or_name
-		FROM sm_delivery a
-		JOIN sm_orders b
-		ON a.or_idx = b.or_idx	
-		WHERE 1=1
-		<if test="searchKeyword != ''">
-			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
-		</if>
-		<if test="searchStDate != ''">
-			AND de_dte >= #{searchStDate}
-		</if>
-		<if test="searchEdDate !=''">
-			AND de_dte <![CDATA[<=]]> #{searchEdDate}
-		</if>	
-		ORDER BY de_idx DESC
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-	</select>
-	
-	<select id="selectOrdersList" resultType="egovMap">
-		SELECT or_idx, or_name FROM sm_orders WHERE or_state = '2'
-	</select>
-	
-	<select id="selectOrdersInfo" resultType="egovMap">
-		SELECT 
-			DATE_FORMAT(a.or_due_dte,'%Y-%m-%d') AS or_due_dte,
-			a.or_due_place,
-			c.ac_code,
-			c.ac_name,
-			c.ac_tel
-		FROM sm_orders a
-		JOIN sm_estimate b
-		ON a.es_idx = b.es_idx
-		JOIN sm_account c
-		ON b.a_idx = c.ac_code
-		WHERE or_idx = #{orIdx}
-	</select>
-	
-	<select id="selectOrdersIdx" resultType="int">
-		SELECT COUNT(*) FROM sm_orders WHERE or_idx = #{orIdx}
-	</select>
-	
-	<insert id="registDelivery">
-		INSERT INTO sm_delivery
-			(
-			de_idx,
-			or_idx,
-			ac_code,
-			de_name,
-			de_dte,
-			<if test="deChkManager != ''">de_chk_manager,</if>
-			<if test="deChkAcManager != ''">de_chk_ac_manager,</if>
-			<if test="deChkDte != ''">de_chk_dte,</if>
-			de_state,
-			<if test="deNote != ''">de_note,</if>
-			de_reg_dte,
-			de_reg_mem
-			)
-		VALUES
-			(
-			(SELECT CONCAT('DE', LPAD((SELECT (SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.de_idx),0) FROM sm_delivery a),'[a-z]','')))+1,10,0))),
-			#{orIdx},
-			#{acCode},
-			#{deName},
-			#{deDte},
-			<if test="deChkManager != ''">#{deChkManager},</if>
-			<if test="deChkAcManager != ''">#{deChkAcManager},</if>
-			<if test="deChkDte != ''">#{deChkDte},</if>
-			#{deState},
-			<if test="deNote != ''">#{deNote},</if>
-			NOW(),
-			#{userId}
-			)
-	</insert>
-	
-	<update id="updateOrders">
-		UPDATE sm_orders SET
-			or_state = #{state}
-		WHERE or_idx = #{orIdx}
-	</update>
-	
-	<select id="selectDeliveryInfo" resultType="egovMap">
-		SELECT
-			a.de_idx,
-			a.or_idx,
-			a.ac_code,
-			a.de_name,
-			a.de_dte,
-			a.de_chk_manager,
-			a.de_chk_ac_manager,
-			a.de_chk_dte,
-			a.de_note,
-			a.de_state,
-			b.or_name,
-			b.or_money,
-			b.or_due_dte,
-			b.or_due_place,
-			c.ac_name,
-			c.ac_tel,
-			c.ac_addr1
+		COUNT(*)
 		FROM sm_delivery a
 		JOIN sm_orders b
 		ON a.or_idx = b.or_idx
-		JOIN sm_account c
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		<if test="searchStDate != ''">
+			AND de_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND de_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+	</select>
+
+	<select id="selectDeliveryList" resultType="egovMap">
+		SELECT
+		a.de_idx,
+		a.or_idx,
+		a.de_chk_manager,
+		a.de_dte,
+		a.de_state,
+		b.or_name
+		FROM sm_delivery a
+		JOIN sm_orders b
+		ON a.or_idx = b.or_idx
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND or_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>
+		<if test="searchStDate != ''">
+			AND de_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND de_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+		ORDER BY de_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectOrdersList" resultType="egovMap">
+		SELECT or_idx, or_name
+		FROM sm_orders WHERE or_state = '2'
+	</select>
+
+	<select id="selectOrdersInfo" resultType="egovMap">
+		SELECT
+		DATE_FORMAT(a.or_due_dte,'%Y-%m-%d') AS or_due_dte,
+		a.or_due_place,
+		c.ac_code,
+		c.ac_name,
+		c.ac_tel
+		FROM sm_orders a
+		JOIN sm_estimate b
+		ON
+		a.es_idx = b.es_idx
+		JOIN
+		sm_account c
+		ON b.a_idx = c.ac_code
+		WHERE or_idx
+		= #{orIdx}
+	</select>
+
+	<select id="selectOrdersIdx" resultType="int">
+		SELECT COUNT(*) FROM
+		sm_orders WHERE or_idx = #{orIdx}
+	</select>
+
+	<insert id="registDelivery">
+		INSERT INTO sm_delivery
+		(
+		de_idx,
+		or_idx,
+		ac_code,
+		de_name,
+		de_dte,
+		<if test="deChkManager != ''">de_chk_manager,</if>
+		<if test="deChkAcManager != ''">de_chk_ac_manager,</if>
+		<if test="deChkDte != ''">de_chk_dte,</if>
+		de_state,
+		<if test="deNote != ''">de_note,</if>
+		de_reg_dte,
+		de_reg_mem
+		)
+		VALUES
+		(
+		(SELECT CONCAT('DE', LPAD((SELECT (SELECT
+		REGEXP_REPLACE((SELECT
+		IFNULL(MAX(a.de_idx),0) FROM sm_delivery
+		a),'[a-z]','')))+1,10,0))),
+		#{orIdx},
+		#{acCode},
+		#{deName},
+		#{deDte},
+		<if test="deChkManager != ''">#{deChkManager},</if>
+		<if test="deChkAcManager != ''">#{deChkAcManager},</if>
+		<if test="deChkDte != ''">#{deChkDte},</if>
+		#{deState},
+		<if test="deNote != ''">#{deNote},</if>
+		NOW(),
+		#{userId}
+		)
+	</insert>
+
+	<update id="updateOrders">
+		UPDATE sm_orders SET
+		or_state = #{state}
+		WHERE or_idx =
+		#{orIdx}
+	</update>
+
+	<select id="selectDeliveryInfo" resultType="egovMap">
+		SELECT
+		a.de_idx,
+		a.or_idx,
+		a.ac_code,
+		a.de_name,
+		a.de_dte,
+		a.de_chk_manager,
+		a.de_chk_ac_manager,
+		a.de_chk_dte,
+		a.de_note,
+		a.de_state,
+		b.or_name,
+		b.or_money,
+		b.or_due_dte,
+		b.or_due_place,
+		c.ac_name,
+		c.ac_tel,
+		c.ac_addr1
+		FROM sm_delivery a
+		JOIN sm_orders b
+		ON a.or_idx = b.or_idx
+		JOIN
+		sm_account c
 		ON a.ac_code = c.ac_code
 		WHERE de_idx = #{deIdx}
 	</select>
-	
+
 	<update id="modifyDelivery">
 		UPDATE sm_delivery SET
-			de_name = #{deName},
-			de_dte = #{deDte},
-			de_chk_manager = #{deChkManager},
-			de_chk_ac_manager = #{deChkAcManager},
-			de_chk_dte = #{deChkDte},
-			de_note = #{deNote},
-			de_state = #{deState},
-			de_edt_dte = NOW(),
-			de_edt_mem = #{userId}
-		WHERE de_idx = #{deIdx}
+		de_name = #{deName},
+		de_dte =
+		#{deDte},
+		de_chk_manager = #{deChkManager},
+		de_chk_ac_manager =
+		#{deChkAcManager},
+		de_chk_dte = #{deChkDte},
+		de_note = #{deNote},
+		de_state = #{deState},
+		de_edt_dte = NOW(),
+		de_edt_mem = #{userId}
+		WHERE
+		de_idx = #{deIdx}
 	</update>
-	
+
+	<update id="updateProduct">
+		UPDATE sm_item a JOIN sm_work_order b ON a. item_cd = b.ITEM_CD
+		JOIN sm_orders c ON b.OR_IDX = c.or_idx
+		JOIN sm_delivery d ON c.or_idx = d.or_idx
+		SET a.ITEM_STOCK = a.ITEM_STOCK - b.wo_pdt_cnt
+		WHERE c.or_idx = #{orIdx}
+
+	</update>
+
 	<delete id="deleteDelivery">
 		DELETE FROM sm_delivery WHERE de_idx = #{deIdx}
 	</delete>

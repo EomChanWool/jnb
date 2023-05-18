@@ -129,7 +129,7 @@ public class IncongruentController {
 		
 		incongruentService.deleteIncongruent(map);
 		
-		System.out.println("삭제확인 맵2 : " + map);
+	
 		
 		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");
 		return "redirect:/sl/quality/incongruent/incongruentList.do";

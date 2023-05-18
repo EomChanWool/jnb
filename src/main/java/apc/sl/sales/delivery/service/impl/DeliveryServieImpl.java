@@ -64,4 +64,10 @@ public class DeliveryServieImpl implements DeliveryService {
 		deliveryMapper.deleteDelivery(map);
 	}
 
+	@Override
+	public void updateProduct(Map<String, Object> map) {
+		deliveryMapper.updateProduct(map);
+		
+	}
+
 }

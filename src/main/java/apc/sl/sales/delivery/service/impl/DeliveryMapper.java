@@ -28,5 +28,7 @@ public interface DeliveryMapper {
 	void modifyDelivery(Map<String, Object> map);
 
 	void deleteDelivery(Map<String, Object> map);
+	
+	void updateProduct(Map<String, Object> map);
 
 }

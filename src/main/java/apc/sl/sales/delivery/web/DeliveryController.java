@@ -76,7 +76,14 @@ public class DeliveryController {
 		//sm_orders의 or_state상태를 출하로(3)
 		map.put("state","3");
 		deliveryService.updateOrders(map);
-	
+		
+		System.out.println("개별확인 : " + map.get("deState"));
+		if(map.get("deState").equals("1")) {
+			
+		
+			deliveryService.updateProduct(map);
+		}
+		
 		redirectAttributes.addFlashAttribute("msg", "등록 되었습니다.");
 		return "redirect:/sl/sales/delivery/deliveryList.do";
 	}
@@ -95,6 +102,15 @@ public class DeliveryController {
 	public String modifyDeliveryOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		map.put("userId", session.getAttribute("user_id"));
 		deliveryService.modifyDelivery(map);
+		
+		System.out.println("개별확인 : " + map.get("deState"));
+		
+		  if(map.get("deState").equals("1")) {
+		  
+		  
+		  deliveryService.updateProduct(map); }
+		 
+		
 		
 		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
 		return "redirect:/sl/sales/delivery/deliveryList.do";

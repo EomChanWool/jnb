@@ -50,5 +50,9 @@ public interface ProdResultMapper {
 	void updateItem(Map<String, Object> map);
 	
 	void registDispensing(Map<String, Object> map);
+	
+	void updateProduct(Map<String, Object> map);
+	
+	Map<String, Object> selectPrReReSt(Map<String, Object> map);
 
 }

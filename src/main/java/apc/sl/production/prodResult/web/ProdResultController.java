@@ -58,9 +58,12 @@ public class ProdResultController {
 		System.out.println("생산실적등록 맵 : " + map);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> list = prodResultService.selectWorkOrderInfo(map);
+		Map<String, Object> list2 = prodResultService.selectPrReReSt(map);
 		mav.setViewName("jsonView");
 		mav.addObject("wo_info", list);
-		System.out.println("리스트값 : " + list);
+		mav.addObject("pr_info", list2);
+		System.out.println("리스트 값 : " + list2);
+		
 		return mav;
 	}
 	
@@ -111,6 +114,9 @@ public class ProdResultController {
 					return "redirect:/sl/production/prodResult/registProdResult.do";
 				}
 			}
+			
+		
+			
 			//modify = true --> sm_process에서 현재 공정 순서,idx,nm 등 수정하겠음.
 			map.put("modify","true");
 			Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
@@ -127,11 +133,22 @@ public class ProdResultController {
 			prodResultService.registProdResult(map);
 			prodResultService.updateProcess(map);
 			if(map.get("prListNm").equals("원자재 이송")) {
+				System.out.println("원자재 이송 맵 : " + map);
 				prodResultService.registDispensing(map); // 불출관리 등록;
 			}
 			
+			if(map.get("prListNm").equals("저장탱크 이송")) {
+				
+				System.out.println("저장탱크 이송 맵 : " + map);
+				prodResultService.updateProduct(map); //제품 재고 업데이트
+			}
+			
+			redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
+			return "redirect:/sl/production/prodResult/prodResultList.do";
+			
 		}
 		
+		prodResultService.registProdResult(map);
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
 		return "redirect:/sl/production/prodResult/prodResultList.do";
 	}

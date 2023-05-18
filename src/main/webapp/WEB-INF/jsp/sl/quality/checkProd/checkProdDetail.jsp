@@ -47,7 +47,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">검사기준서 수정</h1>
+                    <h1 class="h3 mb-2 text-gray-800">유무검사관리 상세보기</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
@@ -55,33 +55,37 @@
                                 <table class="table table-bordered" id="dataTable">
                                     <tbody>
 										<tr>
-											<th>문서명 <span class="req">*</span></th>
-											<td><span class="form-control val-area">${documentVO.doName}</span></td>
-											<th>작성자 <span class="req">*</span></th>
-											<td><span class="form-control val-area">${documentVO.doManager}</span></td>
+											<th>부적합명 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.inName}</span></td>
+											<th>불량유형 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.chState}</span></td>
 										</tr>
 										<tr>
-											<th>작성일 <span class="req">*</span></th>
-											<td><span class="form-control val-area">${documentVO.doDte}</span></td>
+											<th>제품명 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.itemName}</span></td>
+											<th>검사명 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.tiName}</span></td>
 										</tr>
 										<tr>
-											<th>비고</th>
-											<td colspan="3"><textArea name="doNote" id="doNote" disabled="disabled">${documentVO.doNote}</textArea></td>
+											<th>총량 (kg)<span class="req">*</span></th>
+											<td><span class="form-control val-area" id="woPdtCnt">${checkVO.woPdtCnt}kg</span></td>
+											<th>재사용여부 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.chRecycle}</span></td>
 										</tr>
 										<tr>
-											<th>파일명</th>
-											<td colspan="3">
-												<span class="form-control val-area">
-													<a href="${pageContext.request.contextPath}/sl/quality/wost/downloadWost.do?fileName=${documentVO.doFilNm}">
-														<span>${documentVO.doOriginFilNm}</span>
-													</a>
-												</span>
-											</td>
+										<th>작성일 <span class="req">*</span></th>
+											<td><span class="form-control val-area">${checkVO.chRegDte}</span></td>
+										
 										</tr>
+										<tr>
+											<th>변경이유</th>
+											<td colspan="3"><textArea name="doNote" id="doNote" disabled="disabled">${checkVO.chReason}</textArea></td>
+										</tr>
+										
 									</tbody>
                                 </table>
                                 <div class="btn_bottom_wrap">
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/inst/instList.do'">목록</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/checkProd/checkProdList.do'">목록</span>
 								</div>
                             </div>
                         </div>
@@ -120,12 +124,14 @@
 	$(function() {
 		$('#qualityMenu').addClass("active");
 		$('#quality').addClass("show");
-		$('#instList').addClass("active");
+		$('#checkProdList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {
 			alert(msg);
 		}
+		let cnt = $('#woPdtCnt').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$('#woPdtCnt').text(cnt);
 	});
 	</script>
 </body>

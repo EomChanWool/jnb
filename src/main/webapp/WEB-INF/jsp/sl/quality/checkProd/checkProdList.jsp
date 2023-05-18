@@ -53,11 +53,11 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/quality/CheckProd/CheckProdList.do" method="post">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/quality/checkProd/checkProdList.do" method="post">
 									<input type="hidden" name="chIdx">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
-						    									value="${searchVO.searchKeyword}" placeholder="~~명을 입력해 주세요"
+						    									value="${searchVO.searchKeyword}" placeholder="부적합명을 입력해 주세요"
 						    									style="background-color:#eaecf4; width: 25%; float: left;">
 						    	</form>
 						    	<a href="#" class="btn btn-info btn-icon-split" onclick="fn_search_checkProd()" style="margin-left: 0.3rem;">
@@ -76,18 +76,18 @@
                                 <table class="table table-bordered" id="dataTable"  >
                                     <thead>
                                         <tr>
-                                            <th>문서명</th>
-											<th>작성자</th>
+                                            <th>부적합명</th>
+											<th>검사상태</th>
 											<th>등록일</th>
 											<th>수정/삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${checkProdList}" varStatus="status">
-	                                   		<tr>
-	                                            <td>${result.doName}</td>
-												<td>${result.doManager}</td>
-												<td>${result.doDte}</td>
+	                                   		<tr onclick="fn_detail_checkProd('${result.chIdx}')" style="cursor: pointer;">
+	                                            <td>${result.inName}</td>
+												<td>${result.chState}</td>
+												<td>${result.chRegDte}</td>
 	                                            <td onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
 	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_checkProd_go('${result.chIdx}')">
 				                                        <span class="text">수정</span>
@@ -160,6 +160,12 @@
 		function fn_modify_checkProd_go(chIdx){
 			listForm.chIdx.value = chIdx;
 			listForm.action = "${pageContext.request.contextPath}/sl/quality/checkProd/modifyCheckProd.do";
+			listForm.submit();
+		}
+		
+		function fn_detail_checkProd(chIdx){
+			listForm.chIdx.value = chIdx;
+			listForm.action = "${pageContext.request.contextPath}/sl/quality/checkProd/detailCheckProd.do";
 			listForm.submit();
 		}
 	

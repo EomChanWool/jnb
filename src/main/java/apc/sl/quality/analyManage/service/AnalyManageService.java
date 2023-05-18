@@ -38,5 +38,7 @@ public interface AnalyManageService {
 	Map<String, Object> selectAnalysisCnt();
 
 	void updateDocumnetState(Map<String, Object> map);
+	
+	void updatePrReReSt(Map<String, Object> map);
 
 }

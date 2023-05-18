@@ -120,4 +120,15 @@ public class ProdResultServieImpl implements ProdResultService {
 		
 	}
 
+	@Override
+	public void updateProduct(Map<String, Object> map) {
+		prodResultMapper.updateProduct(map);
+		
+	}
+
+	@Override
+	public Map<String, Object> selectPrReReSt(Map<String, Object> map) {
+		return prodResultMapper.selectPrReReSt(map);
+	}
+
 }
