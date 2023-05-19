@@ -54,5 +54,7 @@ public interface ProdResultMapper {
 	void updateProduct(Map<String, Object> map);
 	
 	Map<String, Object> selectPrReReSt(Map<String, Object> map);
+	
+	void updatePrReReSt(Map<String, Object> map);
 
 }

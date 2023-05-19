@@ -131,4 +131,9 @@ public class ProdResultServieImpl implements ProdResultService {
 		return prodResultMapper.selectPrReReSt(map);
 	}
 
+	@Override
+	public void updatePrReReSt(Map<String, Object> map) {
+		prodResultMapper.updatePrReReSt(map);
+	}
+
 }

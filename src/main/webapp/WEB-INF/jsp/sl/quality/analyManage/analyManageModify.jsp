@@ -79,7 +79,7 @@
 												<td><span class="form-control val-area" id="azIdx">${analyManageVO.azIdx}</span></td>
 												<th>적합여부 <span class="req">*</span></th>
 												<td>
-													<select class="form-control" name="tiState">
+													<select class="form-control" name="tiState" id="tiState">
 														<option value="">선택</option>
 														<option value="적합" <c:if test="${analyManageVO.tiState eq '적합'}">selected="selected"</c:if>>적합</option>
 														<option value="부적합" <c:if test="${analyManageVO.tiState eq '부적합'}">selected="selected"</c:if>>부적합</option>
@@ -214,6 +214,11 @@
 		
 		if($('#tiAnalyst').val() == ''){
 			alert("검사자를 확인 바랍니다.");
+			return;
+		}
+		
+		if($('#tiState').val() == ''){
+			alert("적합여부를 확인 바랍니다.");
 			return;
 		}
 		

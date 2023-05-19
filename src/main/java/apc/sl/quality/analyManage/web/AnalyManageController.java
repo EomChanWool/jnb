@@ -106,9 +106,10 @@ public class AnalyManageController {
 		//sm_prod_result에 wo_idx가 없으면 생산실적에도 등록
 		map.put("prNm","품질검사");
 		exists = analyManageService.selectExistsProdResult(map);
+		
 		if(exists == 0) {
 			map.put("analyManage", "true");
-			map.put("prReEdDte", map.get("tiDte"));
+			map.put("prReEdD0te", map.get("tiDte"));
 			map.put("prReManager", map.get("tiAnalyst"));
 			map.put("prReState", "1");
 			updateProcess(map);
@@ -193,17 +194,19 @@ public class AnalyManageController {
 	
 	private void updateProcess(Map<String, Object> map) {
 		
-		System.out.println("프로세스안에 맵 : " + map.get("tiState"));
+		
 		
 		if(map.get("tiState").equals("부적합")) {
 			
 			map.put("prReReSt", map.get("tiState"));
+			prodResultService.updatePrReReSt(map);
 			
-			
+		}
+		if(!map.get("tiState").equals("부적합")) {
+			prodResultService.registProdResult(map);
 		}
 		
 		
-		prodResultService.registProdResult(map);
 		
 		System.out.println("확인");
 		

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="apc.sl.material.stockReturn.service.impl.StockReturnMapper">
+
+	<select id="selectStockReturnListToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_reversal a
+		JOIN sm_insp_change b ON a.WO_IDX =
+		b.WO_IDX
+		JOIN sm_work_order c ON a.WO_IDX = c.WO_IDX
+		JOIN sm_orders d ON
+		c.OR_IDX = d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		JOIN
+		sm_account f ON e.A_IDX = f.AC_CODE
+		JOIN sm_item g ON c.ITEM_CD =
+		g.ITEM_CD
+		<if test="searchKeyword != ''">
+			AND wo_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+		<if test="searchStDate != ''">
+			AND di_reg_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND di_reg_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+
+
+	</select>
+
+
+	<select id="selectStockReturnList" resultType="egovMap">
+		SELECT a.re_idx, c.wo_name, f.ac_name, g.item_name,
+		DATE_FORMAT(a.DI_REG_DTE, '%Y-%m-%d %H:%i') AS di_reg_dte,
+		a.re_cnt
+		FROM
+		sm_reversal a
+		JOIN sm_insp_change b ON a.WO_IDX =
+		b.WO_IDX
+		JOIN
+		sm_work_order c ON a.WO_IDX = c.WO_IDX
+		JOIN sm_orders d ON
+		c.OR_IDX =
+		d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		JOIN
+		sm_account f ON
+		e.A_IDX = f.AC_CODE
+		JOIN sm_item g ON c.ITEM_CD =
+		g.ITEM_CD
+
+		<if test="searchKeyword != ''">
+			AND wo_name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+		<if test="searchStDate != ''">
+			AND di_reg_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND di_reg_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+
+		ORDER BY re_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+
+	</select>
+
+	<select id="selectWoList" resultType="egovMap">
+		SELECT b.wo_idx, b.wo_name
+		FROM sm_insp_change a
+		JOIN sm_work_order b ON a.WO_IDX = b.WO_IDX
+		WHERE
+		a.CH_RECYCLE = 'Y'
+		AND b.wo_idx NOT IN (SELECT wo_idx FROM sm_reversal)
+	</select>
+
+	<select id="selectMaterialList" resultType="egovMap">
+		SELECT item_cd,
+		item_name FROM sm_item WHERE item_type= '자재'
+	</select>
+
+	<select id="selectItemInfo" resultType="egovMap">
+		SELECT item_name FROM
+		sm_item WHERE item_cd = #{itemCd}
+	</select>
+
+	<select id="selectInfo" resultType="egovMap">
+		SELECT d.ac_name,
+		e.item_name, a.wo_pdt_cnt, a.wo_group FROM sm_work_order a
+		JOIN
+		sm_orders b ON
+		a.OR_IDX=b.OR_IDX
+		JOIN sm_estimate c ON b.ES_IDX =
+		c.ES_IDX
+		JOIN
+		sm_account d ON c.A_IDX = d.AC_CODE
+		JOIN sm_item e ON
+		a.ITEM_CD =
+		e.ITEM_CD
+		WHERE a.WO_IDX = #{woIdx}
+	</select>
+
+	<select id="selectWoIdx" resultType="int">
+		SELECT COUNT(*) FROM
+		sm_insp_change
+		WHERE wo_idx = #{woIdx}
+	</select>
+	<select id="selectDetailInfo" resultType="egovMap">
+		SELECT a.re_idx, a.wo_idx, c.wo_name, g.item_name, DATE_FORMAT(a.di_reg_dte,
+		'%Y-%m-%d %H:%i') AS di_reg_dte,
+		a.re_cnt, a.re_manager, a.item_cd1, a.item_name1, a.cnt1,
+		a.item_cd2, a.item_name2, a.cnt2,
+		a.item_cd3, a.item_name3, a.cnt3 FROM sm_reversal a JOIN sm_insp_change b
+		ON a.WO_IDX = b.WO_IDX
+		JOIN sm_work_order c ON a.WO_IDX = c.WO_IDX
+		JOIN sm_orders d ON c.OR_IDX = d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		JOIN sm_account f ON e.A_IDX = f.AC_CODE
+		JOIN sm_item g ON c.ITEM_CD = g.ITEM_CD
+		WHERE a.re_idx = #{reIdx}
+
+	</select>
+
+	<insert id="registStockReturn">
+		INSERT INTO sm_reversal(
+		re_idx,
+		wo_idx,
+		di_reg_dte,
+		di_reg_mem,
+		re_cnt,
+		wo_group,
+		re_manager
+		<if test="itemCd1 != '' and cnt1 != ''">,item_cd1, item_name1, cnt1</if>
+		<if test="itemCd2 != '' and cnt2 != ''">,item_cd2, item_name2, cnt2</if>
+		<if test="itemCd3 != '' and cnt3 != ''">,item_cd3, item_name3, cnt3</if>
+		) values(
+		(SELECT
+		CONCAT('RE', LPAD((SELECT (SELECT
+		REGEXP_REPLACE((SELECT
+		IFNULL(MAX(a.re_idx),0)
+		FROM sm_reversal
+		a),'[a-z]','')))+1,10,0))),
+		#{woIdx},
+		NOW(),
+		#{userId},
+		#{woPdtCnt},
+		#{woGroup},
+		#{reManager}
+		<if test="itemCd1 != '' and cnt1 != ''">,#{itemCd1}, #{itemName1}, #{cnt1}</if>
+		<if test="itemCd2 != '' and cnt2 != ''">,#{itemCd2}, #{itemName2}, #{cnt2}</if>
+		<if test="itemCd3 != '' and cnt3 != ''">,#{itemCd3}, #{itemName3}, #{cnt3}</if>
+		)
+	</insert>
+
+
+	<update id="updateMaterialStock">
+		UPDATE sm_item SET
+		item_stock = (item_stock + ${cnt})
+		WHERE item_cd = #{itemCd}
+	</update>
+
+	<update id="updateWorkOrderCnt">
+		UPDATE sm_work_order
+		SET wo_pdt_cnt = wo_pdt_cnt + (
+		SELECT IFNULL(SUM(IFNULL(cnt1, 0) + IFNULL(cnt2, 0) + IFNULL(cnt3,
+		0)), 0)
+		FROM sm_reversal
+		WHERE sm_reversal.wo_idx = sm_work_order.wo_idx
+		)
+		WHERE wo_idx = #{woIdx}
+
+
+	</update>
+
+	<update id="updateProdResult">
+		update sm_prod_result set
+		pr_re_re_st = 'N'
+		where
+		wo_idx = #{woIdx}
+		and pr_list_nm = '품질검사'
+	</update>
+
+	<update id="updateProcessSet">
+		update sm_process set
+		pr_cur_seq = 3,
+		pr_cur_idx =
+		'PR-001-003',
+		pr_cur_nm = '품질검사',
+		pr_fin_cnt = 2
+		where wo_idx = #{woIdx}
+	</update>
+
+	<delete id="deleteStockReturn">
+		DELETE FROM sm_reversal WHERE re_idx = #{reIdx}
+	</delete>
+
+</mapper>

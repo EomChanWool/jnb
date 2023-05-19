@@ -66,14 +66,21 @@
 		DATE_FORMAT(ch_reg_dte, '%Y-%m-%d') AS ch_reg_dte
 		FROM sm_insp_change a
 		JOIN sm_incongruity b ON a.IN_IDX=b.IN_IDX
-		JOIN sm_analysis_info c ON b.TI_IDX = c.TI_IDX
+		JOIN sm_analysis_info c ON
+		b.TI_IDX = c.TI_IDX
 		JOIN sm_work_order d ON c.WO_IDX = d.WO_IDX
-		JOIN sm_item e ON d.ITEM_CD = e.ITEM_CD
+		JOIN
+		sm_item e ON d.ITEM_CD = e.ITEM_CD
 		WHERE a.CH_IDX = #{chIdx}
 	</select>
 
 
 	<insert id="registCheckProd">
+		<!-- insert into sm_insp_change ( ch_idx, in_idx, ch_state, ch_recycle, 
+			ch_reason, ch_reg_dte, ch_reg_mem) values( (SELECT CONCAT('CH', LPAD((SELECT 
+			(SELECT REGEXP_REPLACE((SELECT IFNULL(MAX(a.in_idx),0) FROM sm_insp_change 
+			a),'[a-z]','')))+1,10,0))), #{inIdx}, #{chState}, #{chRecycle}, #{chReason}, 
+			now(), #{userId}) -->
 		insert into sm_insp_change (
 		ch_idx,
 		in_idx,
@@ -81,7 +88,8 @@
 		ch_recycle,
 		ch_reason,
 		ch_reg_dte,
-		ch_reg_mem)
+		ch_reg_mem,
+		wo_idx)
 		values(
 		(SELECT
 		CONCAT('CH',
@@ -93,7 +101,12 @@
 		#{chRecycle},
 		#{chReason},
 		now(),
-		#{userId})
+		#{userId},
+		(SELECT a.WO_IDX FROM
+		sm_analysis_info a JOIN
+		sm_incongruity b ON a.TI_IDX = b.TI_IDX
+		WHERE b.IN_IDX = #{inIdx})
+		)
 	</insert>
 
 	<update id="modifyCheckProd">

@@ -71,7 +71,8 @@
 		a.WO_IDX = #{woIdx}
 		AND a.pr_re_idx = (
 		SELECT MAX(pr_re_idx)
-		FROM sm_prod_result
+		FROM
+		sm_prod_result
 		WHERE WO_IDX = #{woIdx}
 		)
 
@@ -91,13 +92,11 @@
 		pr_re_state,
 		pr_re_reg_mem,
 		pr_re_reg_dte
-		<if test="prReReSt == '부적합'">
-			,PR_RE_RE_ST
-		</if>
 		)
 		VALUES
 		(
-		(SELECT CONCAT('PR', (SELECT
+		(SELECT CONCAT('PR',
+		(SELECT
 		REGEXP_REPLACE(#{woIdx},'[a-z]','')),'-',LPAD((SELECT
 		COUNT(a.pr_re_idx) FROM sm_prod_result a WHERE a.wo_idx =
 		#{woIdx})+1,3,0))),
@@ -118,9 +117,6 @@
 		#{prReState},
 		#{userId},
 		NOW()
-		<if test="prReReSt == '부적합'">
-			, 'Y'
-		</if>
 		)
 
 	</insert>
@@ -174,6 +170,17 @@
 		</if>
 		${curEdDte} = #{prReEdDte}
 		WHERE wo_idx = #{woIdx}
+	</update>
+
+	<update id="updatePrReReSt">
+		UPDATE sm_prod_result
+		SET pr_re_re_st = 'Y'
+		WHERE wo_idx = #{woIdx}
+		AND pr_re_idx = (
+		SELECT MAX(pr_re_idx)
+		FROM sm_prod_result
+		WHERE wo_idx = #{woIdx}
+		)
 	</update>
 
 	<select id="selectProdResultInfo" resultType="egovMap">
