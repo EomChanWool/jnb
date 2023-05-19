@@ -89,4 +89,10 @@ public class StockReturnServieImpl implements StockReturnSerivce {
 		return stockReturnMapper.selectDetailInfo(map);
 	}
 
+	@Override
+	public void modifyStockReturn(Map<String, Object> map) {
+		stockReturnMapper.modifyStockReturn(map);
+		
+	}
+
 }

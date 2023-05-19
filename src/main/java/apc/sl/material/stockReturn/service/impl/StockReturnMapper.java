@@ -23,7 +23,11 @@ public interface StockReturnMapper {
 	
 	Map<String, Object> selectDetailInfo(Map<String, Object> map);
 	
+	
+	
 	int selectWoIdx(Map<String, Object> map);
+	
+	void modifyStockReturn(Map<String, Object> map);
 	
 	void updateMaterialStock(Map<String, Object> map);
 	

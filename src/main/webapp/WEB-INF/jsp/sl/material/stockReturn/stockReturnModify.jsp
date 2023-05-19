@@ -91,23 +91,19 @@
                                    			<c:forEach var="list" items="${itemList}" varStatus="status">
                                    				<tr>
                                    					<td>
-	                                   					<input type="text" class="form-control" name="itemCd${status.count}" id="itemCd${status.count}" value="${list.itemCd}" list="mtList" autocomplete="off" style="text-align: center;">
-	                                   					<datalist id="mtList">
-	                                   						<c:forEach var="list2" items="${materialList}">
-	                                   							<option value="${list2.itemCd}">${list2.itemName}</option>
-	                                   						</c:forEach>
-	                                   					</datalist>
+	                                   					<input type="text" class="form-control" name="itemCd${status.count}" id="itemCd${status.count}" value="${list.itemCd}" readonly style="text-align: center;">
+	                                   					
 	                                   				</td>
-	                                   				<td><input type="text" class="form-control" name="itemName${status.count}" id="itemName${status.count}" value="${list.itemName}" style="text-align: center;"></td>
-	                                   				<td><input type="text" class="form-control" name="cnt${status.count}" id="cnt${status.count}" value="${list.cnt}" style="text-align: right;"></td>
+	                                   				<td><input type="text" class="form-control" name="itemName${status.count}" id="itemName${status.count}" value="${list.itemName}" readonly style="text-align: center;"></td>
+	                                   				<td><input type="text" class="form-control" name="cnt${status.count}" id="cnt${status.count}" value="${list.cnt}" readonly style="text-align: right;"></td>
                                    				</tr>
                                    			</c:forEach>
                                    		</tbody>
 	                                </table>
                                 </form>
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_modify_stockAdjust()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/stockAdjust/stockAdjustList.do'">취소</span>
+									<button type="submit" class="btn_ok" onclick="fn_modify_stockReturn()" style="border:none;">확인</button>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/stockReturn/stockReturnList.do'">취소</span>
 								</div>
                             </div>
                         </div>
@@ -143,7 +139,7 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_modify_stockAdjust(){
+	function fn_modify_stockReturn(){
 
 		
 		modifyForm.submit();

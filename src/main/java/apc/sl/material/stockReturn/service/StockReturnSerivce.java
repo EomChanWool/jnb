@@ -23,6 +23,8 @@ public interface StockReturnSerivce {
 	
 	int selectWoIdx(Map<String, Object> map);
 	
+	void modifyStockReturn(Map<String, Object> map);
+	
 	void updateMaterialStock(Map<String, Object> map);
 	
 	void updateWorkOrderCnt(Map<String, Object> map);

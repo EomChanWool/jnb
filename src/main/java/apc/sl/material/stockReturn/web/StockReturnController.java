@@ -143,9 +143,9 @@ public class StockReturnController {
 		String[] temp1 = str.split(", ");
 		List<Map<String, Object>> bomMtList = new ArrayList<>();
 		
-		System.out.println("확인하기 : "+ str);
 		
-		for(int i=16;i<temp1.length;i+=3) {
+		
+		for(int i=7;i<temp1.length;i+=3) {
 			Map<String, Object> tempMap = new HashMap<>();
 			String itemCd = temp1[i].split("=")[1];
 			String itemName = temp1[i+1].split("=")[1];
@@ -158,9 +158,20 @@ public class StockReturnController {
 		
 		model.put("itemList", bomMtList);
 		
-		System.out.println("아이템리스트 : " + bomMtList);
+		
 		
 		return "sl/material/stockReturn/stockReturnModify";
+	}
+	
+	@RequestMapping("/sl/material/stockReturn/modifyStockReturnOk.do")
+	public String modifyStockReturnOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
+		
+		map.put("userId", session.getAttribute("user_id"));
+		stockReturnSerivce.modifyStockReturn(map);
+		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
+		
+		
+		return "redirect:/sl/material/stockReturn/stockReturnList.do";
 	}
 	
 	

@@ -109,17 +109,25 @@
 		WHERE wo_idx = #{woIdx}
 	</select>
 	<select id="selectDetailInfo" resultType="egovMap">
-		SELECT a.re_idx, a.wo_idx, c.wo_name, g.item_name, DATE_FORMAT(a.di_reg_dte,
-		'%Y-%m-%d %H:%i') AS di_reg_dte,
-		a.re_cnt, a.re_manager, a.item_cd1, a.item_name1, a.cnt1,
+		SELECT a.re_idx,
+		a.wo_idx, c.wo_name, g.item_name, DATE_FORMAT(a.di_reg_dte,
+		'%Y-%m-%d
+		%H:%i') AS di_reg_dte,
+		a.re_cnt, a.re_manager, a.item_cd1,
+		a.item_name1, a.cnt1,
 		a.item_cd2, a.item_name2, a.cnt2,
-		a.item_cd3, a.item_name3, a.cnt3 FROM sm_reversal a JOIN sm_insp_change b
-		ON a.WO_IDX = b.WO_IDX
+		a.item_cd3,
+		a.item_name3, a.cnt3 FROM sm_reversal a JOIN sm_insp_change b
+		ON
+		a.WO_IDX = b.WO_IDX
 		JOIN sm_work_order c ON a.WO_IDX = c.WO_IDX
-		JOIN sm_orders d ON c.OR_IDX = d.OR_IDX
-		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		JOIN
+		sm_orders d ON c.OR_IDX = d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX =
+		e.ES_IDX
 		JOIN sm_account f ON e.A_IDX = f.AC_CODE
-		JOIN sm_item g ON c.ITEM_CD = g.ITEM_CD
+		JOIN sm_item g ON
+		c.ITEM_CD = g.ITEM_CD
 		WHERE a.re_idx = #{reIdx}
 
 	</select>
@@ -154,6 +162,14 @@
 		<if test="itemCd3 != '' and cnt3 != ''">,#{itemCd3}, #{itemName3}, #{cnt3}</if>
 		)
 	</insert>
+
+	<update id="modifyStockReturn">
+		UPDATE sm_reversal SET
+		RE_MANAGER = #{reManager},
+		DI_EDT_DTE = NOW(),
+		DI_EDT_MEM = #{userId}
+		WHERE re_idx = #{reIdx}
+	</update>
 
 
 	<update id="updateMaterialStock">
