@@ -91,14 +91,15 @@
 											<td><span class="form-control val-area" id="esFnlQutMoney">${ordersVO.esFnlQutMoney}</span></td>
 										</tr>
 										<tr>
+										<th>거래처</th>
+											<td><span class="form-control val-area">${ordersVO.orDuePlace}</span></td>
 										<th>납부상태</th>
 										<td><span class="form-control val-area" id="esFnlQutDte">${ordersVO.orPayment}</span></td>
 										
 										</tr>
-										<tr>
-											<th>거래처</th>
-											<td colspan="3"><span class="form-control val-area">${ordersVO.orDuePlace}</span></td>
-										</tr>
+										
+											
+										
 										<tr>
 											<th>비고</th>
 											<td colspan="3"><textarea name="orNote" disabled="disabled">${ordersVO.orNote}</textarea></td>

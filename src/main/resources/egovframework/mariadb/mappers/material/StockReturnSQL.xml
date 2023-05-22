@@ -115,8 +115,7 @@
 	<select id="selectDetailInfo" resultType="egovMap">
 		SELECT a.re_idx,
 		a.wo_idx, c.wo_name, g.item_name, DATE_FORMAT(a.di_reg_dte,
-		'%Y-%m-%d
-		%H:%i') AS di_reg_dte, a.wo_group, f.ac_name,
+		'%Y-%m-%d %H:%i') AS di_reg_dte, a.wo_group, f.ac_name,
 		a.re_cnt, a.re_manager,
 		a.item_cd1,
 		a.item_name1, a.cnt1,

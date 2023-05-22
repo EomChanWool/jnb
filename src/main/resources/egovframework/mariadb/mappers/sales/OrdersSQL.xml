@@ -64,7 +64,8 @@
 			or_manager,
 			or_note,
 			or_reg_dte,
-			or_reg_mem
+			or_reg_mem,
+			or_payment
 			)
 		VALUES
 			(
@@ -80,7 +81,8 @@
 			#{orManager},
 			#{orNote},
 			NOW(),
-			#{userId}
+			#{userId},
+			#{payment}
 			)
 	</insert>
 	

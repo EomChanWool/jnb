@@ -78,7 +78,7 @@
 											
 										</tbody>
 	                                </table>
-	                                
+	                                <span>* 추가 원자재 투입량</span>
 	                                <table class="table table-bordered" id="dataTable2">
 	                                	<thead>
 	                                		<tr>

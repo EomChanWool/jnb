@@ -80,7 +80,7 @@
 										
 									</tbody>
                                 </table>
-                                
+                                <span>* 추가 원자재 투입량</span>
                                  <table class="table table-bordered" id="dataTable2">
 	                                	<thead>
 	                                		<tr>
@@ -144,7 +144,7 @@
 	$(function() {
 		$('#materialMenu').addClass("active");
 		$('#material').addClass("show");
-		$('#incomeList').addClass("active");
+		$('#stockReturnList').addClass("active");
 		
 		let cnt = $('#stCnt').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		$('#stCnt').text(cnt);
