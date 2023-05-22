@@ -38,7 +38,7 @@
                     </form>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Nav collect - User Information -->
+                        <!-- Nav income - User Information -->
                         <%@ include file="../../menu/logout/nav_user.jsp" %>
                     </ul>
                 </nav>
@@ -47,39 +47,41 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">재고 실사 수정</h1>
+                    <h1 class="h3 mb-2 text-gray-800">환입 상세</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/material/stockReturn/modifyStockReturnOk.do" name="modifyForm" method="post">
-                            		<input type="hidden" name="reIdx" value="${streVO.reIdx}">
-								
-	                                <table class="table table-bordered" id="dataTable">
-	                                    <tbody>
-											<tr>
-												<th>작업지시서 번호  </th>
-												<td><input type="text" class="form-control" name="woIdx" id="woIdx" value="${streVO.woIdx}" readonly></td>
-												<th>작업지시명 </th>
-												<td><input type="text" class="form-control" name="woName" id="woName" value="${streVO.woName}" readonly></td>
-											</tr>
-											<tr>
-												<th>제품명 </th>
-												<td><input type="text" class="form-control" name="itemName" value="${streVO.itemName}" readonly></td>
-												<th>등록일 </th>
-												<td><input type="text" class="form-control" name="diRegDte" id="diRegDte" value="${streVO.diRegDte}" readonly></td>
-											</tr>
-											<tr>
-												<th>환입량(kg)</th>
-												<td><input type="text" class="form-control" name="reCnt" value="${streVO.reCnt}kg" readonly></td>
-												<th>작업자</th>
-												<td><input type="text" class="form-control" name="reManager" id="reManager" value="${streVO.reManager}"></td>
-											</tr>
-											
-										</tbody>
-	                                </table>
-	                                
-	                                <table class="table table-bordered" id="dataTable2">
+                                <table class="table table-bordered" id="dataTable">
+                                    <tbody>
+                                    	<tr>
+                                    		<th>작업지시서 번호</th>
+                                    		<td><span class="form-control val-area">${stockReturnVO.woIdx}</span></td>
+                                    		<th>작업지시명</th>
+											<td><span class="form-control val-area">${stockReturnVO.woName}</span></td>
+                                    	</tr>
+										<tr>
+											<th>거래처</th>
+											<td><span class="form-control val-area">${stockReturnVO.acName}</span></td>
+											<th>제품명</th>
+											<td><span class="form-control val-area">${stockReturnVO.itemName}</span></td>
+										</tr>
+										<tr>
+											<th>환입일</th>
+											<td><span class="form-control val-area" id="stCnt">${stockReturnVO.diRegDte}</span></td>
+											<th>공정그룹</th>
+											<td><span class="form-control val-area">${stockReturnVO.woGroup}</span></td>
+										</tr>
+										<tr>
+											<th>환입량(kg)</th>
+											<td><span class="form-control val-area">${stockReturnVO.reCnt}kg</span></td>
+											<th>작업자</th>
+											<td><span class="form-control val-area">${stockReturnVO.reManager}</span></td>
+										
+									</tbody>
+                                </table>
+                                
+                                 <table class="table table-bordered" id="dataTable2">
 	                                	<thead>
 	                                		<tr>
                                    		 	 	<th style="padding-top: 1rem; width: 29%;">품목코드</th>
@@ -100,10 +102,10 @@
                                    			</c:forEach>
                                    		</tbody>
 	                                </table>
-                                </form>
+                                
+                                
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_modify_stockReturn()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/stockReturn/stockReturnList.do'">취소</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/stockReturn/stockReturnList.do'">목록</span>
 								</div>
                             </div>
                         </div>
@@ -139,26 +141,14 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_modify_stockReturn(){
-
-		
-		modifyForm.submit();
-	}
-	
 	$(function() {
 		$('#materialMenu').addClass("active");
 		$('#material').addClass("show");
-		$('#stockReturnList').addClass("active");
+		$('#incomeList').addClass("active");
 		
-		let msg = '${msg}';
-		if(msg) {
-			alert(msg);
-		}
-		
-	
+		let cnt = $('#stCnt').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$('#stCnt').text(cnt);
 	});
-	
-
 	</script>
 </body>
 

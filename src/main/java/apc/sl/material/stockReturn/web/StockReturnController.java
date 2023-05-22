@@ -124,6 +124,12 @@ public class StockReturnController {
 				stockReturnSerivce.updateProdResult(map);
 				stockReturnSerivce.updateProcessSet(map);
 			}
+			
+			if(map.get("woGroup").equals("혼합/반응")) {
+				System.out.println("이프문안에 공정 : " + map.get("woGroup"));
+				stockReturnSerivce.updateProdResult2(map);
+				stockReturnSerivce.updateProcessSet2(map);
+			}
 				
 		
 		redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
@@ -145,7 +151,7 @@ public class StockReturnController {
 		
 		
 		
-		for(int i=7;i<temp1.length;i+=3) {
+		for(int i=9;i<temp1.length;i+=3) {
 			Map<String, Object> tempMap = new HashMap<>();
 			String itemCd = temp1[i].split("=")[1];
 			String itemName = temp1[i+1].split("=")[1];
@@ -172,6 +178,35 @@ public class StockReturnController {
 		
 		
 		return "redirect:/sl/material/stockReturn/stockReturnList.do";
+	}
+	
+	@RequestMapping("/sl/material/stockReturn/detailStockReturn.do")
+	public String detailStockReturn(@RequestParam Map<String, Object> map, ModelMap model) {
+		Map<String, Object> detail = stockReturnSerivce.selectDetailInfo(map);
+		model.put("stockReturnVO", detail);
+		
+		String str = detail.toString().replaceAll("[{}]", "");
+		String[] temp1 = str.split(", ");
+		List<Map<String, Object>> bomMtList = new ArrayList<>();
+		
+		System.out.println("렝쓰확인 : " + temp1.length);
+		
+		for(int i=9;i<temp1.length;i+=3) {
+			Map<String, Object> tempMap = new HashMap<>();
+			String itemCd = temp1[i].split("=")[1];
+			String itemName = temp1[i+1].split("=")[1];
+			String cnt = temp1[i+2].split("=")[1];
+			tempMap.put("itemCd", itemCd);
+			tempMap.put("itemName", itemName);
+			tempMap.put("cnt", cnt);
+			bomMtList.add(tempMap);
+		}
+		
+		model.put("itemList", bomMtList);
+		
+		
+		
+		return "sl/material/stockReturn/stockReturnDetail";
 	}
 	
 	

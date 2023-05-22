@@ -60,6 +60,7 @@
                             <div class="table-responsive">
                             	<form action="${pageContext.request.contextPath}/sl/material/stockReturn/registStockReturnOk.do" name="registForm" method="post">
 									<input type="hidden" name="woGroup">
+									<input type="hidden" name="chIdx">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -245,6 +246,7 @@
 				 // $('#woPdtCnt').text(result.woInfo.woPdtCnt);
 				  registForm.woPdtCnt.value = result.woInfo.woPdtCnt;
 				  registForm.woGroup.value = result.woInfo.woGroup;
+				  registForm.chIdx.value= result.woInfo.chIdx;
 				  
 			  },
 			  error:function(request,status,error){ 

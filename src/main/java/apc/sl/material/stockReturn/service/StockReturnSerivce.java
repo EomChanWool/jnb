@@ -20,7 +20,7 @@ public interface StockReturnSerivce {
 	Map<String, Object> selectInfo(Map<String, Object> map);
 	
 	Map<String, Object> selectDetailInfo(Map<String, Object> map);
-	
+		
 	int selectWoIdx(Map<String, Object> map);
 	
 	void modifyStockReturn(Map<String, Object> map);
@@ -31,7 +31,11 @@ public interface StockReturnSerivce {
 	
 	void updateProdResult(Map<String, Object> map);
 	
+	void updateProdResult2(Map<String, Object> map);
+	
 	void updateProcessSet(Map<String, Object> map);
+	
+	void updateProcessSet2(Map<String, Object> map);
 	
 	void registStockReturn(Map<String, Object> map);
 	

@@ -112,6 +112,7 @@ public class AnalyManageController {
 			map.put("prReEdD0te", map.get("tiDte"));
 			map.put("prReManager", map.get("tiAnalyst"));
 			map.put("prReState", "1");
+			System.out.println("이프문작동");
 			updateProcess(map);
 		}
 		
@@ -195,6 +196,7 @@ public class AnalyManageController {
 	private void updateProcess(Map<String, Object> map) {
 		
 		
+		System.out.println("확인한다 : " + map.get("tiState"));
 		
 		if(map.get("tiState").equals("부적합")) {
 			

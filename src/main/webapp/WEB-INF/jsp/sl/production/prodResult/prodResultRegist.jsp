@@ -170,6 +170,13 @@
 		$('#production').addClass("show");
 		$('#prodResultList').addClass("active");
 		
+		const offset = 1000 * 60 * 60 * 9;
+		const kr_now = new Date((new Date()).getTime() + offset);
+		
+		$('#prReStDte').val(kr_now.toISOString().replace("T", " ").split('.')[0].slice(0,16));
+		
+		
+		
 		let msg = '${msg}';
 		if(msg) {
 			alert(msg);

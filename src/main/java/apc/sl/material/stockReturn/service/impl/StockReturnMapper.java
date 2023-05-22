@@ -35,7 +35,11 @@ public interface StockReturnMapper {
 	
 	void updateProdResult(Map<String, Object> map);
 	
+	void updateProdResult2(Map<String, Object> map);
+	
 	void updateProcessSet(Map<String, Object> map);
+	
+	void updateProcessSet2(Map<String, Object> map);
 	
 	void registStockReturn(Map<String, Object> map);
 	

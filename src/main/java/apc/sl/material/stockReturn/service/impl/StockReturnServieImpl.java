@@ -95,4 +95,14 @@ public class StockReturnServieImpl implements StockReturnSerivce {
 		
 	}
 
+	@Override
+	public void updateProdResult2(Map<String, Object> map) {
+		stockReturnMapper.updateProdResult2(map);
+	}
+
+	@Override
+	public void updateProcessSet2(Map<String, Object> map) {
+		stockReturnMapper.updateProcessSet2(map);
+	}
+
 }

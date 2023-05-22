@@ -88,13 +88,13 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${stockReturnList}" varStatus="status">
-	                                   		<tr>
+	                                   		<tr onclick="fn_detail_stockReturn('${result.reIdx}')" style="cursor: pointer;">
 												<td>${result.woName}</td>
 												<td>${result.acName}</td>
 												<td>${result.itemName}</td>
 												<td>${result.diRegDte}</td>
 												<td>${result.reCnt}kg</td>
-	                                            <td style="padding: 5px 0px;">
+	                                            <td onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
 	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_stockReturn_go('${result.reIdx}')">
 				                                        <span class="text">수정</span>
 				                                    </a>
@@ -177,6 +177,12 @@
 			listForm.action = "${pageContext.request.contextPath}/sl/material/stockReturn/deleteStockReturn.do";
 			listForm.submit();
 		}
+	}
+	
+	function fn_detail_stockReturn(reIdx){
+		listForm.reIdx.value = reIdx;
+		listForm.action = "${pageContext.request.contextPath}/sl/material/stockReturn/detailStockReturn.do";
+		listForm.submit();
 	}
 	
 	$(function() {
