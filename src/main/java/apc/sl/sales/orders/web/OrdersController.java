@@ -51,7 +51,7 @@ public class OrdersController {
 		map.put("esIdx","");
 		List<?> estimateList = ordersService.selectEstimateList(map);
 		model.put("estimateList", estimateList);
-		System.out.println("est리스트 : " + estimateList);
+		
 		return "sl/sales/orders/ordersRegist";
 	}
 	
@@ -98,7 +98,7 @@ public class OrdersController {
 	public String detailOrders(@RequestParam Map<String, Object> map, ModelMap model) {
 		Map<String, Object> detail = ordersService.selectOrdersInfo(map);
 		model.put("ordersVO", detail);
-		System.out.println("오더브이오 : " + detail);
+		
 		return "sl/sales/orders/ordersDetail";
 	}
 	

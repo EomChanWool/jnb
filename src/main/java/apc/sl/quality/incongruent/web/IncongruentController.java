@@ -107,7 +107,7 @@ public class IncongruentController {
 		
 		model.put("incoVO", list);
 		model.put("biList", biList);
-		System.out.println("맵확인 : " + map);
+		
 		
 		return "sl/quality/incongruent/incongruentModify";
 	}

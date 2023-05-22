@@ -34,7 +34,7 @@ public class ProdAggregateController {
 		List<?> prodList = prodAggregateService.selectProd(searchVO);
 		model.put("prodList", prodList);
 		
-		System.out.println("확인함 : " + prodList);
+		
 		
 		return "sl/monitoring/prodAggregate/prodAggregate";
 	}

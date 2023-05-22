@@ -44,7 +44,7 @@ public class IncongruentStateController {
 		model.put("incongruityList", incongruityList);
 		
 		
-		System.out.println("월 확인 : " + incongruityList);
+		
 		
 		
 		return "sl/quality/incongruentState/incongruentState";

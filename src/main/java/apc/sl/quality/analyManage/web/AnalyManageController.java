@@ -70,7 +70,7 @@ public class AnalyManageController {
 	public String registAnalyManageOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		//작업지시서 체크
 		int exists = analyManageService.selectExistsAzIdx(map);
-		System.out.println("exists값 : " + exists);
+		
 		if(exists == 0) {
 			redirectAttributes.addFlashAttribute("msg", "존재하지 않는 작업지서번호 입니다.");
 			redirectAttributes.addFlashAttribute("analyManageVO", map);
@@ -78,7 +78,7 @@ public class AnalyManageController {
 		}
 		
 		
-		System.out.println("맵안에 doIdx : " + map.get("doIdx"));
+		
 		
 		//성적서 체크
 		if(!map.get("doIdx").equals("")) {
@@ -95,7 +95,7 @@ public class AnalyManageController {
 		map.put("userId", session.getAttribute("user_id"));
 		analyManageService.registAnalyManage(map);
 		
-		System.out.println("검사수정 맵 이프문  : " + map);
+		
 		
 		
 		
@@ -112,7 +112,7 @@ public class AnalyManageController {
 			map.put("prReEdD0te", map.get("tiDte"));
 			map.put("prReManager", map.get("tiAnalyst"));
 			map.put("prReState", "1");
-			System.out.println("이프문작동");
+			
 			updateProcess(map);
 		}
 		
@@ -196,7 +196,7 @@ public class AnalyManageController {
 	private void updateProcess(Map<String, Object> map) {
 		
 		
-		System.out.println("확인한다 : " + map.get("tiState"));
+		
 		
 		if(map.get("tiState").equals("부적합")) {
 			
@@ -210,7 +210,7 @@ public class AnalyManageController {
 		
 		
 		
-		System.out.println("확인");
+	
 		
 		map.put("modify","true");
 		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
@@ -223,7 +223,7 @@ public class AnalyManageController {
 		map.put("nextIdx", "pr_list_idx"+(processSeq+1));
 		map.put("nextNm", "pr_list_nm"+(processSeq+1));
 		prodResultService.updateProcess(map);
-		System.out.println("확인2");
+	
 		
 	}
 }

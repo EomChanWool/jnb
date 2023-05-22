@@ -81,7 +81,7 @@ public class DispensingController {
 	
 	@RequestMapping("/sl/material/dispensing/modifyDispensing.do")
 	public String modifyInvest(@RequestParam Map<String, Object> map, ModelMap model) {
-		System.out.println("맵 확인 : " + map);
+		
 		
 		Map<String, Object> detail = dispensingService.selectDispensingInfo(map);
 		
@@ -89,9 +89,6 @@ public class DispensingController {
 		//detail.put("curCnt", detail.get("inCnt"));
 		model.put("dispensingVO", detail);
 		
-		System.out.println("디테일확인 : " + detail);
-		
-		System.out.println("비아이디엑스 : " + detail.get("bIdx"));
 		
 		map.put("bIdx", detail.get("bIdx"));
 		

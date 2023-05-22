@@ -52,7 +52,7 @@ public class IncomeController {
 		model.put("materialList", materialList);
 		List<?> companyList = incomeService.selectCompanyList();
 		model.put("companyList", companyList);
-		System.out.println("컴퍼니리스트 : "+companyList);
+		
 		return "sl/material/income/incomeRegist";
 	}
 	

@@ -92,7 +92,7 @@ public class ShipmentController {
 	
 	@RequestMapping("/sl/material/shipment/modifyShipment.do")
 	public String modifyShipment(@RequestParam Map<String, Object> map, ModelMap model) {
-		System.out.println("출고 수정 맵 확인 : " + map.toString());
+		
 		if(!map.isEmpty()) {
 			Map<String, Object> detail = shipmentService.selectShipmentInfo(map);
 			detail.put("curOrIdx", detail.get("orIdx"));
@@ -105,7 +105,7 @@ public class ShipmentController {
 	public String modifyShipmentOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		map.put("userId", session.getAttribute("user_id"));
 		
-		System.out.println("모디파이오케이 : " + map.toString());
+		
 		
 		shipmentService.modifyShipment(map);
 		

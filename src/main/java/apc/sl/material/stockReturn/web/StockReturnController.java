@@ -82,7 +82,7 @@ public class StockReturnController {
 		List<?> list = stockReturnSerivce.selectItemInfo(map);
 		mav.setViewName("jsonView");
 		mav.addObject("item_info", list);		
-		System.out.println("리스트값 : " + list);
+		
 		return mav;
 	}
 	
@@ -126,7 +126,7 @@ public class StockReturnController {
 			}
 			
 			if(map.get("woGroup").equals("혼합/반응")) {
-				System.out.println("이프문안에 공정 : " + map.get("woGroup"));
+				
 				stockReturnSerivce.updateProdResult2(map);
 				stockReturnSerivce.updateProcessSet2(map);
 			}
@@ -189,7 +189,7 @@ public class StockReturnController {
 		String[] temp1 = str.split(", ");
 		List<Map<String, Object>> bomMtList = new ArrayList<>();
 		
-		System.out.println("렝쓰확인 : " + temp1.length);
+		
 		
 		for(int i=9;i<temp1.length;i+=3) {
 			Map<String, Object> tempMap = new HashMap<>();

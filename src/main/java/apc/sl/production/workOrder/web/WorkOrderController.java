@@ -63,7 +63,7 @@ public class WorkOrderController {
 		Map<String, Object> info = workOrderService.selectWoProdPlanInfo(map);
 		mav.setViewName("jsonView");
 		mav.addObject("pp_info", info);
-		System.out.println("작업지시 등록 맵 : " + mav);
+	
 		return mav;
 	}
 	
@@ -104,7 +104,7 @@ public class WorkOrderController {
 	
 	@RequestMapping("/sl/production/workOrder/modifyWorkOrder.do")
 	public String modifyWorkOrder(@RequestParam Map<String, Object> map, ModelMap model) {
-		System.out.println("작업지시 수정 : " + map);
+		
 		if(!map.isEmpty()) {
 			Map<String, Object> detail = workOrderService.selectWorkOrderInfo(map);
 			model.put("workOrderVO", detail);
@@ -139,11 +139,11 @@ public class WorkOrderController {
 	
 	private void createProcess(Map<String, Object> map, HttpSession session) {
 		//해당 작지에 대한 공정목록 생성
-		System.out.println("프로세스 : " + map);
+		
 		map.put("group", map.get("process"));
-		System.out.println(map.get("process"));
+		
 		List<?> processList = workOrderService.selectProcessList(map);
-		System.out.println(processList);
+		
 		Map<String, Object> process = new HashMap<>();
 		for(int i=0;i<processList.size();i++) {
 			/*

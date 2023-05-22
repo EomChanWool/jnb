@@ -77,7 +77,7 @@ public class DeliveryController {
 		map.put("state","3");
 		deliveryService.updateOrders(map);
 		
-		System.out.println("개별확인 : " + map.get("deState"));
+	
 		if(map.get("deState").equals("1")) {
 			
 		
@@ -103,7 +103,7 @@ public class DeliveryController {
 		map.put("userId", session.getAttribute("user_id"));
 		deliveryService.modifyDelivery(map);
 		
-		System.out.println("개별확인 : " + map.get("deState"));
+		
 		
 		  if(map.get("deState").equals("1")) {
 		  
@@ -120,7 +120,7 @@ public class DeliveryController {
 	public String detailDelivery(@RequestParam Map<String, Object> map, ModelMap model) {
 		Map<String, Object> detail = deliveryService.selectDeliveryInfo(map);
 		model.put("deliveryVO", detail);
-		System.out.println("디테일 확인 : " + detail);
+	
 		return "sl/sales/delivery/deliveryDetail";
 	}
 	

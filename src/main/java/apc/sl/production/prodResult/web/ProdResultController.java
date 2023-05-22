@@ -55,14 +55,14 @@ public class ProdResultController {
 	
 	@RequestMapping(value="/sl/production/prodResult/prReWorkOrderInfoAjax.do", method=RequestMethod.POST)
 	public ModelAndView prReWorkOrderInfoAjax(@RequestParam Map<String, Object> map) {
-		System.out.println("생산실적등록 맵 : " + map);
+		
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> list = prodResultService.selectWorkOrderInfo(map);
 		Map<String, Object> list2 = prodResultService.selectPrReReSt(map);
 		mav.setViewName("jsonView");
 		mav.addObject("wo_info", list);
 		mav.addObject("pr_info", list2);
-		System.out.println("리스트 값 : " + list2);
+
 		
 		return mav;
 	}
@@ -133,13 +133,13 @@ public class ProdResultController {
 			prodResultService.registProdResult(map);
 			prodResultService.updateProcess(map);
 			if(map.get("prListNm").equals("원자재 이송")) {
-				System.out.println("원자재 이송 맵 : " + map);
+				
 				prodResultService.registDispensing(map); // 불출관리 등록;
 			}
 			
 			if(map.get("prListNm").equals("저장탱크 이송")) {
 				
-				System.out.println("저장탱크 이송 맵 : " + map);
+				
 				prodResultService.updateProduct(map); //제품 재고 업데이트
 			}
 			
@@ -210,10 +210,10 @@ public class ProdResultController {
 	
 	private String updateMaterialStock(List<?> list, RedirectAttributes redirectAttributes) {
 		
-		System.out.println("리스트의 값 :" + list);
+		
 		
 		 EgovMap str1 = (EgovMap) list.get(0);
-		 System.out.println("str : " + str1);
+	
 
 		
 		//String[] str1 = list.get(0).toString().split(", ");

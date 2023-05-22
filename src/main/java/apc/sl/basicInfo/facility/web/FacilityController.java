@@ -28,7 +28,7 @@ public class FacilityController {
 		
 		int totCnt = facilityService.selectFacilityListToCnt(searchVO);
 		/** pageing setting */
-		System.out.println("확인");
+		
 		searchVO.setPageSize(10);
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(searchVO.getPageIndex()); // 현재 페이지 번호
@@ -91,7 +91,7 @@ public class FacilityController {
 		
 		model.put("facilityVO", detail);
 		
-		System.out.println("디테일 확인 : " + detail);
+		
 		
 		
 		return "sl/basicInfo/facility/facilityModify";
@@ -105,9 +105,9 @@ public class FacilityController {
 		
 		
 		map.put("userId", session.getAttribute("user_id"));
-		System.out.println("수정되기전 맵확인 : " + map);
+		
 		facilityService.modifyFacility(map);
-		System.out.println("수정된후 맵확인 : " + map.get("faStatus"));
+		
 		
 		//비가동상태일때 비가동관리 등록
 		if(map.get("faStatus").equals("비가동")) {

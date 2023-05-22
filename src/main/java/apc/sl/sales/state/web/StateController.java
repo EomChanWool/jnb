@@ -39,7 +39,7 @@ public class StateController {
 		
 		List<?> stateList = stateService.selectStateList(searchVO);
 		model.put("stateList", stateList);
-		System.out.println("스테이트리스트 : " + stateList);
+		
 		model.put("paginationInfo", paginationInfo);
 		
 		return "sl/sales/state/stateList";
@@ -80,7 +80,7 @@ public class StateController {
 		paginationInfo.setRecordCountPerPage(10); // 한 페이지에 게시되는 게시물 건수
 		paginationInfo.setPageSize(searchVO.getPageSize()); // 페이징 리스트의 사이즈
 		paginationInfo.setTotalRecordCount(totCnt);
-		System.out.println(searchVO.getSearchCondition2());
+		
 		if(searchVO.getSearchCondition2().equals("")) {
 			searchVO.setSearchCondition2("2023");
 		}

@@ -39,7 +39,7 @@ public class MemberController {
 	@RequestMapping("/sl/login.do")
 	public String login(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes,HttpServletRequest request,HttpServletResponse response,HttpSession session) throws Exception {
 		Map<String, Object> member = memberService.selectMember(map);
-		System.out.println("확인");
+		
 		if(member == null) {
 			redirectAttributes.addFlashAttribute("msg", "아이디가없습니다");
 			return "redirect:/sl/main.do";

@@ -84,7 +84,7 @@ public class ItemController {
 		model.put("companyList", companyList);
 		List<?> comnCodeList = itemService.selectComnCodeList();
 		model.put("comnCodeList", comnCodeList);
-		System.out.println("맵 : " + map);
+		
 		
 		Map<String, Object> detail = itemService.selectItemInfo(map);
 		model.put("itemVO", detail);
