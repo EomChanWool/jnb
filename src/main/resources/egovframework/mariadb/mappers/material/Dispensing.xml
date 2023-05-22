@@ -13,7 +13,7 @@
 		SELECT
 			di_idx,
 			wo_idx,
-			ex_idx,
+			pd_idx,
 			DATE_FORMAT(di_reg_dte, '%Y/%m/%d %H:%i:%s') AS di_reg_dte,
 			di_reg_mem,
 			di_edt_dte,

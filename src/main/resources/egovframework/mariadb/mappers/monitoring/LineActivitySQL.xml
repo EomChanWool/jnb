@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.monitoring.lineActivity.service.impl.LineActivityMapper"> 
+<mapper namespace="apc.sl.monitoring.lineActivity.service.impl.LineActivityMapper">
+
+
+	<select id="selectLineActivityToCnt" resultType="int">
+		SELECT COUNT(*) FROM sm_plc_data
+	</select>
+	
+	<select id="selectLineActivity" resultType="egovMap">
+	SELECT pd_idx, pd_tank, pd_material, pd_setting, pd_act_val, pd_status, date_format(pd_reg_dte, '%Y-%m-%d %H:%i') AS pd_reg_dte FROM sm_plc_data
+	</select>
 
 
 </mapper>

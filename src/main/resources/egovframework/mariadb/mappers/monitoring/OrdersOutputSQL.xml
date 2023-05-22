@@ -54,11 +54,14 @@
 		sm_work_order c ON b.wo_idx = c.wo_idx
 		JOIN sm_orders d ON
 		c.or_idx = d.or_idx
+		join
+		sm_delivery e ON c.OR_IDX = e.OR_IDX
 		WHERE
 		PR_LIST_NM = '저장탱크 이송'
 		AND YEAR(b.PR_RE_ED_DTE) =
 		#{searchCondition2}
 		AND d.OR_STATE = 3
+		AND e.DE_STATE = 1
 		GROUP BY MONTH
 		) AS subquery
 		ON months.m =
