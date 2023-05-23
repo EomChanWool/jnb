@@ -92,12 +92,12 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${noticeList}" varStatus="status">
-	                                   		<tr>
+	                                   		<tr onclick="fn_detail_notice('${result.noIdx}')" style="cursor: pointer;">
 	                                            <td>${result.noTitle}</td>
 												<td>${result.noRegMem}</td>
 												<td>${result.noUse}</td>
 												<td>${result.noRegDte}</td>
-	                                            <td style="padding: 5px 0px;">
+	                                            <td onclick="event.cancelBubble=true" style="padding: 5px 0px; cursor: default;">
 	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_notice('${result.noIdx}')">
 				                                        <span class="text">수정</span>
 				                                    </a>
@@ -175,6 +175,12 @@
 	function fn_modify_notice(noIdx){
 		listForm.noIdx.value = noIdx;
 		listForm.action = "${pageContext.request.contextPath}/sl/monitoring/notice/modifyNotice.do";
+		listForm.submit();
+	}
+	
+	function fn_detail_notice(noIdx){
+		listForm.noIdx.value = noIdx;
+		listForm.action = "${pageContext.request.contextPath}/sl/monitoring/notice/detailNotice.do";
 		listForm.submit();
 	}
 	

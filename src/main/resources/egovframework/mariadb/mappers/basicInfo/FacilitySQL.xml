@@ -91,9 +91,17 @@
 
 	<update id="modifyNonOp">
 		UPDATE sm_non_operation
-		SET no_ed_dte = now()
-		WHERE no_idx = (SELECT MAX(no_idx) FROM (SELECT * FROM sm_non_operation WHERE
-		fa_idx = #{faIdx}) AS t);
+		SET no_ed_dte = now(),
+		no_time = TIMESTAMPDIFF(MINUTE, no_st_dte, now())
+		WHERE no_idx = (
+		SELECT MAX(no_idx)
+		FROM (
+		SELECT *
+		FROM sm_non_operation
+		WHERE fa_idx = #{faIdx}
+		) AS t
+		)
+
 
 	</update>
 

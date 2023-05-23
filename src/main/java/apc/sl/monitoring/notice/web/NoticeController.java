@@ -70,6 +70,14 @@ public class NoticeController {
 		return "redirect:/sl/monitoring/notice/noticeList.do";
 	}
 	
+	@RequestMapping("/sl/monitoring/notice/detailNotice.do")
+	public String detatilNotice(@RequestParam Map<String, Object> map, ModelMap model) {
+		Map<String, Object> detail = noticeService.detailNotice(map);
+		model.put("noticeVO", detail);
+		
+		return "sl/monitoring/notice/detailNotice";
+	}
+	
 	@RequestMapping("/sl/monitoring/notice/deleteNotice.do")
 	public String deleteNotice(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttribues, HttpSession session) {
 		noticeService.deleteNotice(map);

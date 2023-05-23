@@ -12,5 +12,7 @@ public interface DashBoardService {
 	Map<String, Object> selectNoticeInfo(Map<String, Object> map);
 
 	List<?> selectItemList();
+	
+	List<?> selectLineList();
 
 }

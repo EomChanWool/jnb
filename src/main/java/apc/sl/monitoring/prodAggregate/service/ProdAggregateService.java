@@ -9,4 +9,6 @@ public interface ProdAggregateService {
 	List<?> selectProd(SearchVO searchVO);
 	
 	List<?> selectPrYearList(SearchVO searchVO);
+	
+	List<?> selectOrders(SearchVO searchVO);
 }

@@ -1,5 +1,6 @@
 package apc.sl.monitoring.ordersOutput.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -22,10 +23,13 @@ public class OrdersOutputController {
 	public String actualOutput(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 //		List<?> data = ordersOutputService.selectOrderOutputData(searchVO);
 //		model.put("dataList", data);
+		LocalDate now = LocalDate.now();
+		
 		
 		if(searchVO.getSearchCondition2().equals("")) {
-			searchVO.setSearchCondition2("2023");
+			searchVO.setSearchCondition2(now.getYear()+"");
 		}
+		
 		
 		//년도 목록
 		List<?>orYearList = ordersOutputService.selectOrYearList(searchVO);

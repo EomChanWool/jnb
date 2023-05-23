@@ -58,11 +58,17 @@
 										<tr>
 											<th>제목</th>
 											<td><span class="form-control val-area">${noticeVO.noTitle}</span></td>
-											<td style="width:15%;"></td><td></td>
+											
 										</tr>
 										<tr>
 											<th>내용</th>
-											<td colspan="3"><textArea name="noCont" id="noCont" disabled="disabled" style="height:300px;">${noticeVO.noCont}</textArea></td>
+											<td colspan="3"><%-- <textArea name="noCont" id="noCont" disabled="disabled" style="height:300px;">${noticeVO.noCont}</textArea> --%>
+											
+											<div style="text-align: left"><c:if test="${noticeVO.noUse == '비공개'}">비공개 공지입니다.</c:if>
+											<c:if test="${noticeVO.noUse == '공개'}">${noticeVO.noCont}</c:if>
+											</div>
+											
+											</td>
 										</tr>
 										<tr>
 											<th>작성자</th>
@@ -73,8 +79,8 @@
 									</tbody>
                                 </table>
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_modify_notice()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/monitoring/notice/noticeList.do'">취소</span>
+									
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/monitoring/notice/noticeList.do'">목록가기</span>
 								</div>
                             </div>
                         </div>
@@ -110,7 +116,7 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	let oEditors = [];
+	/* let oEditors = [];
 	
 	smartEditor = function(){
 		nhn.husky.EZCreator.createInIFrame({
@@ -118,8 +124,10 @@
 			elPlaceHolder: "noCont",
 			sSkinURI: "/resources/smartEditor/SmartEditor2Skin.html",
 			fCreator: "createSEditor2"
+				
+			
 		});
-	}
+	} */
 	
 	$(function() {
 		$('#monitoringMenu').addClass("active");
@@ -131,7 +139,8 @@
 			alert(msg);
 		}
 		
-		smartEditor();
+		/* smartEditor(); */
+		
 	});
 	</script>
 </body>

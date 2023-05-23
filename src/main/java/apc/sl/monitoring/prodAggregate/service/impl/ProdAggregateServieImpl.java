@@ -26,4 +26,9 @@ public class ProdAggregateServieImpl implements ProdAggregateService{
 		// TODO Auto-generated method stub
 		return prodAggregateMapper.selectPrYearList(searchVO);
 	}
+
+	@Override
+	public List<?> selectOrders(SearchVO searchVO) {
+		return prodAggregateMapper.selectOrders(searchVO);
+	}
 }

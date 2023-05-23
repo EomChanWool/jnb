@@ -1,5 +1,6 @@
 package apc.sl.monitoring.prodAggregate.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -22,13 +23,20 @@ public class ProdAggregateController {
 	@RequestMapping("/sl/monitoring/prodAggregate/prodAggregate.do")
 	public String ProdAggregate(@ModelAttribute("searchVO")SearchVO searchVO, ModelMap model, HttpSession session) {
 		
+		LocalDate now = LocalDate.now();
+		
+		
 		if(searchVO.getSearchCondition2().equals("")) {
-			searchVO.setSearchCondition2("2023");
+			searchVO.setSearchCondition2(now.getYear()+"");
 		}
 		
 		//생산완료시점 년수
 		List<?> prYearList = prodAggregateService.selectPrYearList(searchVO);
 		model.put("prYearList", prYearList);
+		
+		//수주건수
+		List<?> ordersList = prodAggregateService.selectOrders(searchVO);
+		model.put("ordersList", ordersList);
 		
 		//생산건수
 		List<?> prodList = prodAggregateService.selectProd(searchVO);

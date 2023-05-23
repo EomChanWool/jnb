@@ -44,4 +44,9 @@ public class NoticeServieImpl implements NoticeService {
 		noticeMapper.deleteNotice(map);
 	}
 
+	@Override
+	public Map<String, Object> detailNotice(Map<String, Object> map) {
+		return noticeMapper.detailNotice(map);
+	}
+
 }

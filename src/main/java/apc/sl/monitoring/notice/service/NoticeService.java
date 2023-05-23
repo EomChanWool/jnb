@@ -14,6 +14,8 @@ public interface NoticeService {
 	void registNotice(Map<String, Object> map);
 
 	Map<String, Object> selectNoticeInfo(Map<String, Object> map);
+	
+	Map<String, Object> detailNotice(Map<String, Object> map);
 
 	void modifyNotice(Map<String, Object> map);
 

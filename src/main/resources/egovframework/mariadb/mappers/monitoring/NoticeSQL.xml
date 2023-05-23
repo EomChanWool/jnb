@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="apc.sl.monitoring.notice.service.impl.NoticeMapper">
+<mapper
+	namespace="apc.sl.monitoring.notice.service.impl.NoticeMapper">
 	<select id="selectNoticeListToCnt" resultType="int">
 		SELECT COUNT(*) FROM sm_notice
 		WHERE 1=1
@@ -15,15 +16,15 @@
 			</if>
 		</if>
 	</select>
-	
+
 	<select id="selectNoticeList" resultType="egovMap">
 		SELECT
-			no_idx,
-			IF(LENGTH(no_title) > 50, CONCAT(LEFT(no_title, 15),'...'), no_title) AS no_title,
-			no_cont,
-			no_use,
-			DATE_FORMAT(no_reg_dte, '%Y-%m-%d %H:%i') AS no_reg_dte,
-			no_reg_mem
+		no_idx,
+		IF(LENGTH(no_title) > 50, CONCAT(LEFT(no_title, 15),'...'), no_title) AS no_title,
+		no_cont,
+		no_use,
+		DATE_FORMAT(no_reg_dte, '%Y-%m-%d %H:%i') AS no_reg_dte,
+		no_reg_mem
 		FROM sm_notice
 		WHERE 1=1
 		<if test="searchCondition == '제목'">
@@ -39,46 +40,51 @@
 		ORDER BY no_idx DESC
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
-	
+
+	<select id="detailNotice" resultType="egovMap">
+		SELECT no_title, no_cont, no_use, no_reg_mem, date_format(no_reg_dte,'%Y-%m-%d %h:%i')AS no_reg_dte FROM sm_notice
+		WHERE no_idx = #{noIdx}
+	</select>
+
 	<insert id="registNotice">
 		INSERT INTO sm_notice
-			(
-			no_title,
-			no_cont,
-			no_use,
-			no_reg_dte,
-			no_reg_mem
-			)
+		(
+		no_title,
+		no_cont,
+		no_use,
+		no_reg_dte,
+		no_reg_mem
+		)
 		VALUES
-			(
-			#{noTitle},
-			#{noCont},
-			#{noUse},
-			NOW(),
-			#{userId}
-			)
+		(
+		#{noTitle},
+		#{noCont},
+		#{noUse},
+		NOW(),
+		#{userId}
+		)
 	</insert>
-	
+
 	<select id="selectNoticeInfo" resultType="egovMap">
 		SELECT
-			no_idx,
-			no_title,
-			no_cont,
-			no_use
+		no_idx,
+		no_title,
+		no_cont,
+		no_use
 		FROM sm_notice
 		WHERE no_idx = #{noIdx}
 	</select>
-	
+
 	<update id="modifyNotice">
 		UPDATE sm_notice SET
-			no_title = #{noTitle},
-			no_cont = #{noCont},
-			no_use = #{noUse},
-			no_edt_dte = NOW(),
-			no_edt_mem = #{userId}
+		no_title = #{noTitle},
+		no_cont = #{noCont},
+		no_use = #{noUse},
+		no_edt_dte = NOW(),
+		no_edt_mem = #{userId}
 		WHERE no_idx = #{noIdx}
 	</update>
-	
+
 	<delete id="deleteNotice">
 		DELETE FROM sm_notice WHERE no_idx = #{noIdx}
 	</delete>

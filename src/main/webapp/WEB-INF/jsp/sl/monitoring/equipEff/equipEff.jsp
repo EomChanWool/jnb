@@ -48,31 +48,11 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">생산실적 현황</h1>
+                    <h1 class="h3 mb-2 text-gray-800">수주대실적 현황</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                        
-                        <div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/prodAggregate/prodAggregate.do" method="post">
-									
-									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
-									
-									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
-						    			
-						    			<c:forEach var="list" items="${prYearList}" varStatus="status">
-						    				<option value="${list.prYear}" <c:if test="${searchVO.searchCondition2 eq list.prYear or status.count eq 1}">selected="selected"</c:if>>${list.prYear}년도</option>
-						    			</c:forEach>
-						    		</select>
-						    								
-   									
-						    	</form>
-						    	
-	                           
-							</div> 
-                        
-                        </div>
+                       
                         <div class="card-body">
                             <div class="table-responsive">
 								<div id="graph" style="width: 100%; height:500px;"></div>
@@ -113,47 +93,40 @@
 	$(function() {
 		$('#monitoringMenu').addClass("active");
 		$('#monitoring').addClass("show");
-		$('#prodAggregate').addClass("active");
-		 $('#searchCondition2').change(function(){
+		$('#equipEff').addClass("active");
+		/*  $('#searchCondition2').change(function(){
 				listForm.submit();
-			});
+			}); */
 		
-		window.onresize = function() {
+		/* window.onresize = function() {
 			location.reload();
-		}
+		} */
 	});
 	
-	var chartDom = document.getElementById('graph');
+	 var chartDom = document.getElementById('graph');
 	var myChart = echarts.init(chartDom);
 	var option;
 	
-	let date = [];
+	let faName = [];
 	
-
-	let prodCnt = [];
+	let percent = [];
 	
-	let orderCnt = [];
-
 	
 	const dataMin = 0;
 	const dataMax = 0;
 	const dataInterval = 1000;
 	
-	
-	<c:forEach items="${ordersList}" var="list">
-		orderCnt.push('${list.orCnt}');
+	<c:forEach items="${faName}" var="list">
+		
+	faName.push('${list}');
 	</c:forEach>
 	
 	
-	<c:forEach items="${prodList}" var="list">
-		date.push('${list.month}월');
-		prodCnt.push('${list.prCnt}');
+	<c:forEach items="${percent}" var="list">
+	percent.push('${list}');
 	</c:forEach>
 	
 	
-	
-	
-	console.log(prodCnt);
 	
 	option = {
 			  tooltip: {
@@ -176,12 +149,12 @@
 			    }
 			  },
 			  legend: {
-			    data: ['수주건수', '생산건수']
+			    data: ['가동률']
 			  },
 			  xAxis: [
 			    {
 			      type: 'category',
-			      data: date,
+			      data: faName,
 			      axisPointer: {
 			        type: 'shadow'
 			      }
@@ -190,40 +163,28 @@
 			  yAxis: [
 			    {
 			      type: 'value',
-			      name: '개수',
+			      name: '가동률',
 			     
 			      
 			      axisLabel: {
-			        formatter: '{value} EA'
+			        formatter: '{value} %'
 			      }
 			    }
 			  ],
 			  series: [
-			  
-				  {
-				      name: '수주건수',
-				      type: 'bar',
-				      tooltip: {
-				        valueFormatter: function (value) {
-				          return value + ' EA';
-				        }
-				      },
-				      data: orderCnt
-				    },
 			    {
-		    	name: '생산건수',
-			    type: 'bar',
-			    tooltip: {
-			      valueFormatter: function (value) {
-			        return value + ' EA';
-			      }
-			    },
-			    data: prodCnt
+			      name: '가동률',
+			      type: 'bar',
+			      tooltip: {
+			        valueFormatter: function (value) {
+			          return value + ' %';
+			        }
+			      },
+			      data: percent
 			    }
-			   
 			  ]
 			};
-	option && myChart.setOption(option);
+	option && myChart.setOption(option); 
 	</script>
 </body>
 

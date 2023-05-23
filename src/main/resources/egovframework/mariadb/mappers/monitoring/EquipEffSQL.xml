@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="apc.sl.monitoring.equipEff.service.impl.EquipEffMapper">
+
+	<select id="selectEquipEff" resultType="egovMap">
+		SELECT a.fa_idx, a.fa_name, date_format(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS
+		fa_reg_dte, SUM(b.no_time) AS no_time
+		FROM sm_facility a
+		JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
+		GROUP BY a.fa_idx, a.fa_name, a.fa_reg_dte
+
+	</select>
+
+</mapper>

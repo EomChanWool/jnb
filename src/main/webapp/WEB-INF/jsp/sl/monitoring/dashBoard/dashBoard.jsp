@@ -64,6 +64,27 @@
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        
+                        <div class="search">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/ordersOutput/ordersOutput.do" method="post">
+									
+									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
+									
+									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
+						    			
+						    			<c:forEach var="list" items="${orYearList}" varStatus="status">
+						    				<option value="${list.orYear}" <c:if test="${searchVO.searchCondition2 eq list.orYear or status.count eq 1}">selected="selected"</c:if>>${list.orYear}년도</option>
+						    			</c:forEach>
+						    		</select>
+						    								
+   									
+						    	</form>
+						    	
+	                           
+							</div>
+                        
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/dashBoard.do" method="post">
@@ -75,7 +96,7 @@
 								    </div>
 								    <div class="cont">
 								      <h1>생산실적현황</h1>
-								      <div id="actualOutputGraph" style="width: 100%; height:300px;"></div>
+								      <div id="prodAggregateGraph" style="width: 100%; height:300px;"></div>
 								    </div>
 								    <div class="cont stockState scroll">
 								      <h1>재고현황</h1>
@@ -83,14 +104,14 @@
 										<thead>
 											<tr>
 												<th>자재명</th>
-												<th>현 재고량(EA)</th>
+												<th>현 재고량(kg)</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:forEach var="result" items="${itemList}" varStatus="status">
 												<tr>
 													<td>${result.itemName}</td>
-													<td>${result.itemCnt}</td>
+													<td>${result.itemStock}kg</td>
 												</tr>
 											</c:forEach>
 											<c:if test="${empty itemList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
@@ -115,6 +136,29 @@
 										</tbody>
 								      </table>
 								    </div>
+								    <div class="cont stockState scroll">
+								      <h1>라인가동현황</h1>
+								       <table class="table table-bordered" id="dataTable">
+										<thead>
+											<tr>
+												<th>탱크명</th>
+												<th>상태</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="result" items="${lineList}" varStatus="status">
+												<tr>
+													<td>${result.pdTank}</td>
+													<td><c:if test="${result.pdStatus == 1}">작동중</c:if>
+													<c:if test="${result.pdStatus == 0}">정지</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+											<c:if test="${empty lineList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
+										</tbody>
+								      </table>
+								    </div>
+								    
 						    	</div>
 					    	</form>
                             </div>
@@ -198,13 +242,14 @@
 	let deliveryCnt = [];
 	
 	const dataMin = 0;
-	const dataMax = 500;
-	const dataInterval = 100;
+	const dataMax = 0;
+	const dataInterval = 1000;
 	
 	<c:forEach items="${orderCntList}" var="list">
-		date.push('${list.years}년 ' + '${list.month}월');
+		date.push('${list.month}월');
 		orderCnt.push('${list.orderCnt}');
 	</c:forEach>
+	
 	
 	<c:forEach items="${prodCntList}" var="list">
 		prodCnt.push('${list.prodCnt}');
@@ -213,10 +258,11 @@
 	<c:forEach items="${deliveryCntList}" var="list">
 		deliveryCnt.push('${list.orderCnt}');
 	</c:forEach>
-
+	
+	
 	option = {
 			  tooltip: {
-			    trigger: 'item',
+			    trigger: 'axis',
 // 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
 				},
 			    axisPointer: {
@@ -250,11 +296,10 @@
 			    {
 			      type: 'value',
 			      name: '개수',
-			      min: dataMin,
-			      max: dataMax,
-			      interval: dataInterval,
+			     
+			      
 			      axisLabel: {
-			        formatter: '{value} EA'
+			        formatter: '{value} kg'
 			      }
 			    }
 			  ],
@@ -264,7 +309,7 @@
 			      type: 'bar',
 			      tooltip: {
 			        valueFormatter: function (value) {
-			          return value + ' EA';
+			          return value + ' kg';
 			        }
 			      },
 			      data: orderCnt
@@ -274,7 +319,7 @@
 			    type: 'bar',
 			    tooltip: {
 			      valueFormatter: function (value) {
-			        return value + ' EA';
+			        return value + ' kg';
 			      }
 			    },
 			    data: prodCnt
@@ -284,7 +329,7 @@
 			    type: 'bar',
 			    tooltip: {
 			      valueFormatter: function (value) {
-			        return value + ' EA';
+			        return value + ' kg';
 			      }
 			    },
 			    data: deliveryCnt
@@ -295,29 +340,41 @@
 	</script>
 	<script>
 	//생산실적 현황
-	var chartDom = document.getElementById('actualOutputGraph');
+	var chartDom = document.getElementById('prodAggregateGraph');
 	var myChart = echarts.init(chartDom);
 	var option;
 	
-	let actualOutputDate = [${year} + "년  " + ${month} + "월  " + ${day} +"일"];
-	let pressBendingCnt = ${pressBendingData.prReCnt};
-	let plcCnt = ${plcData.plCnt};
+	let date2 = [];
 	
-	const actualOutputDataMin = 0;
-	const actualOutputDataMax = 100;
-	const actualOutputDataInterval = 20;
+
+	let prodCnt2 = [];
+
+	let orderCnt2 = [];
+	
+	
+	<c:forEach items="${ordersList}" var="list">
+		orderCnt2.push('${list.orCnt}');
+	</c:forEach>
+	
+	<c:forEach items="${prodList}" var="list">
+		date2.push('${list.month}월');
+		prodCnt2.push('${list.prCnt}');
+	</c:forEach>
+	
+	
+	console.log(prodCnt2);
 	
 	option = {
 			  tooltip: {
-			    trigger: 'item',
-// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA',
+			    trigger: 'axis',
+// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
+				},
 			    axisPointer: {
 			    	type: 'cross',
 			    	axis: "auto",
 			    	crossStyle: {
 			        	color: '#999'
-			    	}
-			    }
+		    	}
 			  },
 			  toolbox: {
 			    feature: {
@@ -328,12 +385,12 @@
 			    }
 			  },
 			  legend: {
-			    data: ['프레스/벤딩', '취부/용접']
+			    data: ['수주건수', '생산건수']
 			  },
 			  xAxis: [
 			    {
 			      type: 'category',
-			      data: actualOutputDate,
+			      data: date2,
 			      axisPointer: {
 			        type: 'shadow'
 			      }
@@ -343,35 +400,37 @@
 			    {
 			      type: 'value',
 			      name: '개수',
-			      min: actualOutputDataMin,
-			      max: actualOutputDataMax,
-			      interval: actualOutputDataInterval,
+			     
+			      
 			      axisLabel: {
 			        formatter: '{value} EA'
 			      }
 			    }
 			  ],
 			  series: [
+				  
+				  {
+				      name: '수주건수',
+				      type: 'bar',
+				      tooltip: {
+				        valueFormatter: function (value) {
+				          return value + ' EA';
+				        }
+				      },
+				      data: orderCnt2
+				    },
+			  
 			    {
-			      name: '프레스/벤딩',
-			      type: 'bar',
-			      tooltip: {
-			        valueFormatter: function (value) {
-			          return value + ' EA';
-			        }
-			      },
-			      data: [pressBendingCnt]
-			    },
-			    {
-		    	name: '취부/용접',
+		    	name: '생산건수',
 			    type: 'bar',
 			    tooltip: {
 			      valueFormatter: function (value) {
 			        return value + ' EA';
 			      }
 			    },
-			    data: [plcCnt]
+			    data: prodCnt2
 			    }
+			   
 			  ]
 			};
 	option && myChart.setOption(option);

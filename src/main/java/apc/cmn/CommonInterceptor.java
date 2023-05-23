@@ -26,7 +26,6 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 		String str1 = request.getRequestURL().toString();
 		String[] str2 = str1.split("/");
 		Map<String, Object> userMap = (Map<String, Object>) session.getAttribute("memberVO");
-		
 		//사용자 권한 레벨
 		int userLev = Integer.parseInt(userMap.get("saLev")+"");
 		//프로그램 접근 권한 체크

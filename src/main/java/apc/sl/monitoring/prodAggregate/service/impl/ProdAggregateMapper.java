@@ -11,5 +11,7 @@ public interface ProdAggregateMapper {
 	List<?> selectProd(SearchVO searchVO);
 	
 	List<?> selectPrYearList(SearchVO searchVO);
+	
+	List<?> selectOrders(SearchVO searchVO);
 
 }

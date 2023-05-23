@@ -55,13 +55,14 @@ public class WostController {
 	}
 	
 	@RequestMapping("/sl/quality/wost/registWost.do")
-	public String registWost() {
+	public String registWost(ModelMap model) {
 		return "sl/quality/wost/wostRegist";
 	}
 	
 	@RequestMapping("/sl/quality/wost/registWostOk.do")
 	public String registWostOk(@ModelAttribute("searchVO") SearchVO searchVO, @RequestParam Map<String, Object> map, 
 													RedirectAttributes redirectAttributes, HttpSession session) throws Exception{
+		System.out.println("확인 1 : " + map);
 		MultipartFile uploadFile = searchVO.getUploadFile();
 		String fileName = "";
 		if(!uploadFile.isEmpty()) {
@@ -69,12 +70,15 @@ public class WostController {
             String ext = FilenameUtils.getExtension(originalFileName); // 확장자 구하기
             UUID uuid = UUID.randomUUID(); // UUID 구하기
             fileName = uuid + "." + ext;
+            System.out.println(fileName);
 			uploadFile.transferTo(new File(filePath + fileName + ""));
 		}
+		System.out.println("확인2");
 		map.put("doFilNm",fileName);
 		map.put("doOriginFilNm", uploadFile.getOriginalFilename());
 		map.put("userId", session.getAttribute("user_id"));
 		map.put("type", "작업표준서");
+		
 		wostService.registDocument(map);
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
 		return "redirect:/sl/quality/wost/wostList.do";

@@ -14,5 +14,7 @@ public interface DashBoardMapper {
 	Map<String, Object> selectNoticeInfo(Map<String, Object> map);
 
 	List<?> selectItemList();
+	
+	List<?> selectLineList();
 
 }
