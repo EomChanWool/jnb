@@ -42,6 +42,8 @@ public class EquipEffController {
 	//		str.add(temp.get("faRegDte")+"");		}
 		System.out.println("이큅리스트 : " + equipList);
 		
+		
+		
 		//등록일부터 지금까지의 시간 (분)
 		List<Long> str = new ArrayList<>();
 		for (Map<String, Object> temp : equipList) {
@@ -61,7 +63,10 @@ public class EquipEffController {
 		for(int i=0;i<equipList.size();i++) {
 			Map<String, Object> temp2 = new HashMap<>();
 			temp2 = equipList.get(i);
+			String status = temp2.get("faStatus")+"";
+			if(status.equals("가동")) {
 			str2.add(temp2.get("faName")+"");
+			}
 		}
 		System.out.println(str2);
 		model.put("faName", str2);
@@ -80,7 +85,7 @@ public class EquipEffController {
 		}
 		
 		System.out.println(str3);
-		//가동률
+		//가동상태 인 비율 계산
 		List<Long> str4 = new ArrayList<>();
 		
 		for(int i=0;i<equipList.size();i++) {

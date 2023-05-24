@@ -85,6 +85,13 @@ public class ShipmentController {
 		//sm_orders의 or_state상태를 출하로(3)
 		map.put("state","3");
 		shipmentService.updateOrders(map);
+		
+		/*
+		 * if(map.get("shState").equals("확인")) {
+		 * 
+		 * }
+		 */
+		
 	
 		redirectAttributes.addFlashAttribute("msg", "등록 되었습니다.");
 		return "redirect:/sl/material/shipment/shipmentList.do";

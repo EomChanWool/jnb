@@ -86,7 +86,7 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${dispensingList}" varStatus="status">
-	                                   		<tr>
+	                                   		<tr onclick="fn_detail_dispensing('${result.diIdx}', '${result.woIdx}')" style="cursor: pointer;">
 	                                            <td>${result.woIdx}</td>
 												<td>${result.diRegDte}</td>
 												<td>${result.diManager}</td>
@@ -168,10 +168,9 @@
 		listForm.submit();
 	}
 	
-	function fn_detail_dispensing(inIdx,woIdx,itemCd){
-		listForm.inIdx.value = inIdx;
+	function fn_detail_dispensing(diIdx,woIdx){
+		listForm.diIdx.value = diIdx;
 		listForm.woIdx.value = woIdx;
-		listForm.itemCd.value = itemCd;
 		listForm.action = "${pageContext.request.contextPath}/sl/material/dispensing/detailDispensing.do";
 		listForm.submit();
 	}

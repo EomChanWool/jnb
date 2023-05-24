@@ -98,7 +98,8 @@
 			#{searchEdDate}
 
 		</if>
-
+		ORDER BY or_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 
 	<select id="selectStateMonthListToCnt" resultType="int">

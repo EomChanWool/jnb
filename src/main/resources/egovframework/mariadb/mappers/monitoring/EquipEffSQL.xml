@@ -4,11 +4,24 @@
 	namespace="apc.sl.monitoring.equipEff.service.impl.EquipEffMapper">
 
 	<select id="selectEquipEff" resultType="egovMap">
-		SELECT a.fa_idx, a.fa_name, date_format(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS
-		fa_reg_dte, SUM(b.no_time) AS no_time
+		<!-- SELECT a.fa_idx,
+		a.fa_name, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS fa_reg_dte,
+		IFNULL(SUM(b.no_time), 0) AS no_time, a.fa_status
 		FROM sm_facility a
-		JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
-		GROUP BY a.fa_idx, a.fa_name, a.fa_reg_dte
+		LEFT JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
+		GROUP BY a.fa_idx,
+		a.fa_name, a.fa_reg_dte -->
+
+
+		SELECT a.fa_idx
+		, a.fa_name
+		, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS fa_reg_dte
+		, IFNULL(SUM(b.no_time), 0) AS no_time
+		, a.fa_status
+		FROM sm_facility a
+		LEFT JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
+		WHERE a.fa_status NOT LIKE '비가동'
+		GROUP BY a.fa_idx, a.fa_name, a.fa_reg_dte , a.fa_status
 
 	</select>
 

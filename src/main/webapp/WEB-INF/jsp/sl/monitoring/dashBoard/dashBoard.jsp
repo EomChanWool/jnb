@@ -59,31 +59,9 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="overflow: hidden;">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>
-
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        
-                        <div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/ordersOutput/ordersOutput.do" method="post">
-									
-									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
-									
-									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
-						    			
-						    			<c:forEach var="list" items="${orYearList}" varStatus="status">
-						    				<option value="${list.orYear}" <c:if test="${searchVO.searchCondition2 eq list.orYear or status.count eq 1}">selected="selected"</c:if>>${list.orYear}년도</option>
-						    			</c:forEach>
-						    		</select>
-						    								
-   									
-						    	</form>
-						    	
-	                           
-							</div>
-                        
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -97,6 +75,10 @@
 								    <div class="cont">
 								      <h1>생산실적현황</h1>
 								      <div id="prodAggregateGraph" style="width: 100%; height:300px;"></div>
+								    </div>
+								     <div class="cont">
+								      <h1>설비종합효율</h1>
+								      <div id="equipEffGraph" style="width: 100%; height:300px;"></div>
 								    </div>
 								    <div class="cont stockState scroll">
 								      <h1>재고현황</h1>
@@ -118,25 +100,7 @@
 										</tbody>
 								      </table>
 								    </div>
-								    <div class="cont notice scroll">
-								      <h1>공지사항</h1>
-								       <table class="table table-bordered" id="dataTable">
-										<thead>
-											<tr>
-												<th>내용</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="result" items="${noticeList}" varStatus="status">
-												<tr>
-													<td>${result.noCont}</td>
-												</tr>
-											</c:forEach>
-											<c:if test="${empty noticeList}"><tr><td colspan='1'>결과가 없습니다.</td><del></del></c:if>
-										</tbody>
-								      </table>
-								    </div>
-								    <div class="cont stockState scroll">
+								      <div class="cont stockState scroll">
 								      <h1>라인가동현황</h1>
 								       <table class="table table-bordered" id="dataTable">
 										<thead>
@@ -158,6 +122,26 @@
 										</tbody>
 								      </table>
 								    </div>
+								    <div class="cont notice scroll">
+								      <h1>공지사항</h1>
+								       <table class="table table-bordered" id="dataTable">
+										<thead>
+											<tr>
+												<th>내용</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="result" items="${noticeList}" varStatus="status">
+												<tr>
+													<td>${result.noCont}</td>
+												</tr>
+											</c:forEach>
+											<c:if test="${empty noticeList}"><tr><td colspan='1'>결과가 없습니다.</td><del></del></c:if>
+										</tbody>
+								      </table>
+								    </div>
+								  
+								   
 								    
 						    	</div>
 					    	</form>
@@ -435,6 +419,92 @@
 			};
 	option && myChart.setOption(option);
 	</script>
+	
+	<script>
+	
+	 var chartDom = document.getElementById('equipEffGraph');
+		var myChart = echarts.init(chartDom);
+		var option;
+		
+		let faName = [];
+		
+		let percent = [];
+		
+		
+		
+		
+		<c:forEach items="${faName}" var="list">
+			
+		faName.push('${list}');
+		</c:forEach>
+		
+		
+		<c:forEach items="${percent}" var="list">
+		percent.push('${list}');
+		</c:forEach>
+		
+		console.log(percent);
+		
+		option = {
+				  tooltip: {
+				    trigger: 'axis',
+//	 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
+					},
+				    axisPointer: {
+				    	type: 'cross',
+				    	axis: "auto",
+				    	crossStyle: {
+				        	color: '#999'
+			    	}
+				  },
+				  toolbox: {
+				    feature: {
+				      dataView: { show: false, readOnly: false },
+				      magicType: { show: false, type: ['line', 'bar'] },
+				      restore: { show: false },
+				      saveAsImage: { show: true }
+				    }
+				  },
+				  legend: {
+				    data: ['가동률']
+				  },
+				  xAxis: [
+				    {
+				      type: 'category',
+				      data: faName,
+				      axisPointer: {
+				        type: 'shadow'
+				      }
+				    }
+				  ],
+				  yAxis: [
+				    {
+				      type: 'value',
+				      name: '가동률',
+				     
+				      
+				      axisLabel: {
+				        formatter: '{value} %'
+				      }
+				    }
+				  ],
+				  series: [
+				    {
+				      name: '가동률',
+				      type: 'bar',
+				      tooltip: {
+				        valueFormatter: function (value) {
+				          return value + ' %';
+				        }
+				      },
+				      data: percent
+				    }
+				  ]
+				};
+		option && myChart.setOption(option);
+	
+	</script>
+	
 </body>
 
 </html>

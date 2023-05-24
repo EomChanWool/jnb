@@ -48,7 +48,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">수주대실적 현황</h1>
+                    <h1 class="h3 mb-2 text-gray-800">설비종합효율</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">

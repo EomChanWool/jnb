@@ -47,15 +47,14 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">불출 수정</h1>
+                    <h1 class="h3 mb-2 text-gray-800">불출 상세보기</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            	<form action="${pageContext.request.contextPath}/sl/material/dispensing/modifyDispensingOk.do" name="modifyForm" method="post">
+                            	
                             		<input type="hidden" name="diIdx" value="${dispensingVO.diIdx}">
-                            		<%-- <input type="hidden" name="curItemCd" value="${investVO.curItemCd}">
-                            		<input type="hidden" name="curCnt" value="${investVO.curCnt}"> --%>
+                            		
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -82,11 +81,11 @@
 												<th>투입수량(kg)  <span class="req">*</span></th>
 												<td><input type="text" class="form-control" name="cnt" id="cnt" value="${dispensingVO.cnt}" readonly/></td>
 												<th>투입일  <span class="req">*</span></th>
-												<td><input type="datetime-local" class="form-control" name="diRegDte" id="diRegDte" value="${dispensingVO.diRegDte}"></td>
+												<td><input type="datetime-local" class="form-control" name="diRegDte" id="diRegDte" value="${dispensingVO.diRegDte}" readonly></td>
 											</tr>
 											<tr>
 												<th>담당자  <span class="req">*</span></th>
-												<td colspan="3"><input type="text" class="form-control" name="diManager" id="diManager" value="${dispensingVO.diManager}"></td>
+												<td colspan="3"><input type="text" class="form-control" name="diManager" id="diManager" value="${dispensingVO.diManager}" readonly></td>
 											</tr>
 										</tbody>
 	                                </table>
@@ -119,10 +118,10 @@
                                    		</tbody>
 	                                </table>
 	                                
-                                </form>
+                                
                                 <div class="btn_bottom_wrap">
-									<button type="submit" class="btn_ok" onclick="fn_modify_dispensing()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do'">취소</span>
+									
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/material/dispensing/dispensingList.do'">목록가기</span>
 								</div>
                             </div>
                         </div>
@@ -158,22 +157,7 @@
     <script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
-	function fn_modify_dispensing(){
-		var num = /^\d+$/;
-		
-		
-		if($('#diRegDte').val() == ''){
-			alert("투입일을 확인 바랍니다.");
-			return;
-		}
-		
-		if($('#diManager').val() == ''){
-			alert("담당자를 확인 바랍니다.");
-			return;
-		}
-		
-		modifyForm.submit();
-	}
+
 	
 	
 	

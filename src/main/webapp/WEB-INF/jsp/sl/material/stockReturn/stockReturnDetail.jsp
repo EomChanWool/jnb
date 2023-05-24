@@ -68,7 +68,7 @@
 										</tr>
 										<tr>
 											<th>환입일</th>
-											<td><span class="form-control val-area" id="stCnt">${stockReturnVO.diRegDte}</span></td>
+											<td><span class="form-control val-area">${stockReturnVO.diRegDte}</span></td>
 											<th>공정그룹</th>
 											<td><span class="form-control val-area">${stockReturnVO.woGroup}</span></td>
 										</tr>
@@ -146,8 +146,8 @@
 		$('#material').addClass("show");
 		$('#stockReturnList').addClass("active");
 		
-		let cnt = $('#stCnt').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		$('#stCnt').text(cnt);
+		let cnt = $('#cnt').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$('cnt').text(cnt);
 	});
 	</script>
 </body>

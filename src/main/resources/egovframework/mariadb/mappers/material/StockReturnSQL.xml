@@ -4,17 +4,24 @@
 	namespace="apc.sl.material.stockReturn.service.impl.StockReturnMapper">
 
 	<select id="selectStockReturnListToCnt" resultType="int">
-		SELECT COUNT(*) FROM sm_reversal a
-		JOIN sm_insp_change b ON a.WO_IDX =
-		b.WO_IDX
-		JOIN sm_work_order c ON a.WO_IDX = c.WO_IDX
-		JOIN sm_orders d ON
-		c.OR_IDX = d.OR_IDX
-		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		<!-- SELECT COUNT(*) FROM sm_reversal a JOIN sm_insp_change b ON a.WO_IDX 
+			= b.WO_IDX JOIN sm_work_order c ON a.WO_IDX = c.WO_IDX JOIN sm_orders d ON 
+			c.OR_IDX = d.OR_IDX JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX JOIN sm_account 
+			f ON e.A_IDX = f.AC_CODE JOIN sm_item g ON c.ITEM_CD = g.ITEM_CD -->
+		SELECT COUNT(*) AS count_value
+		FROM (
+		SELECT COUNT(*) AS cnt
+		FROM
+		sm_reversal a
+		JOIN sm_insp_change b ON a.WO_IDX = b.WO_IDX
 		JOIN
-		sm_account f ON e.A_IDX = f.AC_CODE
-		JOIN sm_item g ON c.ITEM_CD =
-		g.ITEM_CD
+		sm_work_order c ON a.WO_IDX = c.WO_IDX
+		JOIN sm_orders d ON c.OR_IDX =
+		d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX = e.ES_IDX
+		JOIN sm_account f ON
+		e.A_IDX = f.AC_CODE
+		JOIN sm_item g ON c.ITEM_CD = g.ITEM_CD
 		<if test="searchKeyword != ''">
 			AND wo_name LIKE CONCAT('%',#{searchKeyword},'%')
 		</if>
@@ -26,6 +33,8 @@
 			AND di_reg_dte <![CDATA[<=]]>
 			#{searchEdDate}
 		</if>
+		GROUP BY a.RE_IDX
+		) AS q
 
 
 	</select>
@@ -50,7 +59,7 @@
 		e.A_IDX = f.AC_CODE
 		JOIN sm_item g ON c.ITEM_CD =
 		g.ITEM_CD
-
+		where 1=1
 		<if test="searchKeyword != ''">
 			AND wo_name LIKE CONCAT('%',#{searchKeyword},'%')
 		</if>
@@ -62,9 +71,10 @@
 			AND di_reg_dte <![CDATA[<=]]>
 			#{searchEdDate}
 		</if>
-
+		GROUP BY a.RE_IDX
 		ORDER BY re_idx DESC
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		LIMIT #{recordCountPerPage}
+		OFFSET #{firstIndex}
 
 	</select>
 
@@ -104,7 +114,14 @@
 		a.ITEM_CD =
 		e.ITEM_CD
 		JOIN sm_insp_change f ON f.WO_IDX = a.WO_IDX
-		WHERE a.WO_IDX = #{woIdx}
+		WHERE
+		a.WO_IDX = #{woIdx}
+		AND f.ch_idx = (
+		SELECT MAX(ch_idx)
+		FROM
+		sm_insp_change
+		WHERE WO_IDX = #{woIdx}
+		)
 	</select>
 
 	<select id="selectWoIdx" resultType="int">
@@ -115,7 +132,8 @@
 	<select id="selectDetailInfo" resultType="egovMap">
 		SELECT a.re_idx,
 		a.wo_idx, c.wo_name, g.item_name, DATE_FORMAT(a.di_reg_dte,
-		'%Y-%m-%d %H:%i') AS di_reg_dte, a.wo_group, f.ac_name,
+		'%Y-%m-%d
+		%H:%i') AS di_reg_dte, a.wo_group, f.ac_name,
 		a.re_cnt, a.re_manager,
 		a.item_cd1,
 		a.item_name1, a.cnt1,
@@ -141,6 +159,7 @@
 		c.ITEM_CD = g.ITEM_CD
 		WHERE
 		a.re_idx = #{reIdx}
+		GROUP BY a.RE_IDX
 
 	</select>
 
@@ -209,10 +228,21 @@
 	<update id="updateWorkOrderCnt">
 		UPDATE sm_work_order
 		SET wo_pdt_cnt = wo_pdt_cnt + (
-		SELECT IFNULL(SUM(IFNULL(cnt1, 0) + IFNULL(cnt2, 0) + IFNULL(cnt3,
-		0) + IFNULL(cnt4, 0) + IFNULL(cnt5, 0) + IFNULL(cnt6, 0) + IFNULL(cnt7, 0) + IFNULL(cnt8, 0) + IFNULL(cnt9, 0) + IFNULL(cnt10, 0)), 0)
-		FROM sm_reversal
+		SELECT IFNULL(SUM(IFNULL(cnt1, 0) + IFNULL(cnt2, 0) + IFNULL(cnt3, 0)
+		+
+		IFNULL(cnt4, 0) + IFNULL(cnt5, 0) + IFNULL(cnt6, 0) + IFNULL(cnt7, 0)
+		+
+		IFNULL(cnt8, 0) + IFNULL(cnt9, 0) + IFNULL(cnt10, 0)), 0)
+		FROM
+		sm_reversal
 		WHERE sm_reversal.wo_idx = sm_work_order.wo_idx
+		AND
+		sm_reversal.re_idx = (
+		SELECT MAX(re_idx)
+		FROM sm_reversal
+		WHERE
+		sm_reversal.wo_idx = sm_work_order.wo_idx
+		)
 		)
 		WHERE wo_idx = #{woIdx}
 
@@ -226,12 +256,14 @@
 		wo_idx = #{woIdx}
 		and pr_list_nm = '혼합'
 	</update>
-	
-	<update id="updateProdResult2">update sm_prod_result set
+
+	<update id="updateProdResult2">
+		update sm_prod_result set
 		pr_re_re_st = 'N'
 		where
 		wo_idx = #{woIdx}
-		and pr_list_nm = '혼합/반응'</update>
+		and pr_list_nm = '혼합/반응'
+	</update>
 
 	<update id="updateProcessSet">
 		update sm_process set
@@ -242,7 +274,7 @@
 		pr_fin_cnt = 2
 		where wo_idx = #{woIdx}
 	</update>
-	
+
 	<update id="updateProcessSet2">
 		update sm_process set
 		pr_cur_seq = 4,
@@ -251,7 +283,7 @@
 		pr_cur_nm = '품질검사',
 		pr_fin_cnt = 3
 		where wo_idx = #{woIdx}
-	
+
 	</update>
 
 	<delete id="deleteStockReturn">

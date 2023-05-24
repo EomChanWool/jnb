@@ -2,6 +2,9 @@ package apc.sl.monitoring.dashBoard.web;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import apc.sl.monitoring.actualOutput.service.ActualOutputService;
 import apc.sl.monitoring.actualOutput.web.ActualOutputController;
 import apc.sl.monitoring.dashBoard.service.DashBoardService;
+import apc.sl.monitoring.equipEff.service.EquipEffService;
 import apc.sl.monitoring.ordersOutput.service.OrdersOutputService;
 import apc.sl.monitoring.prodAggregate.service.ProdAggregateService;
 import apc.util.SearchVO;
@@ -30,7 +34,9 @@ public class DashBoardController {
 	@Autowired
 	private OrdersOutputService ordersOutputService;
 	@Autowired
-	private ProdAggregateService prodAggregateService;
+	private ProdAggregateService prodAggregateService;	
+	@Autowired
+	private EquipEffService equipEffService;
 	
 	@RequestMapping("/sl/monitoring/dashBoard.do")
 	public String dashBoardList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
@@ -99,6 +105,80 @@ public class DashBoardController {
 		//라인가동현황
 		List<?> lineList = dashBoardService.selectLineList();
 		model.put("lineList", lineList);
+		
+		
+		LocalDateTime now2 = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String nowFor = now2.format(formatter);
+		
+		System.out.println(nowFor);
+		
+		List<Map<String, Object>> equipList = equipEffService.selectEquipEff();
+		
+	//	List<String> str = new ArrayList<String>();
+	//	for(int i=0;i<equipList.size();i++) {
+	//		Map<String, Object> temp = new HashMap<>();
+	//		temp = equipList.get(i);
+	//		str.add(temp.get("faRegDte")+"");		}
+		
+		
+		//등록일부터 지금까지의 시간 (분)
+		List<Long> str = new ArrayList<>();
+		for (Map<String, Object> temp : equipList) {
+		    String faRegDteStr = temp.get("faRegDte") + "";
+		    LocalDateTime faRegDte = LocalDateTime.parse(faRegDteStr, formatter);
+		    LocalDateTime nowDateTime = LocalDateTime.parse(nowFor, formatter);
+		    
+		    long minutesDiff = java.time.Duration.between(faRegDte, nowDateTime).toMinutes();
+		    str.add(minutesDiff);
+		}
+
+
+		
+		//설비이름
+		List<String> str2 = new ArrayList<String>();
+		
+		for(int i=0;i<equipList.size();i++) {
+			Map<String, Object> temp2 = new HashMap<>();
+			temp2 = equipList.get(i);
+			str2.add(temp2.get("faName")+"");
+		}
+		
+		model.put("faName", str2);
+		//등록일 - 비가동이었던 총 시간
+		List<Long> str3 = new ArrayList<>();
+		
+		for(int i=0;i<equipList.size();i++) {
+			Map<String, Object> temp3 = new HashMap<>();
+			temp3 = equipList.get(i);
+			String noTime = temp3.get("noTime") +"";
+			long regTime = str.get(i);
+			long noTimeMin = Long.parseLong(noTime);
+			
+			long minTime = regTime-noTimeMin;
+			str3.add(minTime);
+		}
+		
+		
+		//가동상태 인 비율 계산
+		List<Long> str4 = new ArrayList<>();
+		
+		for(int i=0;i<equipList.size();i++) {
+			double percent = ((double) str3.get(i) /(double) str.get(i)) * 100;
+			
+			long percentLong = (long) percent;
+			
+			
+			str4.add(percentLong);
+		}
+		
+		
+		model.put("percent", str4);
+		
+		
+		
+		
+		
 		return "sl/monitoring/dashBoard/dashBoard";
 	}
 	

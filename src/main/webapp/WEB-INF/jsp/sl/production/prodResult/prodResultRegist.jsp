@@ -86,9 +86,9 @@
 												</td>
 											</tr>
 											<tr>
-												<th>작업시작일</th>
+												<th>작업시작일<span class="req">*</span></th>
 												<td><input type="datetime-local" class="form-control" name="prReStDte" id="prReStDte" value="${prodResultVO.prReStDte}"></td>
-												<th>작업종료일</th>
+												<th>작업종료일<span class="req">*</span></th>
 												<td><input type="datetime-local" class="form-control" name="prReEdDte" id="prReEdDte" value="${prodResultVO.prReEdDte}"></td>
 											</tr>
 										</tbody>
