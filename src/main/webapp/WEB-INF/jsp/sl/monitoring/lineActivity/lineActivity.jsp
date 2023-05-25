@@ -60,7 +60,7 @@
 								<form name="listForm" class="listForm"
 									action="${pageContext.request.contextPath}/sl/monitoring/lineActivity/lineActivity.do"
 									method="post">
-									<input type="hidden" name="reIdx"> <input type="hidden"
+									<input type="hidden" name="pdIdx"> <input type="hidden"
 										name="pageIndex"
 										value="<c:out value='${searchVO.pageIndex}'/>" />
 
@@ -74,20 +74,20 @@
 								<table class="table table-bordered" id="dataTable">
 									<thead>
 										<tr>
-											<th>번호</th>
+											
 											<th>탱크명</th>
 											<th>원료명</th>
 											<th>설정값</th>
 											<th>실제값</th>
 											<th>상태</th>
-											<th>작동,비작동 시간</th>
+											<th>등록시간</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach var="result" items="${lineActivity}"
 											varStatus="status">
 											<tr>
-												<td>${result.pdIdx}</td>
+												
 												<td>${result.pdTank}</td>
 												<td>${result.pdMaterial}</td>
 												<td>${result.pdSetting}</td>

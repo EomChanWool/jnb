@@ -9,6 +9,7 @@
 	
 	<select id="selectLineActivity" resultType="egovMap">
 	SELECT pd_idx, pd_tank, pd_material, pd_setting, pd_act_val, pd_status, date_format(pd_reg_dte, '%Y-%m-%d %H:%i') AS pd_reg_dte FROM sm_plc_data
+	ORDER BY pd_idx desc
 	</select>
 
 

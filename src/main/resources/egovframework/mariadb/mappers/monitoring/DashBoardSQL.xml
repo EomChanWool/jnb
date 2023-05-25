@@ -30,8 +30,15 @@
 	</select>
 
 	<select id="selectLineList" resultType="egovMap">
-		SELECT pd_idx, pd_tank, pd_status FROM sm_plc_data
-		ORDER BY pd_idx desc
+		SELECT pd_idx, pd_tank,
+		pd_status
+		FROM sm_plc_data
+		WHERE (pd_tank, pd_idx) IN (
+		SELECT pd_tank, MAX(pd_idx)
+		FROM sm_plc_data
+		GROUP BY pd_tank
+		)
+		ORDER BY pd_tank, pd_idx DESC
 	</select>
 
 </mapper>
