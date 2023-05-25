@@ -10,6 +10,7 @@
 		JOIN sm_sys_authority c
 		ON b.sa_idx = c.sa_idx
 		WHERE a.p_url LIKE CONCAT('%',#{str},'%')
+		GROUP BY c.SA_LEV
 	</select>
 	
 	<select id="selectAccess" resultType="int">

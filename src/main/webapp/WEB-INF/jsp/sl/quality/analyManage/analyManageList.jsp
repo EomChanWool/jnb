@@ -101,7 +101,7 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${analyManageList}" varStatus="status">
-	                                   		<tr>
+	                                   		<tr onclick="fn_detail_analyManage('${result.tiIdx}')" style="cursor: pointer;">
 	                                   			<td>${result.tiName}</td>
 	                                   			<td>${result.tiAnalyst}</td>
 	                                   			<td>${result.tiDte}</td>
@@ -181,6 +181,13 @@
 	function fn_modify_analyManage_go(tiIdx){
 		listForm.tiIdx.value = tiIdx;
 		listForm.action = "${pageContext.request.contextPath}/sl/production/analyManage/modifyAnalyManage.do";
+		listForm.submit();
+	}
+	
+	
+	function fn_detail_analyManage(tiIdx){
+		listForm.tiIdx.value = tiIdx;
+		listForm.action = "${pageContext.request.contextPath}/sl/production/analyManage/detailAnalyManage.do";
 		listForm.submit();
 	}
 	

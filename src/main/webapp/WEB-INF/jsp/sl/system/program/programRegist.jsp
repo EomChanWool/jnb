@@ -74,8 +74,8 @@
 												<th>사용여부</th>
 												<td>
 													<select class="form-control" name="pUseFlag" id="pUseFlag">
-														<option value="Y">사용</option>
 														<option value="N">미사용</option>
+														<option value="Y">사용</option>
 													</select>
 												</td>
 											</tr>

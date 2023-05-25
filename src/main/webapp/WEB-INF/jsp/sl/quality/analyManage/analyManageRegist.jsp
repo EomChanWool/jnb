@@ -12,6 +12,7 @@
 	.val-area{
 		text-align: left;
 	}
+	
 </style>
 <body id="page-top">
     <!-- Page Wrapper -->

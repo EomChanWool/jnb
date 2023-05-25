@@ -25,7 +25,8 @@
 		ti_analyst,
 		ti_dte,
 		ti_state
-		FROM sm_analysis_info
+		FROM
+		sm_analysis_info
 		WHERE 1=1
 		<if test="searchKeyword != ''">
 			AND ti_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -56,6 +57,12 @@
 		do_name FROM sm_document WHERE do_type = #{str} AND do_state = 0
 	</select>
 
+	<select id="detailAnalysis" resultType="egovMap">
+		SELECT ti_idx, wo_idx, az_idx, ti_state, ti_analyst, date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte FROM
+		sm_analysis_info
+		WHERE ti_idx = #{tiIdx}
+	</select>
+
 	<insert id="registAnalysisData">
 		INSERT INTO sm_anlz_data
 		(
@@ -76,11 +83,14 @@
 		)
 		VALUES
 		(
-		(SELECT CONCAT(CONCAT('AZ',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,6)),'-',
+		(SELECT
+		CONCAT(CONCAT('AZ',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,6)),'-',
 		(SELECT LPAD((SELECT IFNULL(MAX(SUBSTRING(a.az_idx,10,12)),0)+1
-		FROM sm_anlz_data a
+		FROM
+		sm_anlz_data a
 		WHERE a.az_idx
-		LIKE CONCAT(CONCAT('AZ',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,8)),
+		LIKE
+		CONCAT(CONCAT('AZ',SUBSTRING(DATE_FORMAT(NOW(),'%Y%m%d'),3,8)),
 		'%')),3,0))) AS AZ),
 		#{azBrixStd},
 		#{azBrix},
@@ -140,9 +150,11 @@
 		(SELECT
 		CONCAT(CONCAT('TI',SUBSTRING(DATE_FORMAT(#{tiDte},'%Y%m%d'),3,6)),'-',
 		(SELECT LPAD((SELECT IFNULL(MAX(SUBSTRING(a.ti_idx,10,12)),0)+1
-		FROM sm_analysis_info a
+		FROM
+		sm_analysis_info a
 		WHERE a.ti_idx
-		LIKE CONCAT(CONCAT('TI',SUBSTRING(DATE_FORMAT(#{tiDte},'%Y%m%d'),3,8)),
+		LIKE
+		CONCAT(CONCAT('TI',SUBSTRING(DATE_FORMAT(#{tiDte},'%Y%m%d'),3,8)),
 		'%')),3,0))) AS TI),
 		#{woIdx},
 		<if test="doIdx != ''">#{doIdx},</if>
@@ -173,17 +185,20 @@
 		b.az_brix_std, b.az_brix,
 		b.az_water_std, b.az_water,
 		b.az_ph_std, b.az_ph,
-		b.az_temp_std, b.az_temp,
+		b.az_temp_std,
+		b.az_temp,
 		b.az_viscosity_std, b.az_viscosity,
 		b.az_sg_std, b.az_sg,
 		c.wo_name
 		FROM sm_analysis_info a
 		JOIN sm_anlz_data b
-		ON a.az_idx = b.az_idx
+		ON a.az_idx =
+		b.az_idx
 		JOIN
 		sm_work_order c
 		ON a.wo_idx = c.wo_idx
-		WHERE ti_idx = #{tiIdx}
+		WHERE ti_idx =
+		#{tiIdx}
 	</select>
 
 	<update id="modifyAnalysisData">
@@ -191,10 +206,12 @@
 		az_brix_std = #{azBrixStd},
 		az_brix = #{azBrix},
 		az_water_std = #{azWaterStd},
-		az_water = #{azWater},
+		az_water =
+		#{azWater},
 		az_ph_std = #{azPhStd},
 		az_ph = #{azPh},
-		az_temp_std = #{azTempStd},
+		az_temp_std =
+		#{azTempStd},
 		az_temp = #{azTemp},
 		az_viscosity_std = #{azViscosityStd},
 		az_viscosity = #{azViscosity},
@@ -206,10 +223,12 @@
 	<update id="modifyAnalyManage">
 		UPDATE sm_analysis_info SET
 		do_idx = #{doIdx},
-		ti_name = #{tiName},
+		ti_name
+		= #{tiName},
 		ti_sample = #{tiSample},
 		ti_analyst = #{tiAnalyst},
-		ti_dte = #{tiDte},
+		ti_dte =
+		#{tiDte},
 		ti_state = #{tiState},
 		ti_note = #{tiNote},
 		ti_edt_dte = NOW(),
@@ -218,12 +237,15 @@
 	</update>
 
 	<update id="updatePrReReSt">
-		UPDATE sm_prod_result a JOIN sm_work_order b ON a.WO_IDX=b.WO_IDX
+		UPDATE sm_prod_result a JOIN sm_work_order b ON
+		a.WO_IDX=b.WO_IDX
 		JOIN sm_analysis_info c ON b.WO_IDX=c.WO_IDX
-		SET a.PR_RE_RE_ST = 'Y'
+		SET
+		a.PR_RE_RE_ST = 'Y'
 		WHERE a.WO_IDX = #{woIdx}
 		AND a.pr_re_idx = (
-		SELECT MAX(pr_re_idx)
+		SELECT
+		MAX(pr_re_idx)
 		FROM sm_prod_result
 		WHERE WO_IDX = #{woIdx}
 		)
@@ -236,16 +258,20 @@
 
 	<select id="selectAnalysisCnt" resultType="egovMap">
 		SELECT
-		COUNT(*) AS total,
-		(SELECT COUNT(*) FROM sm_prod_result WHERE pr_list_nm = '품질검사') AS
+		COUNT(*) AS
+		total,
+		(SELECT COUNT(*) FROM sm_prod_result WHERE pr_list_nm = '품질검사')
+		AS
 		analysisCnt,
-		(SELECT COUNT(*) FROM sm_process WHERE pr_cur_nm='품질검사') AS processingCnt
+		(SELECT COUNT(*) FROM sm_process WHERE pr_cur_nm='품질검사')
+		AS processingCnt
 		FROM sm_work_order
 	</select>
 
 	<update id="updateDocumnetState">
 		UPDATE sm_document SET
 		do_state = #{state}
-		WHERE do_idx = #{doIdx}
+		WHERE do_idx
+		= #{doIdx}
 	</update>
 </mapper>

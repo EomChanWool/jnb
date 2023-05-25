@@ -2,6 +2,7 @@ package apc.sl.quality.incongruentState.web;
 
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,11 @@ public class IncongruentStateController {
 	@RequestMapping("/sl/quality/incongruentState/incongruentStateList.do")
 	public String incongruentStateList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		
+		LocalDate now = LocalDate.now();
+		
+		
 		if(searchVO.getSearchCondition2().equals("")) {
-			searchVO.setSearchCondition2("2023");
+			searchVO.setSearchCondition2(now.getYear()+"");
 		}
 		
 		List<?> inYearList = incongruentStateService.selectInYearList(searchVO);

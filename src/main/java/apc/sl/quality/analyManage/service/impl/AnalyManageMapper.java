@@ -38,6 +38,8 @@ public interface AnalyManageMapper {
 	void deleteAnalyManage(Map<String, Object> map);
 
 	Map<String, Object> selectAnalysisCnt();
+	
+	Map<String, Object> detailAnalysis(Map<String, Object> map);
 
 	void updateDocumnetState(Map<String, Object> map);
 	

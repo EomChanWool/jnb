@@ -99,4 +99,9 @@ public class AnalyManageServieImpl implements AnalyManageService {
 	public void updatePrReReSt(Map<String, Object> map) {
 		analyManageMapper.updatePrReReSt(map);
 	}
+
+	@Override
+	public Map<String, Object> detailAnalysis(Map<String, Object> map) {
+		return analyManageMapper.detailAnalysis(map);
+	}
 }

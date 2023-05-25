@@ -177,6 +177,20 @@ public class AnalyManageController {
 		return "redirect:/sl/quality/analyManage/analyManageList.do";
 	}
 	
+	@RequestMapping("/sl/production/analyManage/detailAnalyManage.do")
+	public String detailAnalyManage(@RequestParam Map<String, Object> map, ModelMap model) {
+		
+		Map<String, Object> detail = analyManageService.detailAnalysis(map);
+		
+		model.put("analyVO", detail);
+		
+		
+		
+		return "sl/quality/analyManage/analyManageDetail";
+	}
+	
+	
+	
 	@RequestMapping("/sl/production/analyManage/deleteAnalyManage.do")
 	public String deleteAnalyManage(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		analyManageService.deleteAnalyManage(map);
