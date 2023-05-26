@@ -143,11 +143,17 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h5 class="modal-title" id="exampleModalLabel">데이터 입력</h5>
+	               
+	                <a class="btn btn-primary" style="position: relative; left: 30px;" href="#" onclick="registAnalysisDataAjax2()">데이터불러오기</a>
+	              
 	                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	                
 	                    <span aria-hidden="true">×</span>
 	                </button>
+	                
 	            </div>
 	            <div class="modal-body">
+	            	<form action="#" name="registForm2" method="post">
 					<table class="table table-bordered">
 						<tbody>
 							<tr>
@@ -188,6 +194,7 @@
 							</tr>
 						</tbody>
 					</table>
+					</form>
 				</div>
 	            <div class="modal-footer">
 	                <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBtn">취소</button>
@@ -273,6 +280,8 @@
 		if($('#tiDte').val() == ''){
 			$('#tiDte').val(new Date().toISOString().slice(0,10));	
 		}
+		
+		
 	});
 	
 	function registAnalysisDataAjax(){
@@ -301,6 +310,40 @@
 					  registForm.azIdx.value = result.analysis_ajax.azIdx;
 					  alert("등록 되었습니다.");  
 				  }
+			  },
+			  error:function(request,status,error){ 
+				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  
+			  }
+		  });
+	}
+	function registAnalysisDataAjax2(){
+		$.ajax({
+			  type:"POST",
+			  url:"<c:url value='${pageContext.request.contextPath}/sl/quality/analyManage/registAnalysisDataAjax2.do'/>",	  		  			  
+			  dataType:"JSON",
+			  data:{
+				  'azBrixStd': $('#azBrixStd').val(),
+				  'azWaterStd': $('#azWaterStd').val(),
+				  'azPhStd': $('#azPhStd').val(),
+				  'azTempStd': $('#azTempStd').val(),
+				  'azViscosityStd': $('#azViscosityStd').val(),
+				  'azSgStd': $('#azSgStd').val(),
+				  'azBrix': $('#azBrix').val(),
+				  'azWater': $('#azWater').val(),
+				  'azPh': $('#azPh').val(),
+				  'azTemp': $('#azTemp').val(),
+				  'azViscosity': $('#azViscosity').val(),
+				  'azSg': $('#azSg').val()
+			  },
+			  success:function(result){
+				  console.log(result.analysis_ajax2);
+				  registForm2.azBrix.value = result.analysis_ajax2.azBrix;
+				  registForm2.azWater.value = result.analysis_ajax2.azWater;
+				  registForm2.azPh.value = result.analysis_ajax2.azPh;
+				  registForm2.azTemp.value = result.analysis_ajax2.azTemp;
+				  registForm2.azViscosity.value = result.analysis_ajax2.azViscosity;
+				  registForm2.azSg.value = result.analysis_ajax2.azSg;
+				 
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

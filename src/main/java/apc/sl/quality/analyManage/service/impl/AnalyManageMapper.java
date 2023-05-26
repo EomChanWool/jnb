@@ -20,6 +20,8 @@ public interface AnalyManageMapper {
 	void registAnalysisData(Map<String, Object> map);
 
 	Map<String, Object> selectAzIdx();
+	
+	Map<String, Object> selectAzIdxData();
 
 	int selectExistsAzIdx(Map<String, Object> map);
 

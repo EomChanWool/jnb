@@ -59,10 +59,21 @@ public class AnalyManageController {
 	@RequestMapping(value="/sl/quality/analyManage/registAnalysisDataAjax.do", method=RequestMethod.POST)
 	public ModelAndView registNonOperFacilityListAjax(@RequestParam Map<String, Object> map) {
 		ModelAndView mav = new ModelAndView();
-		analyManageService.registAnalysisData(map);
+		//analyManageService.registAnalysisData(map);
 		Map<String, Object> list = analyManageService.selectAzIdx();
 		mav.setViewName("jsonView");
 		mav.addObject("analysis_ajax", list);
+		return mav;
+	}
+	
+	@RequestMapping(value="/sl/quality/analyManage/registAnalysisDataAjax2.do", method=RequestMethod.POST)
+	public ModelAndView registAnalysisDataAjax2(@RequestParam Map<String, Object> map) {
+		ModelAndView mav = new ModelAndView();
+		
+		Map<String, Object> list = analyManageService.selectAzIdxData();
+		mav.setViewName("jsonView");
+		mav.addObject("analysis_ajax2", list);
+		
 		return mav;
 	}
 	

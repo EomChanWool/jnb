@@ -50,7 +50,7 @@
 	<select id="selectOrdersList" resultType="egovMap">
 		SELECT or_idx, or_name
 		FROM sm_orders
-		WHERE or_state = '3'
+		WHERE or_state = '2'
 		AND or_idx NOT IN(SELECT or_idx FROM sm_shipment)
 	</select>
 
@@ -122,13 +122,18 @@
 		b.or_due_dte,
 		c.ac_name,
 		c.ac_tel,
-		c.ac_addr1
+		c.ac_addr1,
+		d.WO_IDX,
+		e.item_name,
+		d.wo_pdt_cnt
 		FROM sm_shipment a
 		JOIN sm_orders b
 		ON a.or_idx = b.or_idx
 		JOIN
 		sm_account c
 		ON a.ac_code = c.ac_code
+		JOIN sm_work_order d on b.OR_IDX = d.OR_IDX
+		JOIN sm_item e ON d.ITEM_CD = e.ITEM_CD
 		WHERE sh_idx = #{shIdx}
 	</select>
 

@@ -49,7 +49,12 @@
 
 	<select id="selectOrdersList" resultType="egovMap">
 		SELECT or_idx, or_name
-		FROM sm_orders WHERE or_state = '2'
+		FROM sm_orders
+		WHERE or_state = '3'
+		AND or_idx NOT IN (
+		SELECT or_idx
+		FROM sm_delivery
+		)
 	</select>
 
 	<select id="selectOrdersInfo" resultType="egovMap">
@@ -164,9 +169,11 @@
 	</update>
 
 	<update id="updateProduct">
-		UPDATE sm_item a JOIN sm_work_order b ON a. item_cd = b.ITEM_CD
+		UPDATE sm_item a JOIN sm_work_order b ON a. item_cd =
+		b.ITEM_CD
 		JOIN sm_orders c ON b.OR_IDX = c.or_idx
-		JOIN sm_delivery d ON c.or_idx = d.or_idx
+		JOIN sm_delivery d ON
+		c.or_idx = d.or_idx
 		SET a.ITEM_STOCK = a.ITEM_STOCK - b.wo_pdt_cnt
 		WHERE c.or_idx = #{orIdx}
 

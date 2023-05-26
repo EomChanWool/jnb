@@ -58,8 +58,19 @@
 	</select>
 
 	<select id="detailAnalysis" resultType="egovMap">
-		SELECT ti_idx, wo_idx, az_idx, ti_state, ti_analyst, date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte FROM
-		sm_analysis_info
+		SELECT a.ti_idx,
+		a.wo_idx, a.az_idx, a.ti_state, a.ti_analyst, c.item_name, f.ac_name,
+		b.wo_pdt_cnt,
+		date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte FROM
+		sm_analysis_info a
+		JOIN
+		sm_work_order b ON a.WO_IDX = b.WO_IDX
+		JOIN sm_item c ON b.ITEM_CD =
+		c.ITEM_CD
+		JOIN sm_orders d ON b.OR_IDX = d.OR_IDX
+		JOIN sm_estimate e ON d.ES_IDX =
+		e.ES_IDX
+		JOIN sm_account f ON e.A_IDX = f.AC_CODE
 		WHERE ti_idx = #{tiIdx}
 	</select>
 
@@ -107,6 +118,14 @@
 		NOW()
 		)
 	</insert>
+
+	<select id="selectAzIdxData" resultType="egovMap">
+		SELECT az_brix, az_water, az_ph, az_temp, az_viscosity, az_sg
+		FROM sm_anlz_data
+		WHERE az_idx = (SELECT
+		MAX(az_idx) AS az_idx
+		FROM sm_anlz_data)
+	</select>
 
 	<select id="selectAzIdx" resultType="egovMap">
 		SELECT

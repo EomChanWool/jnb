@@ -104,4 +104,9 @@ public class AnalyManageServieImpl implements AnalyManageService {
 	public Map<String, Object> detailAnalysis(Map<String, Object> map) {
 		return analyManageMapper.detailAnalysis(map);
 	}
+
+	@Override
+	public Map<String, Object> selectAzIdxData() {
+		return analyManageMapper.selectAzIdxData();
+	}
 }
