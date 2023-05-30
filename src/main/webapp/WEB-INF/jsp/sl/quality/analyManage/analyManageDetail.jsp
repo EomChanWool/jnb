@@ -41,25 +41,25 @@
 	/* display: block; */
 	flex-direction: column;
 	margin-top: 6px;
-	padding-top: 5px;
+	padding-top: 6px;
 
 }
 
 .content span {
 	color: black;
-	margin-left: 110px;
+	
 }
 
 
 
 .content span:nth-child(1) {
-	font-size: 22px;
+	font-size: 14px;
 	font-weight: bold;
 }
 
 .content span:nth-child(2) {
 
-	font-size: 20px;
+	font-size: 14px;
 
 }
 
@@ -221,13 +221,14 @@
 						<div class="text-on-img">
 							<div class="background-wrap">
 								<div class="content">
-									<span>${analyVO.itemName}</span> 									
+									<span style="margin-left:90px;">${analyVO.itemName}</span> 									
 								</div>
 								<div class="content">
-									<span>${analyVO.acName}</span><span>${analyVO.woPdtCnt}kg</span> 									
+									<span style="display:inline-block; margin-left:80px; width:140px;">${analyVO.acName}</span><span style="margin-left:80px;font-size:20px;">${analyVO.woPdtCnt}kg</span> 
+																
 								</div>
-								<div class="content">
-									<span>${analyVO.woIdx}</span> 									
+								<div class="content" style="margin-top:15px;">
+									<span style="margin-left:90px;">${analyVO.woIdx}</span> 									
 								</div>
 							</div>
 						</div>

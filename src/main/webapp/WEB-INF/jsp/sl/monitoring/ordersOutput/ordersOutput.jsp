@@ -187,7 +187,7 @@
 			  yAxis: [
 			    {
 			      type: 'value',
-			      name: '개수',
+			      name: 'kg',
 			     
 			      
 			      axisLabel: {

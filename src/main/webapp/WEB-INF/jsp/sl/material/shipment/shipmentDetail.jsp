@@ -65,7 +65,9 @@
 
 
 @media print {
-	body {
+	
+	 html,body {
+		margin-right : 5%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -114,8 +116,7 @@
 					<!-- Page Heading -->
 					<div class="btn_bottom_wrap">
 						<h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">출고 상세</h1>
-						<div
-							style="display: inline-block; float: right; margin-top: -5px;">
+						<div style="display: inline-block; float: right; margin-top: -5px;">
 							<button type="button" class="btn btn-success btn-icon-split"
 								style="border: none;" data-toggle="modal"
 								data-target="#analysis">
@@ -127,6 +128,7 @@
 					<div class="card shadow mb-4">
 						<div class="card-body">
 							<div class="table-responsive">
+							
 								<table class="table table-bordered" id="dataTable">
 									<tbody>
 										<tr>
@@ -194,9 +196,9 @@
 
 				<div class="modal-body" id="modalAn">
 					<form name="listForm" class="listForm"
-						action="${pageContext.request.contextPath}/sl/production/analyManage/detailAnalyManage.do"
+						action="${pageContext.request.contextPath}/sl/material/shipment/detailShipment.do"
 						method="post">
-						<input type="hidden" name="tiIdx" value="${shipmentVO.tiIdx}">
+						<input type="hidden" name="shIdx" value="${shipmentVO.shIdx}">
 						<%-- <table class="table table-bordered">
 						<tbody>
 							<tr>

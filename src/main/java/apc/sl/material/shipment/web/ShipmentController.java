@@ -125,6 +125,7 @@ public class ShipmentController {
 		
 		Map<String, Object> detail = shipmentService.selectShipmentInfo(map);
 		model.put("shipmentVO", detail);
+		
 		return "sl/material/shipment/shipmentDetail";
 	}
 	

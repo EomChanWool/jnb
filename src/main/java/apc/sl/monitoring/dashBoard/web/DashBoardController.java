@@ -113,7 +113,7 @@ public class DashBoardController {
 		
 		System.out.println(nowFor);
 		
-		List<Map<String, Object>> equipList = equipEffService.selectEquipEff();
+	//	List<Map<String, Object>> equipList = equipEffService.selectEquipEff();
 		
 	//	List<String> str = new ArrayList<String>();
 	//	for(int i=0;i<equipList.size();i++) {
@@ -123,7 +123,7 @@ public class DashBoardController {
 		
 		
 		//등록일부터 지금까지의 시간 (분)
-		List<Long> str = new ArrayList<>();
+	/*	List<Long> str = new ArrayList<>();
 		for (Map<String, Object> temp : equipList) {
 		    String faRegDteStr = temp.get("faRegDte") + "";
 		    LocalDateTime faRegDte = LocalDateTime.parse(faRegDteStr, formatter);
@@ -173,10 +173,17 @@ public class DashBoardController {
 		}
 		
 		
-		model.put("percent", str4);
+		model.put("percent", str4); */
+		
+		List<?> eq1 = equipEffService.selectEquioEffCnt1(searchVO);
+		
+		model.put("eq1", eq1);
 		
 		
 		
+		List<?> eq2 = equipEffService.selectEquioEffCnt2(searchVO);
+		
+		model.put("eq2", eq2);
 		
 		
 		return "sl/monitoring/dashBoard/dashBoard";

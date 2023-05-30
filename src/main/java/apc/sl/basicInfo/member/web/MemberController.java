@@ -165,6 +165,7 @@ public class MemberController {
 				
 		String pwd = sha256.encrypt(map.get("mPwd").toString());
 		map.put("mPwd", pwd);
+		
 		memberService.modifyMember(map);
 		redirectAttributes.addFlashAttribute("msg","수정 되었습니다.");
 		return "redirect:/sl/basicInfo/member/memberList.do";

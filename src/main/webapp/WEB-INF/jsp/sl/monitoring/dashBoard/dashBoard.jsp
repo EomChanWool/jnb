@@ -425,30 +425,33 @@
 	 var chartDom = document.getElementById('equipEffGraph');
 		var myChart = echarts.init(chartDom);
 		var option;
+
+		let date3 = [];
+		let eq1 = [];
+		let eq2 = [];
 		
-		let faName = [];
-		
-		let percent = [];
-		
-		
-		
-		
-		<c:forEach items="${faName}" var="list">
-			
-		faName.push('${list}');
+		<c:forEach items="${eq1}" var="list">
+		date3.push('${list.month}월');
+		eq1.push('${list.pdCnt}');
+		</c:forEach>
+
+		<c:forEach items="${eq2}" var="list">
+		eq2.push('${list.pdCnt}');
 		</c:forEach>
 		
-		
-		<c:forEach items="${percent}" var="list">
-		percent.push('${list}');
-		</c:forEach>
-		
-		console.log(percent);
+		console.log(eq1);
 		
 		option = {
-				  tooltip: {
+				title: {
+				    text: '월별 평균생산(kg)',
+				    textStyle:{
+				        fontSize: 13
+				      }
+				    
+				  },
+				tooltip: {
 				    trigger: 'axis',
-//	 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
+		// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
 					},
 				    axisPointer: {
 				    	type: 'cross',
@@ -466,41 +469,47 @@
 				    }
 				  },
 				  legend: {
-				    data: ['가동률']
+				    data: ['1번탱크', '2번탱크']
 				  },
-				  xAxis: [
-				    {
-				      type: 'category',
-				      data: faName,
-				      axisPointer: {
-				        type: 'shadow'
-				      }
-				    }
-				  ],
+				  xAxis: {
+				    type: 'category',
+				    data: date3
+				  },
 				  yAxis: [
-				    {
-				      type: 'value',
-				      name: '가동률',
-				     
-				      
-				      axisLabel: {
-				        formatter: '{value} %'
-				      }
-				    }
-				  ],
+					    {
+					      type: 'value',
+					      name: 'kg',
+					     
+					      
+					      axisLabel: {
+					        formatter: '{value} kg'
+					      }
+					    }
+					  ],
 				  series: [
 				    {
-				      name: '가동률',
-				      type: 'bar',
+				      data: eq1,
+				      name: '1번탱크',
 				      tooltip: {
-				        valueFormatter: function (value) {
-				          return value + ' %';
-				        }
-				      },
-				      data: percent
-				    }
+					        valueFormatter: function (value) {
+					          return value + ' kg';
+					        }
+					      },
+				      type: 'line'
+				    },
+				    {
+					      data: eq2,
+					      name: '2번탱크',
+					      tooltip: {
+						        valueFormatter: function (value) {
+						          return value + ' kg';
+						        }
+						      },
+					      type: 'line'
+					    }
 				  ]
 				};
+		
 		option && myChart.setOption(option);
 	
 	</script>

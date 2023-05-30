@@ -1,6 +1,7 @@
 package apc.sl.monitoring.equipEff.web;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import apc.sl.monitoring.equipEff.service.EquipEffService;
 import apc.util.SearchVO;
@@ -25,7 +27,36 @@ public class EquipEffController {
 	@Autowired
 	private EquipEffService equipEffService;
 	
+	
 	@RequestMapping("/sl/monitoring/equipEff/equipEff.do")
+	public String equipEff(@ModelAttribute("searchVO")SearchVO searchVO, ModelMap model, HttpSession session) {
+		LocalDate now = LocalDate.now();
+		
+		
+		if(searchVO.getSearchCondition2().equals("")) {
+			searchVO.setSearchCondition2(now.getYear()+"");
+		}
+		
+		
+		
+		List<?> eq1 = equipEffService.selectEquioEffCnt1(searchVO);
+		
+		model.put("eq1", eq1);
+		
+		
+		
+		List<?> eq2 = equipEffService.selectEquioEffCnt2(searchVO);
+		
+		model.put("eq2", eq2);
+		
+		
+		
+		
+		return "sl/monitoring/equipEff/equipEff";
+	}
+	
+	
+/**	@RequestMapping("/sl/monitoring/equipEff/equipEff.do")
 	public String equipEff(@ModelAttribute("searchVO")SearchVO searchVO, ModelMap model, HttpSession session) {
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -96,10 +127,14 @@ public class EquipEffController {
 			
 			str4.add(percentLong);
 		}
-		System.out.println(str4);
+		
 		
 		model.put("percent", str4);
+		
+		
+		
+		
 		return "sl/monitoring/equipEff/equipEff";
-	}
+	} **/
 
 }

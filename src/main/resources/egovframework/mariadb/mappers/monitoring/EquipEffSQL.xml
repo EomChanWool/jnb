@@ -4,25 +4,97 @@
 	namespace="apc.sl.monitoring.equipEff.service.impl.EquipEffMapper">
 
 	<select id="selectEquipEff" resultType="egovMap">
-		<!-- SELECT a.fa_idx,
-		a.fa_name, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS fa_reg_dte,
-		IFNULL(SUM(b.no_time), 0) AS no_time, a.fa_status
-		FROM sm_facility a
-		LEFT JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
-		GROUP BY a.fa_idx,
-		a.fa_name, a.fa_reg_dte -->
+		<!-- SELECT a.fa_idx, a.fa_name, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d %H:%i') 
+			AS fa_reg_dte, IFNULL(SUM(b.no_time), 0) AS no_time, a.fa_status FROM sm_facility 
+			a LEFT JOIN sm_non_operation b ON a.fa_idx = b.fa_idx GROUP BY a.fa_idx, 
+			a.fa_name, a.fa_reg_dte -->
 
 
 		SELECT a.fa_idx
 		, a.fa_name
-		, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d %H:%i') AS fa_reg_dte
+		, DATE_FORMAT(a.fa_reg_dte, '%Y-%m-%d
+		%H:%i') AS fa_reg_dte
 		, IFNULL(SUM(b.no_time), 0) AS no_time
-		, a.fa_status
+		,
+		a.fa_status
 		FROM sm_facility a
-		LEFT JOIN sm_non_operation b ON a.fa_idx = b.fa_idx
+		LEFT JOIN sm_non_operation b ON a.fa_idx
+		= b.fa_idx
 		WHERE a.fa_status NOT LIKE '비가동'
-		GROUP BY a.fa_idx, a.fa_name, a.fa_reg_dte , a.fa_status
+		GROUP BY a.fa_idx,
+		a.fa_name, a.fa_reg_dte , a.fa_status
 
+	</select>
+
+	<select id="selectEquioEffCnt1" resultType="egovMap">
+		SELECT
+		months.m AS
+		month,
+		COALESCE(ROUND(AVG(pdCnt), 0), 0) AS pd_cnt
+		FROM
+		(SELECT 1 AS m UNION SELECT
+		2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10 UNION SELECT 11
+		UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(a.pd_reg_dte,
+		'%m') AS MONTH,
+		AVG(IFNULL(pd_act_val, 0)) AS pdCnt
+		FROM sm_plc_data a
+		WHERE
+		(DATE_FORMAT(pd_reg_dte, '%Y') = DATE_FORMAT(NOW(), '%Y') AND
+		YEAR(pd_reg_dte) = 2023)
+		AND pd_tank = '1번탱크'
+		GROUP BY MONTH
+		) AS
+		subquery ON months.m = subquery.MONTH
+		GROUP BY months.m
+		ORDER BY
+		months.m
+	</select>
+	<select id="selectEquioEffCnt2" resultType="egovMap">
+		<!-- SELECT months.m AS month, COALESCE(SUM(pdCnt), 0) AS pdCnt FROM (SELECT 
+			1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION 
+			SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION 
+			SELECT 11 UNION SELECT 12) AS months LEFT JOIN ( SELECT DATE_FORMAT(a.pd_reg_dte, 
+			'%m') AS MONTH, SUM( IFNULL(pd_act_val,0) ) AS pdCnt FROM sm_plc_data a WHERE 
+			(DATE_FORMAT(pd_reg_dte, '%Y') = DATE_FORMAT(NOW(), '%Y') AND YEAR(pd_reg_dte) 
+			= #{searchCondition2}) AND pd_tank = '2번탱크' GROUP BY MONTH) AS subquery ON 
+			months.m = subquery.MONTH GROUP BY months.m ORDER BY months.m -->
+		SELECT
+		months.m AS month,
+		COALESCE(ROUND(AVG(pdCnt), 0), 0) AS pd_cnt
+		FROM
+		(SELECT 1
+		AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION
+		SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10
+		UNION SELECT 11 UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(a.pd_reg_dte, '%m') AS MONTH,
+		AVG(IFNULL(pd_act_val, 0)) AS
+		pdCnt
+		FROM sm_plc_data a
+		WHERE
+		(DATE_FORMAT(pd_reg_dte, '%Y') =
+		DATE_FORMAT(NOW(), '%Y') AND YEAR(pd_reg_dte) = 2023)
+		AND pd_tank =
+		'2번탱크'
+		GROUP BY MONTH
+		) AS subquery ON months.m = subquery.MONTH
+		GROUP BY
+		months.m
+		ORDER BY months.m
 	</select>
 
 </mapper>

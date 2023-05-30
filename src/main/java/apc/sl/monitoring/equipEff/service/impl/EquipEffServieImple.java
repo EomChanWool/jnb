@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import apc.sl.monitoring.equipEff.service.EquipEffService;
+import apc.util.SearchVO;
 
 @Service
 public class EquipEffServieImple implements EquipEffService {
@@ -18,6 +19,16 @@ public class EquipEffServieImple implements EquipEffService {
 	@Override
 	public List<Map<String, Object>> selectEquipEff() {
 		return equipEffMapper.selectEquipEff();
+	}
+
+	@Override
+	public List<?> selectEquioEffCnt1(SearchVO searchVO) {
+		return equipEffMapper.selectEquioEffCnt1(searchVO);
+	}
+
+	@Override
+	public List<?> selectEquioEffCnt2(SearchVO searchVO) {
+		return equipEffMapper.selectEquioEffCnt2(searchVO);
 	}
 	
 }
