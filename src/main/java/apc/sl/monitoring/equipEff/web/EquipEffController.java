@@ -41,19 +41,13 @@ public class EquipEffController {
 		
 		model.put("plcYear", plcYearList);
 		
-		
-		List<?> eq1 = equipEffService.selectEquioEffCnt1(searchVO);
-		
-		model.put("eq1", eq1);
-		
-		
-		
-		List<?> eq2 = equipEffService.selectEquioEffCnt2(searchVO);
-		
-		model.put("eq2", eq2);
-		
-		
-		
+		for(int i=1; i<=6; i++) {
+			String tankNm = "ITK"+i;
+			searchVO.setTemp(tankNm);
+			List<Map<String, Object>> eq = equipEffService.selectEquioEffCnt1(searchVO);
+			model.put(tankNm, eq);
+			
+		}
 		
 		return "sl/monitoring/equipEff/equipEff";
 	}

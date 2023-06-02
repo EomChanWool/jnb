@@ -63,7 +63,7 @@
 		(DATE_FORMAT(pd_reg_dte, '%Y') =
 		DATE_FORMAT(NOW(), '%Y') AND
 		YEAR(pd_reg_dte) = #{searchCondition2})
-		AND pd_tank = '1번탱크'
+		AND pd_tank = #{temp}
 		GROUP BY MONTH
 		) AS
 		subquery ON months.m =

@@ -137,17 +137,25 @@
 		let date = [];
 		let eq1 = [];
 		let eq2 = [];
+		let eq3 = [];
+		let eq4 = [];
+		let eq5 = [];
+		let eq6 = [];
 		
-		<c:forEach items="${eq1}" var="list">
-		date.push('${list.month}월');
-		eq1.push('${list.pdCnt}');
-		</c:forEach>
-
-		<c:forEach items="${eq2}" var="list">
-		eq2.push('${list.pdCnt}');
+		<c:forEach items="${ITK1}" var="list" varStatus="status">
+			date.push(${list.month});
+			eq1.push(${list.pdCnt});
+			eq2.push("${ITK2[status.index].pdCnt}");
+			eq3.push("${ITK3[status.index].pdCnt}");
+			eq4.push("${ITK4[status.index].pdCnt}");
+			eq5.push("${ITK5[status.index].pdCnt}");
+			eq6.push("${ITK6[status.index].pdCnt}");
 		</c:forEach>
 		
-		console.log(eq1);
+// 		<c:forEach items="${eq2}" var="list">
+// 		eq2.push('${list.pdCnt}');
+// 		</c:forEach>
+		
 		
 		option = {
 				 title: {
@@ -174,7 +182,7 @@
 				    }
 				  },
 				  legend: {
-				    data: ['1번탱크', '2번탱크']
+				    data: ['ITK1', 'ITK2','ITK3']
 				  },
 				  xAxis: {
 				    type: 'category',
@@ -194,7 +202,7 @@
 				  series: [
 				    {
 				      data: eq1,
-				      name: '1번탱크',
+				      name: 'ITK1',
 				      tooltip: {
 					        valueFormatter: function (value) {
 					          return value + ' kg';
@@ -204,14 +212,25 @@
 				    },
 				    {
 					      data: eq2,
-					      name: '2번탱크',
+					      name: 'ITK2',
 					      tooltip: {
 						        valueFormatter: function (value) {
 						          return value + ' kg';
 						        }
 						      },
 					      type: 'line'
-					    }
+					    },
+					    {
+						      data: eq3,
+						      name: 'ITK3',
+						      tooltip: {
+							        valueFormatter: function (value) {
+							          return value + ' kg';
+							        }
+							      },
+						      type: 'line'
+						    }    
+					    
 				  ]
 				};
 		

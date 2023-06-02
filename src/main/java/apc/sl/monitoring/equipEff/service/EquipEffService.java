@@ -11,7 +11,7 @@ public interface EquipEffService {
 	
 	List<?> selectPlcYearList(SearchVO searchVO);
 	
-	List<?> selectEquioEffCnt1(SearchVO searchVO);
+	List<Map<String, Object>> selectEquioEffCnt1(SearchVO searchVO);
 	
 	List<?> selectEquioEffCnt2(SearchVO searchVO);
 	

@@ -202,8 +202,11 @@
 		});
 		
 		$('#searchCondition2').change(function(){
+			listForm.pageIndex.value = 1;
 			listForm.submit();
 		});
+		
+		$('#searchCondition2').val('${searchVO.searchCondition2}').prop('selected',true);
 	});
 	
 	function factoryListAjax(){
@@ -214,9 +217,12 @@
 			  data:{
 				  'cIdx': $('#searchCondition').val()
 			  },
+			  async: false,
 			  success:function(result){
+				  console.log('${searchVO.searchCondition2}');
+
 				  for(var i=0;i<result.fList_ajax.length;i++){
-					  var option = $('<option value="'+result.fList_ajax[i].fCode+'" <c:if test="${searchVO.searchCondition eq '+result.fList_ajax[i].fCode+'}">selected="selected"</c:if>>'+
+					  var option = $('<option value="'+result.fList_ajax[i].fCode+'" <c:if test="${searchVO.searchCondition2 eq '+ result.fList_ajax[i].fCode+'}">selected="selected"</c:if>>'+
 							  				result.fList_ajax[i].fName+'</option>');
 					  $('#searchCondition2').append(option);
 				  }
