@@ -40,10 +40,12 @@ public class NonOperController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		List<?> nonOperList = nonOperService.selectNonOperList(searchVO);
 		model.put("nonOperList", nonOperList);
+		System.out.println(nonOperList);
 		
 		//사업장 목록
 		List<?> companyList = nonOperService.selectCompanyList();
 		model.put("companyList", companyList);
+		
 		
 		model.put("paginationInfo", paginationInfo);
 		return "sl/production/nonOper/nonOperList";

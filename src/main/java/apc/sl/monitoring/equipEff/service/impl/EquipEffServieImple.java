@@ -22,8 +22,8 @@ public class EquipEffServieImple implements EquipEffService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectEquioEffCnt1(SearchVO searchVO) {
-		return (List<Map<String, Object>>) equipEffMapper.selectEquioEffCnt1(searchVO);
+	public List<?> selectEquioEffCnt1(SearchVO searchVO) {
+		return equipEffMapper.selectEquioEffCnt1(searchVO);
 	}
 
 	@Override
