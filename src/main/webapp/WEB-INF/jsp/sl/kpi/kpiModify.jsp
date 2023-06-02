@@ -151,9 +151,9 @@
 	}
 	
 	$(function() {
-		$('#productionMenu').addClass("active");
-		$('#production').addClass("show");
-		$('#kpiList').addClass("active");
+		$('#kpiMenu').addClass("active");
+		$('#kpi').addClass("show");
+		$('#kpiGoalList').addClass("active");
 		
 		let msg = '${msg}';
 		if(msg) {

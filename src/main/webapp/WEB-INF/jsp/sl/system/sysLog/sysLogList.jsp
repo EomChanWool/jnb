@@ -66,9 +66,7 @@
 						    	<a href="#" class="btn btn-success btn-icon-split" onclick="fn_searchAll_sysLog()">
 	                                <span class="text">전체목록</span>
 	                            </a>
-	                            <a href="#" class="btn btn-primary btn-icon-split" onclick="fn_regist_sysLog()" style="float: right;">
-	                                <span class="text">등록</span>
-	                            </a>
+	                            
 							</div>
                         </div>
                         <div class="card-body">

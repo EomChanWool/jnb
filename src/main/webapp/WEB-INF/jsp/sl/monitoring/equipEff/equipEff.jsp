@@ -57,6 +57,27 @@
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
+					<div class="card-header py-3">
+                        
+                        <div class="search">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/monitoring/equipEff/equipEff.do" method="post">
+									
+									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
+									
+									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
+						    			
+						    			<c:forEach var="list" items="${plcYear}" varStatus="status">
+						    				<option value="${list.pdYear}" <c:if test="${searchVO.searchCondition2 eq list.pdYear or status.count eq 1}">selected="selected"</c:if>>${list.pdYear}년도</option>
+						    			</c:forEach>
+						    		</select>
+						    								
+   									
+						    	</form>
+						    	
+	                           
+							</div>
+                        
+                        </div>
 
 						<div class="card-body">
 							<div class="table-responsive">

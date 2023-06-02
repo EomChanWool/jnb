@@ -187,6 +187,7 @@
 			viewData.push('0');
 		</c:forEach>
 		
+		
 		if($('#searchCondition').val() == "생산량"){
 			<c:forEach items="${dataList}" var="list">
 				var index2 = ${list.month};
@@ -247,7 +248,7 @@
 					      max: outputMax,
 					      interval: outputInterval,
 					      axisLabel: {
-					        formatter: '{value} EA'
+					        formatter: '{value} kg'
 					      }
 					    },
 					    {
@@ -257,7 +258,7 @@
 				     	  max: outputMax,
 				     	  interval: outputInterval,
 				      	  axisLabel: {
-				            formatter: '{value} EA'
+				            formatter: '{value} kg'
 						  }
 					    }
 					  ],
@@ -267,7 +268,7 @@
 					      type: 'bar',
 					      tooltip: {
 					        valueFormatter: function (value) {
-					          return value + ' EA';
+					          return value + ' kg';
 					        }
 					      },
 					      data: kpiOutputData
@@ -277,7 +278,7 @@
 					    type: 'bar',
 					    tooltip: {
 					      valueFormatter: function (value) {
-					        return value + ' EA';
+					        return value + ' kg';
 					      }
 					    },
 					    data: viewData

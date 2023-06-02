@@ -445,7 +445,7 @@
 				title: {
 				    text: '월별 평균생산(kg)',
 				    textStyle:{
-				        fontSize: 13
+				        fontSize: 11
 				      }
 				    
 				  },

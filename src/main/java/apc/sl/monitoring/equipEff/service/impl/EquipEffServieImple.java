@@ -30,5 +30,10 @@ public class EquipEffServieImple implements EquipEffService {
 	public List<?> selectEquioEffCnt2(SearchVO searchVO) {
 		return equipEffMapper.selectEquioEffCnt2(searchVO);
 	}
+
+	@Override
+	public List<?> selectPlcYearList(SearchVO searchVO) {
+		return equipEffMapper.selectPlcYearList(searchVO);
+	}
 	
 }

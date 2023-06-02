@@ -97,7 +97,7 @@
                                 </form>
                                 <div class="btn_bottom_wrap">
 									<button type="submit" class="btn_ok" onclick="fn_regist_document()" style="border:none;">확인</button>
-									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/incongruent/incongruentList.do">취소</span>
+									<span class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/sl/quality/incongruent/incongruentList.do'">취소</span>
 								</div>
                             </div>
                         </div>

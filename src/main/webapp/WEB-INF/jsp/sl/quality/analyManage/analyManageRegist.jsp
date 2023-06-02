@@ -109,7 +109,7 @@
 												</td>
 											</tr>
 											<tr>
-												<th>샘플 정보</th>
+												<th>샘플 정보<span class="req">*</span></th>
 												<td colspan="3"><input type="text" class="form-control" name="tiSample" id="tiSample" value="${analyManageVO.tiSample}"></td>
 											</tr>
 											<tr>
@@ -250,6 +250,10 @@
 		
 		if($('#tiDte').val() == ''){
 			alert("검사일을 확인 바랍니다.");
+			return;
+		}
+		if($('#tiSample').val() == ''){
+			alert("샘플정보를 확인 바랍니다.");
 			return;
 		}
 		

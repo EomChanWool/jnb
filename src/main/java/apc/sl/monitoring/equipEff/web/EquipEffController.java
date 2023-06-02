@@ -37,6 +37,9 @@ public class EquipEffController {
 			searchVO.setSearchCondition2(now.getYear()+"");
 		}
 		
+		List<?> plcYearList = equipEffService.selectPlcYearList(searchVO);
+		
+		model.put("plcYear", plcYearList);
 		
 		
 		List<?> eq1 = equipEffService.selectEquioEffCnt1(searchVO);
