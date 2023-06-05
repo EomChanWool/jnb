@@ -53,7 +53,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/quality/kpiGoal/kpiGoalList.do" method="post">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/kpi/kpiGoal/kpiGoalList.do" method="post">
 									<input type="hidden" name="exIdx">
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									

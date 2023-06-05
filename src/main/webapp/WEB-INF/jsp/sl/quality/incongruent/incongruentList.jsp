@@ -150,6 +150,7 @@
 		}
 	
 		function fn_searchAll_incongruent(){
+			listForm.searchKeyword.value = "";
 			listForm.pageIndex.value = 1;
 			listForm.submit();
 		}

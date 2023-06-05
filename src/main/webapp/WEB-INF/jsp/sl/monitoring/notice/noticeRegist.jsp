@@ -126,14 +126,14 @@
 		});
 	}
 	
-	submitPost = function() {
-	  oEditors.getById["noCont"].exec("UPDATE_CONTENTS_FIELD", [])
+	submitPost = function(){
+	  oEditors.getById["noCont"].exec("UPDATE_CONTENTS_FIELD", []);
 	  let content = $('#noCont').val();
-
-	  if(content == '') {
-	    alert("내용을 입력해주세요.")
+	 
+	  if(content == '<p><br></p>') {
+	    alert("내용을 입력해주세요.");
 	    oEditors.getById["editorTxt"].exec("FOCUS")
-	    return
+	    return;
 	  } else {
 		var str1 = content.substring(0,2)+" style='margin-bottom: 0'";
 		var str2 = content.substring(2,content.length);
@@ -142,6 +142,16 @@
 	}
 	
 	function fn_regist_notice(){
+		if($('#noTitle').val() == ''){
+			alert("제목을 확인 바랍니다.");
+			return;
+		}
+		
+		if($('#noUse').val() == ''){
+			alert("공개여부를 확인 바랍니다.");
+			return;
+		}
+		
 		submitPost();
 		registForm.submit();
 	}

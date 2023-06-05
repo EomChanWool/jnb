@@ -148,6 +148,7 @@
 		}
 	
 		function fn_searchAll_checkProd(){
+			listForm.searchKeyword.value = "";
 			listForm.pageIndex.value = 1;
 			listForm.submit();
 		}
