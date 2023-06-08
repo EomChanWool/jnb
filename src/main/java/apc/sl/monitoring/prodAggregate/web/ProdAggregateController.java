@@ -42,6 +42,9 @@ public class ProdAggregateController {
 		List<?> prodList = prodAggregateService.selectProd(searchVO);
 		model.put("prodList", prodList);
 		
+		//생산량
+		List<?> prodCntList = prodAggregateService.selectProdCnt(searchVO);
+		model.put("prodCntList", prodCntList);
 		
 		
 		return "sl/monitoring/prodAggregate/prodAggregate";

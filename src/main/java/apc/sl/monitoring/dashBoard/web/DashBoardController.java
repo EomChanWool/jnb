@@ -174,16 +174,14 @@ public class DashBoardController {
 		
 		
 		model.put("percent", str4); */
-		
-		List<?> eq1 = equipEffService.selectEquioEffCnt1(searchVO);
-		
-		model.put("eq1", eq1);
-		
-		
-		
-		List<?> eq2 = equipEffService.selectEquioEffCnt2(searchVO);
-		
-		model.put("eq2", eq2);
+		//설비종합효율
+		for(int i=1; i<=6; i++) {
+			String tankNm = "ITK"+i;
+			searchVO.setTemp(tankNm);
+			List<?> eq = equipEffService.selectEquioEffCnt1(searchVO);
+			model.put(tankNm, eq);
+			System.out.println("확인 : " + eq);
+		}
 		
 		
 		return "sl/monitoring/dashBoard/dashBoard";

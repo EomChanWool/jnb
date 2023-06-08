@@ -31,4 +31,9 @@ public class ProdAggregateServieImpl implements ProdAggregateService{
 	public List<?> selectOrders(SearchVO searchVO) {
 		return prodAggregateMapper.selectOrders(searchVO);
 	}
+
+	@Override
+	public List<?> selectProdCnt(SearchVO searchVO) {
+		return prodAggregateMapper.selectProdCnt(searchVO);
+	}
 }

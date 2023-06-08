@@ -77,5 +77,39 @@
 		ORDER BY
 		pr_year DESC
 	</select>
+	
+	<select id="selectProdCnt" resultType="egovMap">
+	SELECT
+		months.m AS month,
+		COALESCE(SUM(prodCnt), 0) AS prod_cnt
+		FROM
+		(SELECT 1 AS m UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+		SELECT 5
+		UNION SELECT 6 UNION
+		SELECT 7 UNION SELECT 8 UNION SELECT 9
+		UNION SELECT 10 UNION SELECT 11 UNION
+		SELECT 12) AS months
+		LEFT JOIN (
+		SELECT
+		DATE_FORMAT(b.PR_RE_ED_DTE, '%m') AS MONTH,
+		SUM(WO_PDT_CNT) AS
+		prodCnt
+		FROM sm_prod_result b
+		JOIN
+		sm_work_order c ON b.wo_idx = c.wo_idx
+		JOIN sm_orders d ON
+		c.or_idx = d.or_idx
+		WHERE
+		PR_LIST_NM = '저장탱크 이송'
+		AND
+		YEAR(b.PR_RE_ED_DTE) =
+		#{searchCondition2}
+		GROUP BY MONTH
+		) AS subquery
+		ON months.m =
+		subquery.MONTH
+		GROUP BY months.m
+		ORDER BY months.m
+	</select>
 
 </mapper>

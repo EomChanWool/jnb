@@ -134,6 +134,7 @@
 	
 	let orderCnt = [];
 
+	let prodCntCnt = [];
 	
 	const dataMin = 0;
 	const dataMax = 0;
@@ -144,6 +145,9 @@
 		orderCnt.push('${list.orCnt}');
 	</c:forEach>
 	
+	<c:forEach items="${prodCntList}" var="list">
+	prodCntCnt.push('${list.prodCnt}');
+</c:forEach>
 	
 	<c:forEach items="${prodList}" var="list">
 		date.push('${list.month}월');
@@ -176,7 +180,7 @@
 			    }
 			  },
 			  legend: {
-			    data: ['수주건수', '생산건수']
+			    data: ['수주건수', '생산건수', '생산량']
 			  },
 			  xAxis: [
 			    {
@@ -196,7 +200,15 @@
 			      axisLabel: {
 			        formatter: '{value} EA'
 			      }
-			    }
+			    },
+			    {
+		    		  type: 'value',
+			      	  name: '금액',
+			      	  position: 'right',
+			      	  axisLabel: {
+			            formatter: '{value} kg'
+					  }
+				    }
 			  ],
 			  series: [
 			  
@@ -219,7 +231,18 @@
 			      }
 			    },
 			    data: prodCnt
-			    }
+			    },
+			    {
+			    	name: '생산량',
+			    	yAxisIndex: 1,
+				    type: 'line',
+				    tooltip: {
+				      valueFormatter: function (value) {
+				        return value + ' kg';
+				      }
+				    },
+				    data: prodCntCnt
+				    }
 			   
 			  ]
 			};
