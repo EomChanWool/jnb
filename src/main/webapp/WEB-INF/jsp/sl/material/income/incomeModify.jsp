@@ -56,7 +56,10 @@
                             		<input type="hidden" name="itemCd" value="${incomeVO.itemCd}">
                             		<input type="hidden" name="stCnt" value="${incomeVO.stCnt}">
                             		<input type="hidden" name="stIdx" value="${incomeVO.stIdx}">
+<<<<<<< HEAD
                             		
+=======
+>>>>>>> refs/remotes/origin/master
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
@@ -111,7 +114,7 @@
 											</tr>
 											<tr>
 												<th>특이사항</th>
-												<td colspan="3"><textarea name="stNote">${incoeVO.stNote}</textarea></td>
+												<td colspan="3"><textarea name="stNote">${incomeVO.stNote}</textarea></td>
 											</tr>
 										</tbody>
 	                                </table>

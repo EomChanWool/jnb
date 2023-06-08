@@ -72,7 +72,7 @@
 														<option value="비가동" <c:if test="${facilityVO.faStatus eq '비가동'}">selected="selected"</c:if>>비가동</option>
 													</select>
 												</td>
-												<th>담당자</th>
+												<th>담당자 <span class="req">*</span></th>
 												<td>
 													<input type="text" class="form-control" name="faManager" id="faManager" value="${facilityVO.faManager}">
 												</td>
@@ -125,7 +125,6 @@
 	<script>
 		function fn_regist_facility(){
 			
-			
 			if($('#fCode').val() == ''){
 				alert("공장명을 확인 바랍니다.");
 				return;
@@ -137,12 +136,10 @@
 			}
 			
 			
-			
 			if($('#faManager').val() == ''){
 				alert("담당자를 확인 바랍니다.");
 				return;
 			}
-			
 			
 			registForm.submit();
 		}
