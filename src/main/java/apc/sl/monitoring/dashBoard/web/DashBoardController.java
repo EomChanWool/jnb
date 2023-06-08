@@ -97,6 +97,8 @@ public class DashBoardController {
 		//재고현황
 		List<?> itemList = dashBoardService.selectItemList();
 		model.put("itemList", itemList);
+		List<?> itemList2 = dashBoardService.selectItemList2();
+		model.put("itemList2", itemList2);
 		
 		//공지사항
 		List<?> noticeList = dashBoardService.selectNoticeList(searchVO);

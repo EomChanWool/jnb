@@ -34,4 +34,9 @@ public class DashBoardServieImpl implements DashBoardService {
 		return dashBoardMapper.selectLineList();
 	}
 
+	@Override
+	public List<?> selectItemList2() {
+		return dashBoardMapper.selectItemList2();
+	}
+
 }

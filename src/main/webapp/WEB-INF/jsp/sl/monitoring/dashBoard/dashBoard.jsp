@@ -98,6 +98,21 @@
 											</c:forEach>
 											<c:if test="${empty itemList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
 										</tbody>
+										<thead>
+											<tr>
+												<th>제품명</th>
+												<th>현 재고량(kg)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="result" items="${itemList2}" varStatus="status">
+												<tr>
+													<td>${result.itemName}</td>
+													<td>${result.itemStock}kg</td>
+												</tr>
+											</c:forEach>
+											<c:if test="${empty itemList2}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
+										</tbody>
 								      </table>
 								    </div>
 								      <div class="cont stockState scroll">

@@ -56,10 +56,7 @@
                             		<input type="hidden" name="itemCd" value="${incomeVO.itemCd}">
                             		<input type="hidden" name="stCnt" value="${incomeVO.stCnt}">
                             		<input type="hidden" name="stIdx" value="${incomeVO.stIdx}">
-<<<<<<< HEAD
-                            		
-=======
->>>>>>> refs/remotes/origin/master
+
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>

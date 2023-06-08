@@ -13,6 +13,8 @@ public interface DashBoardService {
 
 	List<?> selectItemList();
 	
+	List<?> selectItemList2();
+	
 	List<?> selectLineList();
 
 }

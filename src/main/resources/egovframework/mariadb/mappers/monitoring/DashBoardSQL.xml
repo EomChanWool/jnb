@@ -28,6 +28,13 @@
 		FROM sm_item
 		WHERE item_type = '자재'
 	</select>
+	<select id="selectItemList2" resultType="egovMap">
+		SELECT
+		item_name,
+		item_stock
+		FROM sm_item
+		WHERE item_type = '제품'
+	</select>
 
 	<select id="selectLineList" resultType="egovMap">
 		SELECT pd_idx, pd_tank,

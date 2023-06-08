@@ -15,6 +15,8 @@ public interface DashBoardMapper {
 
 	List<?> selectItemList();
 	
+	List<?> selectItemList2();
+	
 	List<?> selectLineList();
 
 }
