@@ -126,6 +126,11 @@
 				alert("부서명을 확인 바랍니다.");
 				return;
 			}
+
+			if($('#ccCode').val() == ''){
+				alert("공통코드를 확인 바랍니다.");
+				return;
+			}
 			
 			registForm.submit();
 		}

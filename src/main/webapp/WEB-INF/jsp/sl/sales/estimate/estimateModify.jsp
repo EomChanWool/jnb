@@ -200,6 +200,11 @@
 			return;
 		}
 		
+		if(modifyForm.aIdx.value == ''){
+			alert("거래처를 확인 바랍니다.");
+			return;
+		}
+		
 		if(modifyForm.prod1.value == '' || !num.test(modifyForm.cnt1.value) || !num.test(modifyForm.perPrice1.value)){
 			alert("견적 제품을 확인 바랍니다.");
 			return;

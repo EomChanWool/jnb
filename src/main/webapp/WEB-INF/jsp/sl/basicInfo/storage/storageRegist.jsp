@@ -137,6 +137,11 @@
 				return;
 			}
 			
+			if($('#ccCode').val() == ''){
+				alert("공통코드를 확인 바랍니다.");
+				return;
+			}
+			
 			if($('#sLocation').val() == ''){
 				alert("창고위치를 확인 바랍니다.");
 				return;

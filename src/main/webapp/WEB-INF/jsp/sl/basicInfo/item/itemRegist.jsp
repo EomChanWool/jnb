@@ -157,6 +157,11 @@
 			alert("거래처를 확인 바랍니다.");
 			return;
 		}
+
+		if($('#ccCode').val() == ''){
+			alert("공통코드를 확인 바랍니다.");
+			return;
+		}
 		
 		if($('#itemName').val() == ''){
 			alert("품목명을 확인 바랍니다.");

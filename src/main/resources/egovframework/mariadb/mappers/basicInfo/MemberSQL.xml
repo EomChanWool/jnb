@@ -123,7 +123,7 @@
 			<if test="mRank != ''">m_rank = #{mRank},</if>
 			sa_idx = #{saIdx},
 			<if test="mEmpltDte != ''">m_emplt_dte = #{mEmpltDte},</if>
-			<if test="mNote != ''">m_note = #{mNote}</if>
+			m_note = #{mNote}
 		WHERE m_idx = #{mIdx}
 	</update>
 	

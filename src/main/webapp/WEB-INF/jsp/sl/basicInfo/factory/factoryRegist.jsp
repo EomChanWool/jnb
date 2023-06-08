@@ -139,14 +139,14 @@
 				alert("사업장명을 확인 바랍니다.");
 				return;
 			}
-			
-			if($('#comnCode').val() == ''){
-				alert("공통코드를 확인 바랍니다.");
+
+			if($('#fName').val() == ''){
+				alert("공장명을 확인 바랍니다.");
 				return;
 			}
 			
-			if($('#cAddr').val() == ''){
-				alert("주소를 확인 바랍니다.");
+			if($('#ccCode').val() == ''){
+				alert("공통코드를 확인 바랍니다.");
 				return;
 			}
 			
@@ -155,10 +155,10 @@
 				return;
 			}
 			
-			if(!tel.test($('#fTel').val())){
-				alert("연락처를 확인 바랍니다.");
-				return;
-			}
+// 			if(!tel.test($('#fTel').val())){
+// 				alert("연락처를 확인 바랍니다.");
+// 				return;
+// 			}
 			
 			registForm.submit();
 		}
