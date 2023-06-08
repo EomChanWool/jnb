@@ -99,7 +99,7 @@ public class IncomeController {
 	public String modifyIncomeOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		map.put("userId", session.getAttribute("user_id"));
 		
-		System.out.println("전확인 : " + map);
+		System.out.println("전확인 : ");
 		
 		
 		String itemCd = map.get("itemCd")+"";
