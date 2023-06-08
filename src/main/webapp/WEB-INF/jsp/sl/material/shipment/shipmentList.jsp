@@ -4,6 +4,79 @@
 <html lang="en">
 
 <%@ include file="../../header.jsp" %>
+<style>
+.table th {
+	padding-top: 1.3rem;
+}
+
+.val-area {
+	text-align: left;
+}
+
+.modal-content {
+	position: relative;
+	margin-left: 250px;
+	flex-direction: column;
+	width: 60%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 0.3rem;
+	outline: 0;
+}
+
+.background-wrap {
+	background-image:
+		url('/resources/conf/images/label.png');
+	background-size: 450px 600px;
+	width: 450px;
+	height: 600px;
+	display: block;
+	justify-content: center;
+	align-items: center;
+}
+
+.content {
+	display: block;
+	flex-direction: column;
+	margin-top: 6px;
+	padding-top: 6px;
+
+}
+
+.content span {
+	color: black;
+
+}
+
+
+
+.content span:nth-child(1) {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.content span:nth-child(2) {
+
+	font-size: 14px;
+
+}
+
+
+@media print {
+	
+	 html,body {
+		margin-right : 5%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		-webkit-print-color-adjust:exact;
+	}
+}
+
+</style>
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -47,7 +120,16 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">출고관리</h1>
+                    <div class="btn_bottom_wrap">
+						<h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">출고 관리</h1>
+						<div style="display: inline-block; float: right; margin-top: -5px;">
+							<button type="button" class="btn btn-success btn-icon-split"
+								style="border: none;" data-toggle="modal"
+								data-target="#analysis">
+								<span class="text">인쇄양식(직접작성)</span>
+							</button>
+						</div>
+					</div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -123,8 +205,87 @@
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
+        
     </div>
     <!-- End of Page Wrapper -->
+    <div class="modal fade" id="analysis" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">인쇄영역</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body" id="modalAn">
+					<form name="listForm2" class="listForm"
+						action="${pageContext.request.contextPath}/sl/material/shipment/shipmentList.do"
+						method="post">
+						<input type="hidden" name="shIdx" value="${shipmentVO.shIdx}">
+						<%-- <table class="table table-bordered">
+						<tbody>
+							<tr>
+								<th>검사번호</th>
+								<td><input type="text" class="form-control" name="tiIdx2" id="tiIdx2" value="${analyVO.tiIdx}"></td>								
+							</tr>
+							<tr>
+								<th>로트번호</th>
+								<td><input type="text" class="form-control" name="woIdx" id="woIdx" value="${analyVO.woIdx}"></td>
+							</tr>
+							<tr>
+								<th>분석번호</th>
+								<td><input type="text" class="form-control" name="azIdx" id="azIdx" value="${analyVO.azIdx}"></td>								
+							</tr>
+							<tr>
+								<th>검사결과</th>
+								<td><input type="text" class="form-control" name="tiState" id="tiState" value="${analyVO.tiState}"></td>
+							</tr>
+							<tr>
+								<th>검사자</th>
+								<td><input type="text" class="form-control" name="tiAnalyst" id="tiAnalyst" value="${analyVO.tiAnalyst}"></td>
+							</tr>
+							<tr>
+								<th>검사일</th>
+								<td><input type="text" class="form-control" name="tiRegDte" id="tiRegDte" value="${analyVO.tiRegDte}"></td>
+							</tr>
+							
+							<img alt="label" src="/resources/conf/images/label.png" style="width: 450px; height: 600px" ;>
+						</tbody>
+					</table> --%>
+
+						<div class="text-on-img">
+							<div class="background-wrap">
+								<div class="content">
+									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:80px; border: none; background: transparent;"id="itemName">									
+									<span id="sp_itemName" style="margin-left:90px; display:none;"></span>
+								</div>
+								<div class="content" style="margin-top:10px;">
+									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:180px; height:35px; margin-left:80px; font-size:13px; "id="acName">
+									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:15px; font-size:14px;"id="itemCnt">	 
+									<span id="sp_acName" style="margin-left:80px; width:190px; display:none; font-size:14px;"></span>
+									<span id="sp_itemCnt" style="margin-left:20px;font-size:20px;display:none;"></span>							
+								</div>
+								<div class="content" style="margin-top:12px;">
+									<input type="text" class="form-control" style="width:300px; height:22px; margin-left:80px; border: none; background: transparent;"id="woIdx2">									
+									<span id="sp_woIdx2" style="margin-left:80px;font-size:16px;display:none;"></span> 	
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button"
+						data-dismiss="modal" id="closeBtn">취소</button>
+					<a class="btn btn-primary" href="#" onclick="fn_print()">인쇄</a>
+				</div>
+			</div>
+		</div>
+	</div>
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -167,6 +328,7 @@
 	}
 	
 	function fn_modify_shipment_go(shIdx){
+		
 		listForm.shIdx.value = shIdx;
 		listForm.action = "${pageContext.request.contextPath}/sl/material/shipment/modifyShipment.do";
 		listForm.submit();
@@ -204,6 +366,33 @@
 			listForm.submit();
 		});
 	});
+	
+	function fn_print() {
+		
+		window.onbeforeprint = function() {
+			$('#sp_itemName').text($('#itemName').val());
+			$('#itemName').hide();
+			$('#sp_itemName').css("display","inline-block");
+			$('#sp_acName').text($('#acName').val());
+			$('#acName').hide();
+			$('#sp_acName').css("display","inline-block");
+			$('#sp_itemCnt').text($('#itemCnt').val());
+			$('#itemCnt').hide();
+			$('#sp_itemCnt').css("display","inline-block");
+			$('#sp_woIdx2').text($('#woIdx2').val());
+			$('#woIdx2').hide();
+			$('#sp_woIdx2').css("display","inline-block");
+			document.body.innerHTML = document.getElementById('modalAn').innerHTML;
+			
+			
+		}
+		window.onafterprint = function() {
+			//document.body.innerHTML = initBody;
+			listForm2.submit();
+		}
+		window.print();
+	}
+		
 	</script>
 </body>
 

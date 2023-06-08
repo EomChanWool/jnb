@@ -236,7 +236,8 @@
 									<span style="margin-left:90px;">${shipmentVO.itemName}</span> 									
 								</div>
 								<div class="content">
-									<span style="display:inline-block; margin-left:80px; width:140px;">${shipmentVO.acName}</span><span style="margin-left:80px;font-size:20px;">${shipmentVO.woPdtCnt}kg</span> 
+									<span style="display:inline-block; margin-left:80px; width:140px;">${shipmentVO.acName}</span>
+									<span style="margin-left:80px;font-size:20px;">${shipmentVO.woPdtCnt}kg</span> 
 																
 								</div>
 								<div class="content" style="margin-top:15px;">
