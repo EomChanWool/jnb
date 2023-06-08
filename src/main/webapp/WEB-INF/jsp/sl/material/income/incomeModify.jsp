@@ -108,7 +108,7 @@
 											</tr>
 											<tr>
 												<th>특이사항</th>
-												<td colspan="3"><textarea name="stNote">${incoeVO.stNote}</textarea></td>
+												<td colspan="3"><textarea name="stNote">${incomeVO.stNote}</textarea></td>
 											</tr>
 										</tbody>
 	                                </table>

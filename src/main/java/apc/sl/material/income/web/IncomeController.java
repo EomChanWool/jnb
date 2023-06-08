@@ -103,7 +103,7 @@ public class IncomeController {
 		//sm_item에 재고 갱신
 		//자재가 바뀌었을경우
 		map.put("cnt", "");
-		if(!map.get("curItemCd").equals(map.get("itemCd"))) {
+		if(!map.get("itemCd").equals(map.get("curItemCd"))) {
 			//이전 자재 재고 복구
 			map.replace("cnt", "-"+map.get("curStCnt"));
 			map.replace("itemCd", map.get("curItemCd"));
