@@ -76,7 +76,7 @@
 										<tr>
 											
 											<th>탱크명</th>
-											<th>원료명</th>
+											
 											<th>설정값</th>
 											<th>실제값</th>
 											<th>상태</th>
@@ -89,7 +89,7 @@
 											<tr>
 												
 												<td>${result.pdTank}</td>
-												<td>${result.pdMaterial}</td>
+												
 												<td>${result.pdSetting}</td>
 												<td>${result.pdActVal}</td>
 												<td>
