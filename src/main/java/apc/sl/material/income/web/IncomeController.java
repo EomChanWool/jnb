@@ -82,6 +82,7 @@ public class IncomeController {
 	
 	@RequestMapping("/sl/material/income/modifyIncome.do")
 	public String modifyIncome(@RequestParam Map<String, Object> map, ModelMap model) {
+		
 		List<?> accountList = incomeService.selectAccountList();
 		model.put("accountList", accountList);
 		List<?> materialList = incomeService.selectMaterialList();
@@ -97,27 +98,38 @@ public class IncomeController {
 	@RequestMapping("/sl/material/income/modifyIncomeOk.do")
 	public String modifyIncomeOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		map.put("userId", session.getAttribute("user_id"));
-		incomeService.modifyIncome(map);
+		
+		System.out.println("전확인 : " + map);
+		
 		
 		String itemCd = map.get("itemCd")+"";
+		
+		
 		//sm_item에 재고 갱신
 		//자재가 바뀌었을경우
 		map.put("cnt", "");
+		
 		if(!map.get("curItemCd").equals(map.get("itemCd"))) {
 			//이전 자재 재고 복구
 			map.replace("cnt", "-"+map.get("curStCnt"));
 			map.replace("itemCd", map.get("curItemCd"));
 			incomeService.updateMaterialCnt(map);
 			//변경된 자재 재고 더해줌
+			
 			map.replace("cnt", map.get("stCnt"));
 			map.replace("itemCd", itemCd);
 			incomeService.updateMaterialCnt(map);
+			incomeService.modifyIncome(map);
 		}else {
 			//자재가 안바뀌었을 경우
-			int cnt = Integer.parseInt(map.get("stCnt")+"") - Integer.parseInt(map.get("curStCnt")+"");
+			System.out.println("확인 : " + map);
+			int cnt = Integer.parseInt(map.get("curStCnt")+"") - Integer.parseInt(map.get("stCnt")+"");
+			
 			map.replace("cnt", cnt);
 			incomeService.updateMaterialCnt(map);
+			incomeService.modifyIncome(map);
 		}
+		
 		redirectAttributes.addFlashAttribute("msg","수정 되었습니다.");
 		return "redirect:/sl/material/income/incomeList.do";
 	}

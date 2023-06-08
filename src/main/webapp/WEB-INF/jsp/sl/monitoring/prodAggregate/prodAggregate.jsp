@@ -203,7 +203,7 @@
 			    },
 			    {
 		    		  type: 'value',
-			      	  name: '금액',
+			      	  name: 'kg',
 			      	  position: 'right',
 			      	  axisLabel: {
 			            formatter: '{value} kg'

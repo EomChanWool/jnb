@@ -53,13 +53,16 @@
                         <div class="card-body">
                             <div class="table-responsive">
                             	<form action="${pageContext.request.contextPath}/sl/material/income/modifyIncomeOk.do" name="modifyForm" method="post">
-                            		<input type="hidden" name="itemName">
+                            		<input type="hidden" name="itemCd" value="${incomeVO.itemCd}">
+                            		<input type="hidden" name="stCnt" value="${incomeVO.stCnt}">
+                            		<input type="hidden" name="stIdx" value="${incomeVO.stIdx}">
+                            		
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
 												<th>품목코드  <span class="req">*</span></th>
 												<td>
-													<input type="text" class="form-control" name="itemCd" id="itemCd" value="${incomeVO.itemCd}" list="mtList" autocomplete="off"/>
+													<input type="text" class="form-control" name="curItemCd" id="curItemCd" value="${incomeVO.itemCd}" list="mtList" autocomplete="off"/>
 													<datalist id="mtList">
 														<c:forEach var="list" items="${materialList}" varStatus="status">
 															<option value="${list.itemCd}">${list.itemName}</option>
@@ -87,7 +90,7 @@
 													</datalist>
 												</td>
 												<th>입고량(kg) <span class="req">*</span></th>
-												<td><input type="text" class="form-control" name="stCnt" id="stCnt" value="${incomeVO.stCnt}"></td>
+												<td><input type="text" class="form-control" name="curStCnt" id="curStCnt" value="${incomeVO.stCnt}"></td>
 											</tr>
 											<tr>
 												<th>위치</th>
@@ -163,7 +166,7 @@
 			return;
 		}
 		
-		if(!num.test($('#stCnt').val())){
+		if(!num.test($('#curStCnt').val())){
 			alert("입고량을 확인 바랍니다.");
 			return;
 		}
