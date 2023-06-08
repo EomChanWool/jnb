@@ -103,7 +103,7 @@ public class IncomeController {
 		//sm_item에 재고 갱신
 		//자재가 바뀌었을경우
 		map.put("cnt", "");
-		if(!map.get("itemCd").equals(map.get("curItemCd"))) {
+		if(!map.get("curItemCd").equals(map.get("itemCd"))) {
 			//이전 자재 재고 복구
 			map.replace("cnt", "-"+map.get("curStCnt"));
 			map.replace("itemCd", map.get("curItemCd"));
@@ -114,6 +114,7 @@ public class IncomeController {
 			incomeService.updateMaterialCnt(map);
 		}else {
 			//자재가 안바뀌었을 경우
+			System.out.println("확인 : " + map);
 			int cnt = Integer.parseInt(map.get("stCnt")+"") - Integer.parseInt(map.get("curStCnt")+"");
 			map.replace("cnt", cnt);
 			incomeService.updateMaterialCnt(map);

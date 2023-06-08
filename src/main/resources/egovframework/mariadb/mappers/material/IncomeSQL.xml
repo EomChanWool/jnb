@@ -140,8 +140,8 @@
 		UPDATE sm_store SET
 		c_idx = #{cIdx},
 		a_idx = #{aIdx},
-		item_cd = #{itemCd},
-		st_cnt = #{stCnt},
+		item_cd = #{curItemCd},
+		st_cnt = #{curStCnt},
 		st_location = #{stLocation},
 		st_dte = #{stDte},
 		st_ins_dte = #{stInsDte},
