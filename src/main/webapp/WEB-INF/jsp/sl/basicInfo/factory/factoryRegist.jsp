@@ -74,7 +74,7 @@
 														</c:forEach>
 													</datalist>
 												</td>
-												<th>연락처</th>
+												<th>연락처 <span class="req">*</span></th>
 												<td>
 													<input type="text" class="form-control" name="fTel" id="fTel" value="${factoryVO.fTel}">
 												</td>
@@ -140,13 +140,13 @@
 				return;
 			}
 			
-			if($('#comnCode').val() == ''){
-				alert("공통코드를 확인 바랍니다.");
+			if($('#fName').val() == ''){
+				alert("공장명을 확인 바랍니다.");
 				return;
 			}
-			
-			if($('#cAddr').val() == ''){
-				alert("주소를 확인 바랍니다.");
+
+			if($('#ccCode').val() == ''){
+				alert("공통코드을 확인 바랍니다.");
 				return;
 			}
 			

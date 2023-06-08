@@ -133,7 +133,7 @@
 			item_name = #{itemName},
 			<if test="itemStandard != ''">item_standard = #{itemStandard},</if>
 			item_uom = #{itemUom},
-			<if test="itemNote != ''">item_note = #{itemNote},</if>
+			item_note = #{itemNote},
 			item_edt_dte = NOW(),
 			item_edt_mem = #{userId}
 		WHERE item_cd = #{itemCd}
