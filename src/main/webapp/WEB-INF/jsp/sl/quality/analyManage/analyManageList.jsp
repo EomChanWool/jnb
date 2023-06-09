@@ -66,6 +66,8 @@
 								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/quality/analyManage/analyManageList.do" method="post">
 									<input type="hidden" name="tiIdx">
 									<input type="hidden" name="doIdx">
+									<input type="hidden" name="woIdx">
+									
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									<input type="text" class="form-control bg-light border-0 small" name="searchKeyword"
 						    									value="${searchVO.searchKeyword}" placeholder="검사명을 입력해 주세요"
@@ -110,7 +112,7 @@
 	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_analyManage_go('${result.tiIdx}')">
 				                                        <span class="text">수정</span>
 				                                    </a>
-				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_analyManage('${result.tiIdx}', '${result.doIdx}')">
+				                                    <a href="#" class="btn btn-danger btn-icon-split" onclick="fn_delete_analyManage('${result.tiIdx}', '${result.doIdx}', '${result.woIdx}')">
 				                                        <span class="text">삭제</span>
 				                                    </a>
 	                                            </td>
@@ -191,10 +193,11 @@
 		listForm.submit();
 	}
 	
-	function fn_delete_analyManage(tiIdx, doIdx){
+	function fn_delete_analyManage(tiIdx, doIdx, woIdx){
 		if(confirm('해당 내역을 삭제하시겠습니까?')) {
 			listForm.tiIdx.value = tiIdx;
 			listForm.doIdx.value = doIdx;
+			listForm.woIdx.value = woIdx;
 			listForm.action = "${pageContext.request.contextPath}/sl/production/analyManage/deleteAnalyManage.do";
 			listForm.submit();
 		}

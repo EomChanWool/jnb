@@ -46,5 +46,9 @@ public interface AnalyManageMapper {
 	void updateDocumnetState(Map<String, Object> map);
 	
 	void updatePrReReSt(Map<String, Object> map);
+	
+	void updateProcess2(Map<String, Object> map);
+	
+	void deleteProdResult(Map<String, Object> map);
 
 }

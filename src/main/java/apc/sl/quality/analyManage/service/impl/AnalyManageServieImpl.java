@@ -109,4 +109,14 @@ public class AnalyManageServieImpl implements AnalyManageService {
 	public Map<String, Object> selectAzIdxData() {
 		return analyManageMapper.selectAzIdxData();
 	}
+
+	@Override
+	public void updateProcess2(Map<String, Object> map) {
+		analyManageMapper.updateProcess2(map);
+	}
+
+	@Override
+	public void deleteProdResult(Map<String, Object> map) {
+		analyManageMapper.deleteProdResult(map);
+	}
 }

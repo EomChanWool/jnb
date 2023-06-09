@@ -181,6 +181,7 @@ public class AnalyManageController {
 			analyManageService.updateDocumnetState(map);
 		}
 		if(map.get("tiState").equals("부적합")) { 
+			
 			analyManageService.updatePrReReSt(map);
 		}
 				
@@ -207,6 +208,17 @@ public class AnalyManageController {
 		analyManageService.deleteAnalyManage(map);
 		map.put("state", "0");
 		analyManageService.updateDocumnetState(map);
+		System.out.println("맵확인 : " + map);
+		
+		//삭제시 공정변경
+		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
+		int processSeq = Integer.parseInt(process.get("prCurSeq")+"");
+		map.put("nextIdx", "pr_list_idx"+(processSeq-1));
+		map.put("nextNm", "pr_list_nm"+(processSeq-1));
+		map.put("curSeq", processSeq-1);
+		analyManageService.updateProcess2(map);
+		analyManageService.deleteProdResult(map);
+		
 		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");
 		return "redirect:/sl/quality/analyManage/analyManageList.do";
 	}
@@ -240,6 +252,7 @@ public class AnalyManageController {
 		map.put("modify","true");
 		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
 		int processSeq = Integer.parseInt(process.get("prCurSeq")+"");
+		System.out.println("확인 : " + processSeq);
 		map.put("curSeq", processSeq);
 		map.put("curStDte", "pr_st_time"+processSeq);
 		map.put("curEdDte", "pr_ed_time"+processSeq);

@@ -172,13 +172,17 @@
 		WHERE wo_idx = #{woIdx}
 	</update>
 
+	
+
 	<update id="updatePrReReSt">
 		UPDATE sm_prod_result
 		SET pr_re_re_st = 'Y'
-		WHERE wo_idx = #{woIdx}
+		WHERE
+		wo_idx = #{woIdx}
 		AND pr_re_idx = (
 		SELECT MAX(pr_re_idx)
-		FROM sm_prod_result
+		FROM
+		sm_prod_result
 		WHERE wo_idx = #{woIdx}
 		)
 	</update>

@@ -24,7 +24,8 @@
 		ti_name,
 		ti_analyst,
 		ti_dte,
-		ti_state
+		ti_state,
+		wo_idx
 		FROM
 		sm_analysis_info
 		WHERE 1=1
@@ -61,16 +62,20 @@
 		SELECT a.ti_idx,
 		a.wo_idx, a.az_idx, a.ti_state, a.ti_analyst, c.item_name, f.ac_name,
 		b.wo_pdt_cnt,
-		date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte FROM
+		date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte
+		FROM
 		sm_analysis_info a
 		JOIN
 		sm_work_order b ON a.WO_IDX = b.WO_IDX
-		JOIN sm_item c ON b.ITEM_CD =
+		JOIN
+		sm_item c ON b.ITEM_CD =
 		c.ITEM_CD
-		JOIN sm_orders d ON b.OR_IDX = d.OR_IDX
+		JOIN sm_orders d ON b.OR_IDX =
+		d.OR_IDX
 		JOIN sm_estimate e ON d.ES_IDX =
 		e.ES_IDX
-		JOIN sm_account f ON e.A_IDX = f.AC_CODE
+		JOIN sm_account f ON
+		e.A_IDX = f.AC_CODE
 		WHERE ti_idx = #{tiIdx}
 	</select>
 
@@ -120,9 +125,11 @@
 	</insert>
 
 	<select id="selectAzIdxData" resultType="egovMap">
-		SELECT az_brix, az_water, az_ph, az_temp, az_viscosity, az_sg
+		SELECT az_brix,
+		az_water, az_ph, az_temp, az_viscosity, az_sg
 		FROM sm_anlz_data
-		WHERE az_idx = (SELECT
+		WHERE
+		az_idx = (SELECT
 		MAX(az_idx) AS az_idx
 		FROM sm_anlz_data)
 	</select>
@@ -219,6 +226,20 @@
 		WHERE ti_idx =
 		#{tiIdx}
 	</select>
+	<update id="updateProcess2">
+		UPDATE sm_process SET
+		pr_cur_seq = (pr_cur_seq - 1),
+		pr_cur_idx = (SELECT
+		${nextIdx} FROM sm_process WHERE wo_idx =
+		#{woIdx}),
+		pr_cur_nm =
+		(SELECT pr_list_nm3 FROM sm_process WHERE wo_idx
+		=
+		#{woIdx}),
+		pr_fin_cnt
+		= (pr_fin_cnt - 1)
+		WHERE wo_idx = #{woIdx}
+	</update>
 
 	<update id="modifyAnalysisData">
 		UPDATE sm_anlz_data SET
@@ -273,6 +294,10 @@
 
 	<delete id="deleteAnalyManage">
 		DELETE FROM sm_analysis_info WHERE ti_idx = #{tiIdx}
+	</delete>
+	<delete id="deleteProdResult">
+		DELETE FROM sm_prod_result WHERE wo_idx = #{woIdx}
+		AND PR_LIST_NM = '품질검사'
 	</delete>
 
 	<select id="selectAnalysisCnt" resultType="egovMap">
