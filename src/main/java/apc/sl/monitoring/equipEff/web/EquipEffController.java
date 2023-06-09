@@ -43,8 +43,8 @@ public class EquipEffController {
 		
 		model.put("plcYear", plcYearList);
 		
-		for(int i=1; i<=6; i++) {
-			String tankNm = "ITK"+i;
+		for(int i=1; i<=3; i++) {
+			String tankNm = "MIX"+i;
 			searchVO.setTemp(tankNm);
 			List<?> eq = equipEffService.selectEquioEffCnt1(searchVO);
 			model.put(tankNm, eq);

@@ -75,10 +75,6 @@
 									<thead>
 										<tr>
 											<th>탱크명</th>
-<<<<<<< HEAD
-											
-=======
->>>>>>> refs/remotes/origin/master
 											<th>설정값</th>
 											<th>실제값</th>
 											<th>상태</th>
@@ -89,17 +85,12 @@
 										<c:forEach var="result" items="${lineActivity}"
 											varStatus="status">
 											<tr>
-												
+
 												<td>${result.pdTank}</td>
-<<<<<<< HEAD
-												
-=======
->>>>>>> refs/remotes/origin/master
 												<td>${result.pdSetting}</td>
 												<td>${result.pdActVal}</td>
-												<td>
-												<c:if test="${result.pdStatus == 1}">작동중</c:if>
-												<c:if test="${result.pdStatus == 0}">중지</c:if></td>
+												<td><c:if test="${result.pdStatus == 1}">작동중</c:if> <c:if
+														test="${result.pdStatus == 0}">중지</c:if></td>
 												<td>${result.pdRegDte}</td>
 
 											</tr>
