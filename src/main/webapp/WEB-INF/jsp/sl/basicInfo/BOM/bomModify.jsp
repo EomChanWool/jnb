@@ -48,7 +48,7 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="btn_bottom_wrap">
-                   		<h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">품목코드 수정</h1>
+                   		<h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">BOM 수정</h1>
                    		<div style="display: inline-block; float: right; margin-top: -5px;">
                    			<button type="button" class="btn btn-success btn-icon-split" onclick="addRow()" style="border:none;"><span class="text">추가</span></button>
 							<button type="button" class="btn btn-danger btn-icon-split" onclick="delRow()" style="border:none;"><span class="text">삭제</span></button>
