@@ -300,6 +300,12 @@
 		AND PR_LIST_NM = '품질검사'
 	</delete>
 
+	<select id="selectOrderState" resultType="egovMap">
+		SELECT b.or_state FROM sm_work_order a JOIN
+		sm_orders b ON a.OR_IDX=b.OR_IDX
+		WHERE a.wo_idx = #{woIdx}
+	</select>
+
 	<select id="selectAnalysisCnt" resultType="egovMap">
 		SELECT
 		COUNT(*) AS

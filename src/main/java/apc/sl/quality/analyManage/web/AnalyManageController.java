@@ -216,8 +216,17 @@ public class AnalyManageController {
 		map.put("nextIdx", "pr_list_idx"+(processSeq-1));
 		map.put("nextNm", "pr_list_nm"+(processSeq-1));
 		map.put("curSeq", processSeq-1);
-		analyManageService.updateProcess2(map);
-		analyManageService.deleteProdResult(map);
+		
+		Map<String, Object> orderStat = analyManageService.selectOrderState(map);
+		int orderState = Integer.parseInt(orderStat.get("orState")+"");
+		
+		if(orderState==1) {
+			analyManageService.updateProcess2(map);
+			analyManageService.deleteProdResult(map);
+		}
+		
+		
+		
 		
 		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");
 		return "redirect:/sl/quality/analyManage/analyManageList.do";

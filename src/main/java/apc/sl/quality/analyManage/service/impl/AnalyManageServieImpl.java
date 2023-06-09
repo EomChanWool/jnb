@@ -119,4 +119,9 @@ public class AnalyManageServieImpl implements AnalyManageService {
 	public void deleteProdResult(Map<String, Object> map) {
 		analyManageMapper.deleteProdResult(map);
 	}
+
+	@Override
+	public Map<String, Object> selectOrderState(Map<String, Object> map) {
+		return analyManageMapper.selectOrderState(map);
+	}
 }

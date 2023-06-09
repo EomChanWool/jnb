@@ -30,6 +30,8 @@ public interface AnalyManageService {
 	int selectExistsProdResult(Map<String, Object> map);
 
 	Map<String, Object> selectAnalyManageInfo(Map<String, Object> map);
+	
+	Map<String, Object> selectOrderState(Map<String, Object> map);
 
 	void modifyAnalysisData(Map<String, Object> map);
 
