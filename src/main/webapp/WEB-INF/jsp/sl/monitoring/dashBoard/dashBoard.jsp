@@ -361,7 +361,7 @@
 	</c:forEach>
 	
 	
-	console.log(prodCnt2);
+	
 	
 	option = {
 			  tooltip: {
@@ -436,95 +436,89 @@
 	</script>
 	
 	<script>
-		$(function() {
-			$('#monitoringMenu').addClass("active");
-			$('#monitoring').addClass("show");
-			$('#equipEff').addClass("active");
-		 $('#searchCondition2').change(function(){
-					listForm.submit();
-				}); 
+	
+	var chartDom = document.getElementById('equipEffGraph');
+	var myChart = echarts.init(chartDom);
+	var option;
 
-			 window.onresize = function() {
-				location.reload();
-			} 
-		});
-
-		var chartDom = document.getElementById('equipEffGraph');
-		var myChart = echarts.init(chartDom);
-		var option;
-
-		let date3 = [];
-		let eq1 = [];
-		let eq2 = [];
-		let eq3 = [];
-		let eq4 = [];
-		let eq5 = [];
-		let eq6 = [];
+	let date3 = [];
+	let eq1 = [];
+	let eq2 = [];
+	let eq3 = [];
+	
+	
+	<c:forEach items="${MIX1}" var="list" varStatus="status">
+		date3.push('${list.month}월');
+		eq1.push(${list.pdCnt});
+		eq2.push("${MIX2[status.index].pdCnt}");
+		eq3.push("${MIX3[status.index].pdCnt}");
 		
-		<c:forEach items="${ITK1}" var="list" varStatus="status">
-			date3.push(${list.month});
-			eq1.push(${list.pdCnt});
-			eq2.push("${ITK2[status.index].pdCnt}");
-			eq3.push("${ITK3[status.index].pdCnt}");
-			eq4.push("${ITK4[status.index].pdCnt}");
-			eq5.push("${ITK5[status.index].pdCnt}");
-			eq6.push("${ITK6[status.index].pdCnt}");
-		</c:forEach>
-		
-// 		<c:forEach items="${eq2}" var="list">
-// 		eq2.push('${list.pdCnt}');
-// 		</c:forEach>
-		
-		
-		option = {
-				 title: {
-					    text: '월별 평균 생산 (kg)',
-					    textStyle:{
-							        fontSize: 11
-							      }
-					  },
-				
-				tooltip: {
-				    trigger: 'axis',
-		// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
-					},
-				    axisPointer: {
-				    	type: 'cross',
-				    	axis: "auto",
-				    	crossStyle: {
-				        	color: '#999'
-			    	}
+	</c:forEach>
+	
+//		<c:forEach items="${eq2}" var="list">
+//		eq2.push('${list.pdCnt}');
+//		</c:forEach>
+	
+	
+	option = {
+			 title: {
+				    text: '월별 평균 생산 (kg)',
+				    textStyle:{
+				        fontSize: 11
+				      }
 				  },
-				  toolbox: {
-				    feature: {
-				      dataView: { show: false, readOnly: false },
-				      magicType: { show: false, type: ['line', 'bar'] },
-				      restore: { show: false },
-				      saveAsImage: { show: true }
-				    }
-				  },
-				  legend: {
-				    data: ['ITK1', 'ITK2','ITK3']
-				  },
-				  xAxis: {
-				    type: 'category',
-				    data: date
-				  },
-				  yAxis: [
-					    {
-					      type: 'value',
-					      name: 'kg',
-					     
-					      
-					      axisLabel: {
-					        formatter: '{value} kg'
-					      }
-					    }
-					  ],
-				  series: [
+			
+			tooltip: {
+			    trigger: 'axis',
+	// 			    formatter: '{b0}<br>{a0} : {c0} EA<br>{a1} : {c1} EA<br>{a2} : {c2} EA',
+				},
+			    axisPointer: {
+			    	type: 'cross',
+			    	axis: "auto",
+			    	crossStyle: {
+			        	color: '#999'
+		    	}
+			  },
+			  toolbox: {
+			    feature: {
+			      dataView: { show: false, readOnly: false },
+			      magicType: { show: false, type: ['line', 'bar'] },
+			      restore: { show: false },
+			      saveAsImage: { show: true }
+			    }
+			  },
+			  legend: {
+			    data: ['MIX1', 'MIX2','MIX3']
+			  },
+			  xAxis: {
+			    type: 'category',
+			    data: date3
+			  },
+			  yAxis: [
 				    {
-				      data: eq1,
-				      name: 'ITK1',
+				      type: 'value',
+				      name: 'kg',
+				     
+				      
+				      axisLabel: {
+				        formatter: '{value} kg'
+				      }
+				    }
+				  ],
+			  series: [
+			    {
+			      data: eq1,
+			      name: 'MIX1',
+			      tooltip: {
+				        valueFormatter: function (value) {
+				          return value + ' kg';
+				        }
+				      },
+			      type: 'line'
+			    },
+			    {
+				      data: eq2,
+				      name: 'MIX2',
 				      tooltip: {
 					        valueFormatter: function (value) {
 					          return value + ' kg';
@@ -533,30 +527,20 @@
 				      type: 'line'
 				    },
 				    {
-					      data: eq2,
-					      name: 'ITK2',
+					      data: eq3,
+					      name: 'MIX3',
 					      tooltip: {
 						        valueFormatter: function (value) {
 						          return value + ' kg';
 						        }
 						      },
 					      type: 'line'
-					    },
-					    {
-						      data: eq3,
-						      name: 'ITK3',
-						      tooltip: {
-							        valueFormatter: function (value) {
-							          return value + ' kg';
-							        }
-							      },
-						      type: 'line'
-						    }    
-					    
-				  ]
-				};
-		
-		option && myChart.setOption(option);
+					    }    
+				    
+			  ]
+			};
+	
+	option && myChart.setOption(option);
 
 		/*  var chartDom = document.getElementById('graph');
 		var myChart = echarts.init(chartDom);

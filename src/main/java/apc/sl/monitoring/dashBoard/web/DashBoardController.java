@@ -177,12 +177,12 @@ public class DashBoardController {
 		
 		model.put("percent", str4); */
 		//설비종합효율
-		for(int i=1; i<=6; i++) {
-			String tankNm = "ITK"+i;
+		for(int i=1; i<=3; i++) {
+			String tankNm = "MIX"+i;
 			searchVO.setTemp(tankNm);
 			List<?> eq = equipEffService.selectEquioEffCnt1(searchVO);
 			model.put(tankNm, eq);
-			System.out.println("확인 : " + eq);
+			
 		}
 		
 		
