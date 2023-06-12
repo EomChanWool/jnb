@@ -63,16 +63,22 @@
 
 }
 
+@page {
+  size: auto;
+  margin: 0;
+ }
 
 @media print {
 	
 	 html,body {
-		margin-right : 5%;
+		margin-top : -5%;
+		margin-right : 3%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 100vh;
 		-webkit-print-color-adjust:exact;
+		-webkit-transform:rotate(45deg); 
 	}
 }
 </style>

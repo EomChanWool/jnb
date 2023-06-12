@@ -61,6 +61,11 @@
 														<option value="항목3">항목3</option>
 														<option value="항목4">항목4</option>
 														<option value="항목5">항목5</option>
+														<option value="항목6">항목6</option>
+														<option value="항목7">항목7</option>
+														<option value="항목8">항목8</option>
+														<option value="항목9">항목9</option>
+														<option value="항목10">항목10</option>
 													</select>
 												</td>
 												<th>불량명 <span class="req">*</span></th>

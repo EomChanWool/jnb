@@ -221,7 +221,7 @@ public class AnalyManageController {
 		int orderState = Integer.parseInt(orderStat.get("orState")+"");
 		
 		if(orderState==1) {
-			analyManageService.updateProcess2(map);
+			analyManageService.updateProcess2(map); 
 			analyManageService.deleteProdResult(map);
 		}
 		

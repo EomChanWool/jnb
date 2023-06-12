@@ -62,6 +62,12 @@
 														<option value="항목3" <c:if test="${biVO.biCate eq '항목3'}">selected="selected"</c:if>>항목3</option>
 														<option value="항목4" <c:if test="${biVO.biCate eq '항목4'}">selected="selected"</c:if>>항목4</option>
 														<option value="항목5" <c:if test="${biVO.biCate eq '항목5'}">selected="selected"</c:if>>항목5</option>
+														<option value="항목6" <c:if test="${biVO.biCate eq '항목6'}">selected="selected"</c:if>>항목6</option>
+														<option value="항목7" <c:if test="${biVO.biCate eq '항목7'}">selected="selected"</c:if>>항목7</option>
+														<option value="항목8" <c:if test="${biVO.biCate eq '항목8'}">selected="selected"</c:if>>항목8</option>
+														<option value="항목9" <c:if test="${biVO.biCate eq '항목9'}">selected="selected"</c:if>>항목9</option>
+														<option value="항목10" <c:if test="${biVO.biCate eq '항목10'}">selected="selected"</c:if>>항목10</option>
+														
 													</select>
 												</td>
 												<th>불량명 <span class="req">*</span></th>
