@@ -110,6 +110,10 @@ public class DeliveryController {
 		  
 		  deliveryService.updateProduct(map); }
 		 
+		  else if(map.get("deState").equals("0")) {
+			  
+			  
+			  deliveryService.updateProduct2(map); }
 		
 		
 		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
