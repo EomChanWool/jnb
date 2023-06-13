@@ -99,11 +99,33 @@ public class StateController {
 	}
 	
 	@RequestMapping("/sl/sales/state/deliveryStateList.do")
-	public String deliveryStateList(ModelMap model, HttpSession session) {
+	public String deliveryStateList(@ModelAttribute("searchVO") SearchVO searchVO,ModelMap model, HttpSession session) {
 		
-		List<?> deliveryStateList = stateService.selectDeliveryStateList();
+		int totCnt = stateService.selectStateMonthListToCnt(searchVO);
+		
+		/** pageing setting */
+		searchVO.setPageSize(10);
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex()); // 현재 페이지 번호
+		paginationInfo.setRecordCountPerPage(10); // 한 페이지에 게시되는 게시물 건수
+		paginationInfo.setPageSize(searchVO.getPageSize()); // 페이징 리스트의 사이즈
+		paginationInfo.setTotalRecordCount(totCnt);
+		
+		if(searchVO.getSearchCondition2().equals("")) {
+			searchVO.setSearchCondition2("2023");
+		}
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		List<?> deliveryStateList = stateService.selectDeliveryStateList(searchVO);
+		List<?> deliveryStateTotalList = stateService.selectDeliveryStateTotalList(searchVO);
+		List<?> deYearList = stateService.selectDeYearList(searchVO);
 		
 		model.put("deliveryStateList", deliveryStateList);
+		model.put("deliveryStateTotalList", deliveryStateTotalList);
+		model.put("deYearList", deYearList);
+		model.put("paginationInfo", paginationInfo);
 		
 		return "sl/sales/state/deliveryStateList";
 	}

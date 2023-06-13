@@ -162,8 +162,56 @@
 		ORDER BY or_year DESC
 
 	</select>
-
+	
 	<select id="selectDeliveryStateList" resultType="egovMap">
+		SELECT
+	    months.month AS MONTH,
+	    IFNULL(total_delivery_counts.total_delivery, 0) AS total_delivery,
+	    IFNULL(de_state_0_counts.de_state_0_count, 0) AS de_state_0_count,
+	    IFNULL(de_state_1_counts.de_state_1_count, 0) AS de_state_1_count,
+	    FORMAT(IFNULL(de_state_1_sums.total_or_money, 0), 0) AS total_or_money
+		FROM (
+	    SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+	    SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION
+	    SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12
+		) AS months
+		LEFT JOIN (
+	    SELECT
+        MONTH(de_dte) AS month,
+        COUNT(*) AS total_delivery
+	    FROM sm_delivery a
+	    WHERE de_state IN (0, 1) AND YEAR(de_dte) = #{searchCondition2}
+	    GROUP BY MONTH(de_dte)
+		) AS total_delivery_counts ON months.month = total_delivery_counts.month
+		LEFT JOIN (
+	    SELECT
+        MONTH(de_dte) AS month,
+        SUM(CASE WHEN a.de_state = 0 THEN 1 ELSE 0 END) AS de_state_0_count
+	    FROM sm_delivery a
+	    WHERE de_state IN (0, 1) AND YEAR(de_dte) = #{searchCondition2}
+	    GROUP BY MONTH(de_dte)
+		) AS de_state_0_counts ON months.month = de_state_0_counts.month
+		LEFT JOIN (
+	    SELECT
+        MONTH(de_dte) AS month,
+        SUM(CASE WHEN a.de_state = 1 THEN 1 ELSE 0 END) AS de_state_1_count
+	    FROM sm_delivery a
+	    WHERE de_state IN (0, 1) AND YEAR(de_dte) = #{searchCondition2}
+	    GROUP BY MONTH(de_dte)
+		) AS de_state_1_counts ON months.month = de_state_1_counts.month
+		LEFT JOIN (
+	    SELECT
+        MONTH(de_dte) AS month,
+        SUM(CASE WHEN a.de_state = 1 THEN b.or_money ELSE 0 END) AS total_or_money
+	    FROM sm_delivery a
+	    LEFT JOIN sm_orders b ON a.or_idx = b.or_idx
+	    WHERE de_state IN (0, 1) AND YEAR(de_dte) = #{searchCondition2}
+	    GROUP BY MONTH(de_dte)
+		) AS de_state_1_sums ON months.month = de_state_1_sums.month
+		ORDER BY months.month
+	</select>
+
+	<select id="selectDeliveryStateTotalList" resultType="egovMap">
 		SELECT
 		COUNT(*) AS total_delivery,
 		SUM(CASE WHEN sm_delivery.de_state = 0 THEN 1 ELSE 0 END) AS de_state_0_count,
@@ -174,7 +222,19 @@
 		FROM sm_delivery
 		LEFT JOIN sm_orders ON sm_delivery.or_idx = sm_orders.or_idx
 		WHERE sm_delivery.de_state IN (0, 1)
+		AND YEAR(de_dte) = #{searchCondition2};
 	</select>
+	
 
+	<select id="selectDeYearList" resultType="egovMap">
+
+		SELECT
+		DATE_FORMAT(de_dte, '%Y') AS de_year
+		FROM sm_delivery
+		GROUP BY
+		DATE_FORMAT(de_dte, '%Y')
+		ORDER BY de_year DESC
+
+	</select>
 
 </mapper>

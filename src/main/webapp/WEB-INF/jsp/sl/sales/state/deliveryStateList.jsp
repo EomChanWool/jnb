@@ -66,10 +66,14 @@
                         <div class="card-header py-3">
 							<div class="search">
 								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/sales/state/deliveryStateList.do" method="post">
+									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									
-									
-						    								
-   									
+									<select class="btn btn-secondary dropdown-toggle searchCondition" name="searchCondition2" id="searchCondition2">
+						    			
+						    			<c:forEach var="list" items="${deYearList}" varStatus="status">
+						    				<option value="${list.deYear}" <c:if test="${searchVO.searchCondition2 eq list.deYear or status.count eq 1}">selected="selected"</c:if>>${list.deYear}년도</option>
+						    			</c:forEach>
+						    		</select>
 						    	</form>
 						    	
 	                           
@@ -80,31 +84,37 @@
                                 <table class="table table-bordered" id="dataTable"  >
                                     <thead>
                                         <tr>
-                                        	<th>총 납품 건수 </th>
-											<th>총 납품 금액</th>
+                                        	<th>월</th>
+                                        	<th>납품 건수 </th>
+											<th>납품 금액</th>
 											<th>대기 납품 건수</th>
 											<th>완료 납품 건수</th>
-											
-											
-											
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="result" items="${deliveryStateList}" varStatus="status">
 	                                   		<tr>
+	                                   			<td>${result.month}월</td>
 	                                   			<td>${result.totalDelivery}건</td>
 												<td>${result.totalOrMoney}원</td>
 												<td>${result.deState0Count}건</td>
 												<td>${result.deState1Count}건</td>
-												
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty deliveryStateList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:forEach var="result" items="${deliveryStateTotalList}" varStatus="status">
+	                                   		<tr>
+	                                   			<td>전체</td>
+	                                   			<td>${result.totalDelivery}건</td>
+												<td>${result.totalOrMoney}원</td>
+												<td>${result.deState0Count}건</td>
+												<td>${result.deState1Count}건</td>
+	                                        </tr>
+                                    	</c:forEach>
                                     </tbody>
                                 </table>
-                                <%-- <div class="btn_page">
+                                <div class="btn_page">
 									<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_pageview"/>
-							    </div> --%>
+							    </div>
                             </div>
                         </div>
                     </div>

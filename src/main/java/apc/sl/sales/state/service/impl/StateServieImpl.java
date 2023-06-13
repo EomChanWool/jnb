@@ -57,9 +57,21 @@ public class StateServieImpl implements StateService {
 	}
 
 	@Override
-	public List<?> selectDeliveryStateList() {
+	public List<?> selectDeliveryStateList(SearchVO searchVO) {
 		
-		return stateMapper.selectDeliveryStateList();
+		return stateMapper.selectDeliveryStateList(searchVO);
 	}
 
+	@Override
+	public List<?> selectDeliveryStateTotalList(SearchVO searchVO) {
+		
+		return stateMapper.selectDeliveryStateTotalList(searchVO);
+	}
+
+	@Override
+	public List<?> selectDeYearList(SearchVO searchVO) {
+		
+		return stateMapper.selectDeYearList(searchVO);
+	}
+	
 }
