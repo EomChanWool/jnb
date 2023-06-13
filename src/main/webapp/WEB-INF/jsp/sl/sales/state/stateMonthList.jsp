@@ -90,8 +90,6 @@
                                         	<th>월 </th>
 											<th>수주 건수</th>
 											<th>수주금액 월 총합</th>
-											
-											
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,7 +98,6 @@
 	                                   			<td>${result.month}월</td>
 												<td>${result.orCount}건</td>
 												<td>${result.totalMoney}원</td>
-												
 	                                        </tr>
                                     	</c:forEach>
                                     	<c:if test="${empty stateMonthList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
