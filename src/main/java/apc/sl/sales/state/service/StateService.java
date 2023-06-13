@@ -22,8 +22,6 @@ public interface StateService {
 	
 	List<?> selectDeliveryStateList(SearchVO searchVO);
 	
-	List<?> selectDeliveryStateTotalList(SearchVO searchVO);
-
 	List<?> selectDeYearList(SearchVO searchVO);
 	
 }

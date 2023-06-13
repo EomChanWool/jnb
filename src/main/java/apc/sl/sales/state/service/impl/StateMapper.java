@@ -24,7 +24,5 @@ public interface StateMapper {
 	
 	List<?> selectDeliveryStateList(SearchVO searchVO);
 
-	List<?> selectDeliveryStateTotalList(SearchVO searchVO);
-
 	List<?> selectDeYearList(SearchVO searchVO);
 }

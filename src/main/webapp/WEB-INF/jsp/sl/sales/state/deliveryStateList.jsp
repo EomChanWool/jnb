@@ -101,15 +101,21 @@
 												<td>${result.deState1Count}건</td>
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:forEach var="result" items="${deliveryStateTotalList}" varStatus="status">
-	                                   		<tr>
+                                    	<c:forEach var="result" items="${deliveryStateList}" varStatus="status">
+   											 <c:set var="total1" value="${total1 + result.totalDelivery}"/>
+    										<c:set var="total2" value="${total2 + result.totalOrMoney.replace(',', '')}"/>
+    										<c:set var="total3" value="${total3 + result.deState0Count}"/>
+    										<c:set var="total4" value="${total4 + result.deState1Count}"/>
+											</c:forEach>
+
+                                    	<tr>
 	                                   			<td>전체</td>
-	                                   			<td>${result.totalDelivery}건</td>
-												<td>${result.totalOrMoney}원</td>
-												<td>${result.deState0Count}건</td>
-												<td>${result.deState1Count}건</td>
-	                                        </tr>
-                                    	</c:forEach>
+                                    			<td><c:out value="${total1}건"/></td>
+                                    			<td id="totalPrice"><c:out value="${total2}원"/></td>
+                                    			<td><c:out value="${total3}건"/></td>
+                                    			<td><c:out value="${total4}건"/></td>
+                                    	
+	                                    </tr>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
@@ -201,6 +207,9 @@
 		if(msg) {
 			alert(msg);
 		}
+		
+		let totalPrice = $('#totalPrice').text().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$('#totalPrice').text(totalPrice);
 		
 		 $('#searchCondition2').change(function(){
 			listForm.submit();
