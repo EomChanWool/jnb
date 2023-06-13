@@ -21,7 +21,7 @@ public class StateController {
 	private StateService stateService;
 	
 	
-	@RequestMapping("/sl/sales/state/stateList.do")
+	@RequestMapping("/sl/sales/stateManage/stateList.do")
 	public String stateList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		
 		int totCnt = stateService.selectStateListToCnt(searchVO);
@@ -45,7 +45,7 @@ public class StateController {
 		return "sl/sales/state/stateList";
 	}
 	
-	@RequestMapping("/sl/sales/state/noPayList.do")
+	@RequestMapping("/sl/sales/stateManage/noPayList.do")
 	public String noPayList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		int totCnt = stateService.selectNoPayListToCnt(searchVO);
 		/** pageing setting */
@@ -68,7 +68,7 @@ public class StateController {
 		return "sl/sales/state/noPayList";
 	}
 	
-	@RequestMapping("/sl/sales/state/stateMonthList.do")
+	@RequestMapping("/sl/sales/stateManage/stateMonthList.do")
 	public String stateMonthList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
 		
 		int totCnt = stateService.selectStateMonthListToCnt(searchVO);
@@ -98,7 +98,7 @@ public class StateController {
 		return "sl/sales/state/stateMonthList";
 	}
 	
-	@RequestMapping("/sl/sales/state/deliveryStateList.do")
+	@RequestMapping("/sl/sales/stateManage/deliveryStateList.do")
 	public String deliveryStateList(@ModelAttribute("searchVO") SearchVO searchVO,ModelMap model, HttpSession session) {
 		
 		int totCnt = stateService.selectStateMonthListToCnt(searchVO);

@@ -106,6 +106,7 @@
 			<mvc:exclude-mapping path="/**/main.do"/>
 			<mvc:exclude-mapping path="/**/login.do"/>
 			<mvc:exclude-mapping path="/**/logout.do"/>
+			<mvc:exclude-mapping path="/**/*Ajax.do"/>
 			<bean class="apc.cmn.CommonInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

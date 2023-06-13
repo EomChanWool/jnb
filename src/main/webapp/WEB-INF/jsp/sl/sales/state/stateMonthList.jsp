@@ -65,7 +65,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 							<div class="search">
-								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/sales/state/stateMonthList.do" method="post">
+								<form name ="listForm" class="listForm" action="${pageContext.request.contextPath}/sl/sales/stateManage/stateMonthList.do" method="post">
 									
 									<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									
@@ -146,22 +146,22 @@
 	}
 	
 	function fn_go_state(){
-		listForm.action = "${pageContext.request.contextPath}/sl/sales/state/stateList.do";
+		listForm.action = "${pageContext.request.contextPath}/sl/sales/stateManage/stateList.do";
 		listForm.submit();
 	}
 	
 	function fn_go_noPayList(){
-		listForm.action = "${pageContext.request.contextPath}/sl/sales/state/noPayList.do";
+		listForm.action = "${pageContext.request.contextPath}/sl/sales/stateManage/noPayList.do";
 		listForm.submit();
 	}
 	
 	function fn_go_stateMonthList(){
-		listForm.action = "${pageContext.request.contextPath}/sl/sales/state/stateMonthList.do";
+		listForm.action = "${pageContext.request.contextPath}/sl/sales/stateManage/stateMonthList.do";
 		listForm.submit();
 	}	
 	
 	function fn_go_deliveryStateList(){
-		listForm.action = "${pageContext.request.contextPath}/sl/sales/state/deliveryStateList.do";
+		listForm.action = "${pageContext.request.contextPath}/sl/sales/stateManage/deliveryStateList.do";
 		listForm.submit();
 	}	
 	

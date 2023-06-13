@@ -59,7 +59,7 @@
 		    <a class="collapse-item" id="estimateList" href="${pageContext.request.contextPath}/sl/sales/estimate/estimateList.do">견적관리</a>
 		    <a class="collapse-item" id="ordersList" href="${pageContext.request.contextPath}/sl/sales/ordersManage/ordersList.do">수주관리</a>
 		    <a class="collapse-item" id="deliveryList" href="${pageContext.request.contextPath}/sl/sales/delivery/deliveryList.do">납품관리</a>
-		    <a class="collapse-item" id="stateList" href="${pageContext.request.contextPath}/sl/sales/state/stateList.do">현황관리</a>
+		    <a class="collapse-item" id="stateList" href="${pageContext.request.contextPath}/sl/sales/stateManage/stateList.do">현황관리</a>
 		</div>
     </div>
 </li>

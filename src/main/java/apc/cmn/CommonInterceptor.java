@@ -29,8 +29,9 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 		//사용자 권한 레벨
 		int userLev = Integer.parseInt(userMap.get("saLev")+"");
 		//프로그램 접근 권한 체크
-		//System.out.println("확인" + str2[5]);
+		System.out.println("확인" + str2[5]);
 		int programAccessLev = authorityService.selectProgramAccessLev(str2[5]); 
+		System.out.println(programAccessLev);
 		if(session.getAttribute("user_id") == null) {
 			ScriptAlert.alertAndMovePage(response, "접근 권한이 없습니다.", "/sl/main.do");
 			return false;
@@ -47,7 +48,7 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 				System.out.println("CRUD권한 체크");
 				int crud = authorityService.selectAccess(userMap.get("mId")+"");
 				if(crud == 0) {
-					ScriptAlert.alertAndBackPage(response, "등록/수정/삭제 권한이 없습니다.");
+					ScriptAlert.alertAndMovePage(response, "등록/수정/삭제 권한이 없습니다.","/sl/basicInfo/member/memberList.do");
 				}
 			}
 		}
