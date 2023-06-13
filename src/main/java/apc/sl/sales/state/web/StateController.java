@@ -119,11 +119,9 @@ public class StateController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		List<?> deliveryStateList = stateService.selectDeliveryStateList(searchVO);
-		List<?> deliveryStateTotalList = stateService.selectDeliveryStateTotalList(searchVO);
 		List<?> deYearList = stateService.selectDeYearList(searchVO);
 		
 		model.put("deliveryStateList", deliveryStateList);
-		model.put("deliveryStateTotalList", deliveryStateTotalList);
 		model.put("deYearList", deYearList);
 		model.put("paginationInfo", paginationInfo);
 		

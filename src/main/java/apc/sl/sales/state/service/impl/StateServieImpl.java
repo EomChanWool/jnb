@@ -63,12 +63,6 @@ public class StateServieImpl implements StateService {
 	}
 
 	@Override
-	public List<?> selectDeliveryStateTotalList(SearchVO searchVO) {
-		
-		return stateMapper.selectDeliveryStateTotalList(searchVO);
-	}
-
-	@Override
 	public List<?> selectDeYearList(SearchVO searchVO) {
 		
 		return stateMapper.selectDeYearList(searchVO);
