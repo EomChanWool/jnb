@@ -17,7 +17,7 @@
 	position: relative;
 	margin-left: 250px;
 	flex-direction: column;
-	width: 60%;
+	width: 68%;
 	pointer-events: auto;
 	background-color: #fff;
 	background-clip: padding-box;
@@ -29,8 +29,8 @@
 .background-wrap {
 	background-image:
 		url('/resources/conf/images/label.png');
-	background-size: 450px 600px;
-	width: 450px;
+	background-size: 500px 600px;
+	width: 500px;
 	height: 600px;
 	display: block;
 	justify-content: center;
@@ -239,15 +239,15 @@
 						<div class="text-on-img">
 							<div class="background-wrap">
 								<div class="content">
-									<span style="margin-left:90px;">${shipmentVO.itemName}</span> 									
+									<span style="margin-left:100px;">${shipmentVO.itemName}</span> 									
 								</div>
 								<div class="content">
-									<span style="display:inline-block; margin-left:80px; width:140px;">${shipmentVO.acName}</span>
-									<span style="margin-left:80px;font-size:20px;">${shipmentVO.woPdtCnt}kg</span> 
+									<span style="display:inline-block; margin-left:90px; width:140px;">${shipmentVO.acName}</span>
+									<span style="margin-left:90px;font-size:20px;">${shipmentVO.woPdtCnt}kg</span> 
 																
 								</div>
 								<div class="content" style="margin-top:15px;">
-									<span style="margin-left:90px;">${shipmentVO.woIdx}</span> 									
+									<span style="margin-left:100px;">${shipmentVO.woIdx}</span> 									
 								</div>
 							</div>
 						</div>
