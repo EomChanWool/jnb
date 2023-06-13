@@ -30,5 +30,7 @@ public interface DeliveryMapper {
 	void deleteDelivery(Map<String, Object> map);
 	
 	void updateProduct(Map<String, Object> map);
+	
+	void updateProduct2(Map<String, Object> map);
 
 }

@@ -70,4 +70,9 @@ public class DeliveryServieImpl implements DeliveryService {
 		
 	}
 
+	@Override
+	public void updateProduct2(Map<String, Object> map) {
+		deliveryMapper.updateProduct2(map);
+	}
+
 }

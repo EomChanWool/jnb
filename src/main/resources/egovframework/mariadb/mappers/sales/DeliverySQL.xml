@@ -178,6 +178,16 @@
 		WHERE c.or_idx = #{orIdx}
 
 	</update>
+	
+	<update id="updateProduct2">
+		UPDATE sm_item a JOIN sm_work_order b ON a. item_cd =
+		b.ITEM_CD
+		JOIN sm_orders c ON b.OR_IDX = c.or_idx
+		JOIN sm_delivery d ON
+		c.or_idx = d.or_idx
+		SET a.ITEM_STOCK = a.ITEM_STOCK + b.wo_pdt_cnt
+		WHERE c.or_idx = #{orIdx}
+	</update>
 
 	<delete id="deleteDelivery">
 		DELETE FROM sm_delivery WHERE de_idx = #{deIdx}

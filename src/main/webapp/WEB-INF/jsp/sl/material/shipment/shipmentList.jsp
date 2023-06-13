@@ -64,15 +64,22 @@
 }
 
 
+@page {
+  size: auto;
+  margin: 0;
+ }
+
 @media print {
 	
 	 html,body {
-		margin-right : 5%;
+		margin-top : -5%;
+		margin-right : 3%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 100vh;
 		-webkit-print-color-adjust:exact;
+		-webkit-transform:rotate(45deg); 
 	}
 }
 
@@ -269,7 +276,7 @@
 									<span id="sp_itemCnt" style="margin-left:20px;font-size:20px;display:none;"></span>							
 								</div>
 								<div class="content" style="margin-top:12px;">
-									<input type="text" class="form-control" style="width:300px; height:22px; margin-left:80px; border: none; background: transparent;"id="woIdx2">									
+									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:80px; margin-top:-8px; border: none; background: transparent;"id="woIdx2">									
 									<span id="sp_woIdx2" style="margin-left:80px;font-size:16px;display:none;"></span> 	
 								</div>
 							</div>
