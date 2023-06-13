@@ -5,11 +5,42 @@
 
 	<select id="selectLineActivityToCnt" resultType="int">
 		SELECT COUNT(*) FROM sm_plc_data
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND pd_tank = #{searchKeyword}
+		</if>
+		<if test="searchStDate != ''">
+			AND pd_st_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND pd_st_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+		
 	</select>
 	
 	<select id="selectLineActivity" resultType="egovMap">
-	SELECT pd_idx, pd_tank, pd_material, pd_setting, pd_act_val, pd_status, date_format(pd_reg_dte, '%Y-%m-%d %H:%i') AS pd_reg_dte FROM sm_plc_data
-	ORDER BY pd_idx desc
+		SELECT pd_idx,
+		pd_tank,
+		pd_material,
+		pd_setting,
+		pd_act_val,
+		pd_status,
+		date_format(pd_reg_dte, '%Y-%m-%d %H:%i') AS pd_reg_dte
+		FROM sm_plc_data
+		WHERE 1=1
+		<if test="searchKeyword != ''">
+			AND pd_tank LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchStDate != ''">
+			AND pd_st_dte >= #{searchStDate}
+		</if>
+		<if test="searchEdDate !=''">
+			AND pd_st_dte <![CDATA[<=]]>
+			#{searchEdDate}
+		</if>
+		ORDER BY pd_idx DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 
 
