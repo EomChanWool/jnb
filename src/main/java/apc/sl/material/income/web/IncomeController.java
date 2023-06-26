@@ -118,7 +118,6 @@ public class IncomeController {
 			incomeService.modifyIncome(map);
 		}else {
 			//자재가 안바뀌었을 경우
-			System.out.println("확인 : " + map);
 			int cnt = Integer.parseInt(map.get("curStCnt")+"") - Integer.parseInt(map.get("stCnt")+"");
 			
 			map.replace("cnt", cnt);
