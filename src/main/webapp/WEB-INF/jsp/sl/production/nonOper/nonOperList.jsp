@@ -219,8 +219,6 @@
 			  },
 			  async: false,
 			  success:function(result){
-				  console.log('${searchVO.searchCondition2}');
-
 				  for(var i=0;i<result.fList_ajax.length;i++){
 					  var option = $('<option value="'+result.fList_ajax[i].fCode+'" <c:if test="${searchVO.searchCondition2 eq '+ result.fList_ajax[i].fCode+'}">selected="selected"</c:if>>'+
 							  				result.fList_ajax[i].fName+'</option>');
