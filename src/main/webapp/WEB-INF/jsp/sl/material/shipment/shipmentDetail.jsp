@@ -29,8 +29,8 @@
 .background-wrap {
 	background-image:
 		url('/resources/conf/images/label.png');
-	background-size: 550px 600px;
-	width: 550px;
+	background-size: 540px 600px;
+	width: 540px;
 	height: 600px;
 	display: block;
 	justify-content: center;

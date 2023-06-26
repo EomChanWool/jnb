@@ -271,9 +271,9 @@
 								</div>
 								<div class="content" style="margin-top:10px;">
 									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:180px; height:35px; margin-left:90px; font-size:13px; "id="acName">
-									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:45px; font-size:14px;"id="itemCnt">	 
+									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:60px; font-size:14px;"id="itemCnt">	 
 									<span id="sp_acName" style="margin-left:100px; width:190px; display:none; font-size:14px;"></span>
-									<span id="sp_itemCnt" style="margin-left:40px;font-size:20px;display:none;"></span>							
+									<span id="sp_itemCnt" style="margin-left:50px;font-size:20px;display:none;"></span>							
 								</div>
 								<div class="content" style="margin-top:12px;">
 									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; margin-top:-8px; border: none; background: transparent;"id="woIdx2">									
