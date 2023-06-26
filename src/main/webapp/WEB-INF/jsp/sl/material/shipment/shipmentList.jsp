@@ -17,7 +17,7 @@
 	position: relative;
 	margin-left: 250px;
 	flex-direction: column;
-	width: 68%;
+	width: 72%;
 	pointer-events: auto;
 	background-color: #fff;
 	background-clip: padding-box;
@@ -29,8 +29,8 @@
 .background-wrap {
 	background-image:
 		url('/resources/conf/images/label.png');
-	background-size: 500px 600px;
-	width: 500px;
+	background-size: 540px 600px;
+	width: 540px;
 	height: 600px;
 	display: block;
 	justify-content: center;
@@ -266,18 +266,18 @@
 						<div class="text-on-img">
 							<div class="background-wrap">
 								<div class="content">
-									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:80px; border: none; background: transparent;"id="itemName">									
+									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; border: none; background: transparent;"id="itemName">									
 									<span id="sp_itemName" style="margin-left:100px; display:none;"></span>
 								</div>
 								<div class="content" style="margin-top:10px;">
 									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:180px; height:35px; margin-left:90px; font-size:13px; "id="acName">
-									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:25px; font-size:14px;"id="itemCnt">	 
-									<span id="sp_acName" style="margin-left:90px; width:190px; display:none; font-size:14px;"></span>
-									<span id="sp_itemCnt" style="margin-left:30px;font-size:20px;display:none;"></span>							
+									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:45px; font-size:14px;"id="itemCnt">	 
+									<span id="sp_acName" style="margin-left:100px; width:190px; display:none; font-size:14px;"></span>
+									<span id="sp_itemCnt" style="margin-left:40px;font-size:20px;display:none;"></span>							
 								</div>
 								<div class="content" style="margin-top:12px;">
 									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; margin-top:-8px; border: none; background: transparent;"id="woIdx2">									
-									<span id="sp_woIdx2" style="margin-left:90px;font-size:16px;display:none;"></span> 	
+									<span id="sp_woIdx2" style="margin-left:100px;font-size:16px;display:none;"></span> 	
 								</div>
 							</div>
 						</div>

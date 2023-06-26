@@ -2,6 +2,7 @@ package apc.cmn;
 
 import java.util.Map;
 
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,8 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		HttpSession session = request.getSession();
 		String str1 = request.getRequestURL().toString();
+		
+		
 		String[] str2 = str1.split("/");
 		Map<String, Object> userMap = (Map<String, Object>) session.getAttribute("memberVO");
 		//사용자 권한 레벨

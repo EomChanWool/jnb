@@ -92,6 +92,9 @@ public class DashBoardController {
 		
 		List<?> prodList = prodAggregateService.selectProd(searchVO);
 		model.put("prodList", prodList);
+		//생산량
+		List<?> prodCntList2 = prodAggregateService.selectProdCnt(searchVO);
+		model.put("prodCntList2", prodCntList2);
 		
 				
 		//재고현황

@@ -73,7 +73,7 @@
 								      <div id="ordersOutputGraph" style="width: 100%; height:300px;"></div>
 								    </div>
 								    <div class="cont">
-								      <h1>생산실적현황</h1>
+								      <h1>생산집계현황</h1>
 								      <div id="prodAggregateGraph" style="width: 100%; height:300px;"></div>
 								    </div>
 								     <div class="cont">
@@ -298,7 +298,11 @@
 			     
 			      
 			      axisLabel: {
-			        formatter: '{value} kg'
+			        formatter: '{value}kg'
+			        ,
+			        textStyle:{
+				        fontSize: 10
+				      }
 			      }
 			    }
 			  ],
@@ -350,6 +354,7 @@
 
 	let orderCnt2 = [];
 	
+	let prodCntCnt2 = [];
 	
 	<c:forEach items="${ordersList}" var="list">
 		orderCnt2.push('${list.orCnt}');
@@ -360,7 +365,9 @@
 		prodCnt2.push('${list.prCnt}');
 	</c:forEach>
 	
-	
+	<c:forEach items="${prodCntList2}" var="list">
+		prodCntCnt2.push('${list.prodCnt}');
+	</c:forEach>
 	
 	
 	option = {
@@ -384,7 +391,7 @@
 			    }
 			  },
 			  legend: {
-			    data: ['수주건수', '생산건수']
+			    data: ['수주건수', '생산건수', '생산량']
 			  },
 			  xAxis: [
 			    {
@@ -402,9 +409,24 @@
 			     
 			      
 			      axisLabel: {
-			        formatter: '{value} EA'
+			        formatter: '{value} EA',
+			        textStyle:{
+				        fontSize: 11
+				      }
+			        
 			      }
-			    }
+			    },
+			    {
+		    		  type: 'value',
+			      	  name: 'kg',
+			      	  position: 'right',
+			      	  axisLabel: {
+			            formatter: '{value}kg',
+			            textStyle:{
+					        fontSize: 10
+					      }
+					  }
+				    }
 			  ],
 			  series: [
 				  
@@ -428,7 +450,18 @@
 			      }
 			    },
 			    data: prodCnt2
-			    }
+			    },
+			    {
+			    	name: '생산량',
+			    	yAxisIndex: 1,
+				    type: 'line',
+				    tooltip: {
+				      valueFormatter: function (value) {
+				        return value + ' kg';
+				      }
+				    },
+				    data: prodCntCnt2
+				    }
 			   
 			  ]
 			};
