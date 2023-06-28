@@ -239,15 +239,15 @@
 						<div class="text-on-img">
 							<div class="background-wrap">
 								<div class="content">
-									<span style="margin-left:100px;">${shipmentVO.itemName}</span> 									
+									<span style="margin-left:100px;font-weight:bold;font-size:20px;">${shipmentVO.itemName}</span> 									
 								</div>
 								<div class="content">
-									<span style="display:inline-block; margin-left:100px; width:140px;">${shipmentVO.acName}</span>
-									<span style="margin-left:105px;font-size:20px;">${shipmentVO.woPdtCnt}kg</span> 
+									<span style="display:inline-block; margin-left:100px; width:190px;font-size:18px; font-weight:bold;">${shipmentVO.acName}</span>
+									<span style="display:inline-block; margin-left:50px;font-size:21px;font-weight:bold;">${shipmentVO.woPdtCnt}kg</span> 
 																
 								</div>
-								<div class="content" style="margin-top:15px;">
-									<span style="margin-left:100px;">${shipmentVO.woIdx}</span> 									
+								<div class="content" style="margin-top:10px;">
+									<span style="margin-left:100px;font-size:18px;font-weight:bold;">${shipmentVO.woIdx}</span> 									
 								</div>
 							</div>
 						</div>

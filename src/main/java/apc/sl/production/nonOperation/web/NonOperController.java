@@ -45,7 +45,6 @@ public class NonOperController {
 		List<?> companyList = nonOperService.selectCompanyList();
 		model.put("companyList", companyList);
 		
-		
 		model.put("paginationInfo", paginationInfo);
 		return "sl/production/nonOper/nonOperList";
 	}
@@ -80,7 +79,6 @@ public class NonOperController {
 		if(existsCodeCheck(map, redirectAttributes)) {
 			return "redirect:/sl/production/nonOper/registNonOper.do";
 		}
-		
 		map.put("userId", session.getAttribute("user_id"));
 		nonOperService.registNonOper(map);
 		redirectAttributes.addFlashAttribute("msg", "등록 되었습니다.");

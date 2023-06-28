@@ -267,17 +267,17 @@
 							<div class="background-wrap">
 								<div class="content">
 									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; border: none; background: transparent;"id="itemName">									
-									<span id="sp_itemName" style="margin-left:100px; display:none;"></span>
+									<span id="sp_itemName" style="margin-left:100px; display:none;font-weight:bold;font-size:20px;"></span>
 								</div>
 								<div class="content" style="margin-top:10px;">
 									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:180px; height:35px; margin-left:90px; font-size:13px; "id="acName">
 									<input type="text" class="form-control" style="display:inline-block; border: none; background: transparent; width:110px; height:35px; margin-left:60px; font-size:14px;"id="itemCnt">	 
-									<span id="sp_acName" style="margin-left:100px; width:190px; display:none; font-size:14px;"></span>
-									<span id="sp_itemCnt" style="margin-left:50px;font-size:20px;display:none;"></span>							
+									<span id="sp_acName" style="margin-left:100px; width:190px; display:none; font-size:18px; font-weight:bold;"></span>
+									<span id="sp_itemCnt" style="margin-left:50px;font-size:21px;display:none;font-weight:bold;"></span>							
 								</div>
-								<div class="content" style="margin-top:12px;">
-									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; margin-top:-8px; border: none; background: transparent;"id="woIdx2">									
-									<span id="sp_woIdx2" style="margin-left:100px;font-size:16px;display:none;"></span> 	
+								<div class="content" style="margin-top:7px;">
+									<input type="text" class="form-control" style="width:300px; height:25px; margin-left:90px; margin-top:-4px; border: none; background: transparent;"id="woIdx2">									
+									<span id="sp_woIdx2" style="margin-left:100px;font-size:18px;display:none;font-weight:bold;"></span> 	
 								</div>
 							</div>
 						</div>
