@@ -101,7 +101,7 @@
                                             </td>
                                         </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty facilityList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty facilityList}"><tr><td colspan='5'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
