@@ -199,6 +199,8 @@
 			$('#searchEdDate').change(function(){
 				listForm.submit();
 			});
+			
+			
 		});
 	</script>
 </body>

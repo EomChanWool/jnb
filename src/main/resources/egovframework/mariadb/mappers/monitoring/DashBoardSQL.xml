@@ -38,7 +38,7 @@
 
 	<select id="selectLineList" resultType="egovMap">
 		SELECT pd_idx, pd_tank,
-		pd_status
+		pd_status,pd_qty_per
 		FROM sm_plc_data
 		WHERE pd_tank LIKE '%MIX%' AND (pd_tank, pd_idx) IN (
 		SELECT pd_tank, MAX(pd_idx)

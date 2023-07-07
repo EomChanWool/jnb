@@ -22,6 +22,7 @@
 	<select id="selectLineActivity" resultType="egovMap">
 		SELECT pd_idx,
 		pd_tank,
+		
 		pd_material,
 		pd_setting,
 		pd_act_val,

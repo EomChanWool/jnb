@@ -122,6 +122,7 @@
 											<tr>
 												<th>탱크명</th>
 												<th>상태</th>
+												<th>잔량(%)</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -131,9 +132,10 @@
 													<td><c:if test="${result.pdStatus == 1}">작동중</c:if>
 													<c:if test="${result.pdStatus == 0}">정지</c:if>
 													</td>
+													<td>${result.pdQtyPer}%</td>
 												</tr>
 											</c:forEach>
-											<c:if test="${empty lineList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
+											<c:if test="${empty lineList}"><tr><td colspan='3'>결과가 없습니다.</td><del></del></c:if>
 										</tbody>
 								      </table>
 								    </div>

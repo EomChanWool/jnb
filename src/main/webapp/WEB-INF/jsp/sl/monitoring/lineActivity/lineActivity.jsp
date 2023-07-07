@@ -107,6 +107,7 @@
 											<tr>
 
 												<td>${result.pdTank}</td>
+												
 												<td>${result.pdSetting}</td>
 												<td>${result.pdActVal}</td>
 												<td><c:if test="${result.pdStatus == 1}">작동중</c:if> <c:if

@@ -157,6 +157,8 @@
 		$('#input_file').change(function(){
 			$('#fileName').val($('#input_file').val().split('\\')[2]);
 		});
+		
+		
 	});
 	</script>
 </body>
