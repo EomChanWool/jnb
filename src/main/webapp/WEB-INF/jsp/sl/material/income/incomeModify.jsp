@@ -94,7 +94,13 @@
 											</tr>
 											<tr>
 												<th>위치</th>
-												<td><input type="text" class="form-control" name="stLocation" id="stLocation" value="${incomeVO.stLocation}"></td>
+												<td><input type="text" class="form-control" name="stLocation" id="stLocation" list="taList" autocomplete="off" value="${incomeVO.stLocation}">
+												<datalist id="taList">
+														<c:forEach var="list" items="${tankList}" varStatus="status">
+															<option value="${list.pdTank}">${list.pdTank}</option>
+														</c:forEach>
+													</datalist>
+												</td>
 												<th>입고일  <span class="req">*</span></th>
 												<td><input type="datetime-local" class="form-control" name="stDte" id="stDte" value="${incomeVO.stDte}"></td>
 											</tr>
@@ -183,6 +189,8 @@
 		
 		modifyForm.submit();
 	}
+	
+	
 	
 	$(function() {
 		$('#materialMenu').addClass("active");

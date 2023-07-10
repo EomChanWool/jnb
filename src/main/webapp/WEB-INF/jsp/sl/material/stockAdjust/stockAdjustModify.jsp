@@ -77,7 +77,13 @@
 											</tr>
 											<tr>
 												<th>보관위치</th>
-												<td><input type="text" class="form-control" name="adPlace" id="adPlace" value="${adjustVO.adPlace}"></td>
+												<td><input type="text" class="form-control" name="adPlace" id="adPlace" list="taList" autocomplete="off" value="${adjustVO.adPlace}">
+												<datalist id="taList">
+														<c:forEach var="list" items="${tankList}" varStatus="status">
+															<option value="${list.pdTank}">${list.pdTank}</option>
+														</c:forEach>
+													</datalist>
+													</td>
 											</tr>
 										</tbody>
 	                                </table>

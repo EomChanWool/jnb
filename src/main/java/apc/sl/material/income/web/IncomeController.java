@@ -46,13 +46,15 @@ public class IncomeController {
 	
 	@RequestMapping("/sl/material/income/registIncome.do")
 	public String registIncome(ModelMap model) {
+		int loType = 2;
 		List<?> accountList = incomeService.selectAccountList();
 		model.put("accountList", accountList);
 		List<?> materialList = incomeService.selectMaterialList();
 		model.put("materialList", materialList);
 		List<?> companyList = incomeService.selectCompanyList();
 		model.put("companyList", companyList);
-		
+		List<?> tankList = incomeService.selectTankLocation(loType);
+		model.put("tankList", tankList);
 		return "sl/material/income/incomeRegist";
 	}
 	
@@ -83,6 +85,9 @@ public class IncomeController {
 	@RequestMapping("/sl/material/income/modifyIncome.do")
 	public String modifyIncome(@RequestParam Map<String, Object> map, ModelMap model) {
 		
+		int loType = 2;
+		List<?> tankList = incomeService.selectTankLocation(loType);
+		model.put("tankList", tankList);
 		List<?> accountList = incomeService.selectAccountList();
 		model.put("accountList", accountList);
 		List<?> materialList = incomeService.selectMaterialList();

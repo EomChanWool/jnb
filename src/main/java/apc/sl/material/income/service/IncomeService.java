@@ -18,6 +18,8 @@ public interface IncomeService {
 	List<?> selectCompanyList();
 
 	List<?> selectItemInfo(Map<String, Object> map);
+	
+	List<?> selectTankLocation(int loType);
 
 	void registIncome(Map<String, Object> map);
 

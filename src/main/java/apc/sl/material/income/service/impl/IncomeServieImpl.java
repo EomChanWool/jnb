@@ -69,4 +69,10 @@ public class IncomeServieImpl implements IncomeService {
 		incomeMapper.deleteIncome(map);
 	}
 
+	@Override
+	public List<?> selectTankLocation(int loType) {
+		return incomeMapper.selectTankLocation(loType);
+	}
+
+
 }

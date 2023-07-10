@@ -17,12 +17,18 @@ public interface StockAdjustMapper {
 
 	List<?> selectItemCntInfo(Map<String, Object> map);
 
+	List<?> selectTankLocation(int loType);
+	
 	int selectExistsItemCode(Map<String, Object> map);
+	
+	int selectExistsTankLocation(Map<String, Object> map);
+	
+	int selectExsistsTankLocation2(Map<String, Object> map);
 
 	void registStockAdjust(Map<String, Object> map);
 
 	void updateItemCnt(Map<String, Object> map);
-
+	
 	Map<String, Object> selectStockAdjustInfo(Map<String, Object> map);
 
 	void modifyStockAdjust(Map<String, Object> map);

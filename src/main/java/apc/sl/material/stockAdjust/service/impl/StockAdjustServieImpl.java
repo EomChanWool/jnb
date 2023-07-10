@@ -69,4 +69,21 @@ public class StockAdjustServieImpl implements StockAdjustService {
 		stockAdjustMapper.deleteStockAdjust(map);
 	}
 
+	@Override
+	public List<?> selectTankLocation(int loType) {
+		return stockAdjustMapper.selectTankLocation(loType);
+	}
+
+	@Override
+	public int selectExistsTankLocation(Map<String, Object> map) {
+		return stockAdjustMapper.selectExistsTankLocation(map);
+	}
+
+	@Override
+	public int selectExsistsTankLocation2(Map<String, Object> map) {
+		return stockAdjustMapper.selectExsistsTankLocation2(map);
+	}
+
+	
+
 }

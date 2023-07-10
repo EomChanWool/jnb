@@ -83,7 +83,13 @@
 											</tr>
 											<tr>
 												<th>보관위치</th>
-												<td><input type="text" class="form-control" name="adPlace" id="adPlace"></td>
+												<td><input type="text" class="form-control" name="adPlace" id="adPlace" list="taList" autocomplete="off" />
+												<datalist id="taList">
+														<c:forEach var="list" items="${tankList}" varStatus="status">
+															<option value="${list.pdTank}">${list.pdTank}</option>
+														</c:forEach>
+													</datalist>
+												</td>
 											</tr>
 										</tbody>
 	                                </table>
@@ -182,6 +188,7 @@
 				  registForm.adCnt.value = result.item_info[0].itemStock;
 				  registForm.adPrice.value = result.item_info[0].itemPerPrice;
 				  registForm.itemName.value = result.item_info[0].itemName;
+				  registForm.adPlace.value = result.item_info[0].itemTank;
 			  },
 			  error:function(request,status,error){ 
 				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  

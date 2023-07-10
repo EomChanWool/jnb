@@ -48,6 +48,9 @@ public class StockAdjustController {
 	public String registStockAdjust(ModelMap model) {
 		String type = "자재";
 		List<?> materialList = stockAdjustService.selectItemList(type);
+		int loType = 2;
+		List<?> tankList = stockAdjustService.selectTankLocation(loType);
+		model.put("tankList", tankList);
 		model.put("materialList", materialList);
 		return "sl/material/stockAdjust/stockAdjustRegist";
 	}
@@ -71,11 +74,22 @@ public class StockAdjustController {
 			redirectAttributes.addFlashAttribute("msg","존재하지 않는 물품입니다.");
 			return "redirect:/sl/material/stockAdjust/registStockAdjust.do";
 		}
+		int exists2 = stockAdjustService.selectExistsTankLocation(map);
+		
+		if(exists2 == 0) {
+			redirectAttributes.addFlashAttribute("msg","존재하지 않는 탱크입니다.");
+			return "redirect:/sl/material/stockAdjust/registStockAdjust.do";
+		}
+		
+		
+		
 		map.put("userId", session.getAttribute("user_id"));
 		stockAdjustService.registStockAdjust(map);
 		
 		//sm_item 재고 Stock, 단가 갱신
 		stockAdjustService.updateItemCnt(map);
+		
+		
 		
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
 		return "redirect:/sl/material/stockAdjust/stockAdjustList.do";
@@ -85,6 +99,9 @@ public class StockAdjustController {
 	public String modifyStockAdjust(@RequestParam Map<String, Object> map, ModelMap model) {
 		String type = "자재";
 		List<?> materialList = stockAdjustService.selectItemList(type);
+		int loType = 2;
+		List<?> tankList = stockAdjustService.selectTankLocation(loType);
+		model.put("tankList", tankList);
 		model.put("materialList", materialList);
 		
 		if(!map.isEmpty()) {

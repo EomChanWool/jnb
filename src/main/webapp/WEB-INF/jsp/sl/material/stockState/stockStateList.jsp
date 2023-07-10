@@ -76,6 +76,8 @@
                                         <tr>
                                         	<th>자재명</th>
 											<th>재고량(kg)</th>
+											<th>위치</th>
+											<th>탱크 재고량(%)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,6 +85,8 @@
 	                                   		<tr>
 	                                            <td>${result.itemName}</td>
 												<td>${result.itemStock}</td>
+												<td>${result.itemTank}</td>
+												<td>${result.pdQtyPer}%</td>
 	                                        </tr>
                                     	</c:forEach>
                                     	<c:if test="${empty stockStateList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>

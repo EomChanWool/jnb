@@ -91,7 +91,14 @@
 											</tr>
 											<tr>
 												<th>위치</th>
-												<td><input type="text" class="form-control" name="stLocation" id="stLocation" value="${incomeVO.stLocation}"></td>
+												<td><input type="text" class="form-control" name="stLocation" id="stLocation" list="taList" autocomplete="off" value="${incomeVO.stLocation}">
+												<datalist id="taList">
+														<c:forEach var="list" items="${tankList}" varStatus="status">
+															<option value="${list.pdTank}">${list.pdTank}</option>
+														</c:forEach>
+													</datalist>
+												</td>
+												
 												<th>입고일  <span class="req">*</span></th>
 												<td><input type="datetime-local" class="form-control" name="stDte" id="stDte" value="${incomeVO.stDte}"></td>
 											</tr>
@@ -178,6 +185,7 @@
 			return;
 		}
 		
+		
 		registForm.submit();
 	}
 	
@@ -190,7 +198,28 @@
 		if(msg) {
 			alert(msg);
 		}
+		$('#itemCd').change(function(){
+			itemInfoAjax();
+		});
 	});
+	
+	function itemInfoAjax(){
+		$.ajax({
+			  type:"POST",
+			  url:"<c:url value='${pageContext.request.contextPath}/sl/material/income/itemInfoAjax.do'/>",	  		  			  
+			  dataType:"JSON",
+			  data:{
+				  'itemCd':$('#itemCd').val()
+			  },
+			  success:function(result){
+				  registForm.stLocation.value = result.item_info[0].itemTank;
+				 
+			  },
+			  error:function(request,status,error){ 
+				  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);		  
+			  }
+		  });
+	}
 	</script>
 </body>
 

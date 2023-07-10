@@ -13,19 +13,36 @@
 
 	<select id="selectStockStateList" resultType="egovMap">
 		SELECT
-		item_cd,
-		item_name,
-		item_standard,
-		FORMAT(item_stock, 0) AS item_stock,
-		item_note
-		FROM sm_item
+		a.item_cd,
+		a.item_name,
+		a.item_standard,
+		FORMAT(a.item_stock, 0) AS item_stock,
+		a.item_note,
+		a.item_tank,
+		b.pd_qty_per
+		FROM
+		sm_item a
+		JOIN
+		sm_plc_data b ON a.item_tank = b.pd_tank
+		JOIN
+		(
+		SELECT
+		pd_tank,
+		MAX(pd_idx) AS max_pd_idx
+		FROM
+		sm_plc_data
+		GROUP BY
+		pd_tank
+		) c ON b.pd_tank = c.pd_tank AND b.pd_idx = c.max_pd_idx
 		WHERE 1=1
-		AND item_type = '자재'
+		and a.item_type = '자재'
 		<if test="searchKeyword != ''">
 			AND item_name LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		ORDER BY item_cd DESC
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		GROUP BY a.item_cd
+		ORDER BY a.item_cd DESC
+		LIMIT #{recordCountPerPage}
+		OFFSET #{firstIndex}
 	</select>
 
 
@@ -36,7 +53,8 @@
 		item_cd,
 		item_name,
 		item_standard,
-		FORMAT(item_stock, 0) AS item_stock,
+		FORMAT(item_stock, 0) AS
+		item_stock,
 		item_note
 		FROM sm_item
 		WHERE 1=1

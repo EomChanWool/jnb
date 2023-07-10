@@ -62,7 +62,13 @@
 
 	<select id="selectItemInfo" resultType="egovMap">
 		SELECT item_cd,
-		item_name, item_std FROM sm_item WHERE item_cd = #{itemCd}
+		item_name, item_tank FROM sm_item WHERE item_cd = #{itemCd}
+	</select>
+	
+	<select id="selectTankLocation" resultType="egovMap">
+	SELECT pd_tank FROM sm_plc_data
+	WHERE pd_type = #{loType}
+	GROUP BY pd_tank
 	</select>
 
 	<insert id="registIncome">
