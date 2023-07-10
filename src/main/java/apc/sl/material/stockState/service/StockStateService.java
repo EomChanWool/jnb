@@ -12,5 +12,9 @@ public interface StockStateService {
 	List<?> selectStockStateList(SearchVO searchVO);
 	
 	List<?> selectMoStockStateList(SearchVO searchVO);
+	
+	Map<String, Object> selectMoStoDetail(Map<String, Object> map);
+	
+	void updateStockPro(Map<String, Object> map);
 
 }

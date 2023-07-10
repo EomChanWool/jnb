@@ -16,7 +16,8 @@
 		a.item_cd,
 		a.item_name,
 		a.item_standard,
-		FORMAT(a.item_stock, 0) AS item_stock,
+		FORMAT(a.item_stock, 0) AS
+		item_stock,
 		a.item_note,
 		a.item_tank,
 		b.pd_qty_per
@@ -33,9 +34,11 @@
 		sm_plc_data
 		GROUP BY
 		pd_tank
-		) c ON b.pd_tank = c.pd_tank AND b.pd_idx = c.max_pd_idx
+		) c ON
+		b.pd_tank = c.pd_tank AND b.pd_idx = c.max_pd_idx
 		WHERE 1=1
-		and a.item_type = '자재'
+		and
+		a.item_type = '자재'
 		<if test="searchKeyword != ''">
 			AND item_name LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
@@ -67,5 +70,21 @@
 
 
 	</select>
+
+	<select id="selectMoStoDetail" resultType="egovMap">
+		SELECT item_cd,
+		item_type, item_name,item_standard,item_tank,item_stock
+		FROM sm_item
+		WHERE item_type = '제품'
+		AND item_cd = #{itemCd}
+	</select>
+
+	<update id="updateStockPro">
+		UPDATE sm_item SET
+		item_standard = #{itemStandard},
+		item_stock = #{itemStock},
+		item_tank = #{itemTank}
+		WHERE item_cd = #{itemCd}
+	</update>
 
 </mapper>

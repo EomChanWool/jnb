@@ -1,6 +1,7 @@
 package apc.sl.monitoring.moStockState.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import apc.sl.material.stockAdjust.service.StockAdjustService;
 import apc.sl.material.stockState.service.StockStateService;
 import apc.sl.monitoring.actualOutput.service.ActualOutputService;
 import apc.util.SearchVO;
@@ -19,6 +23,9 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 public class MoStockStateController {
 	@Autowired
 	private StockStateService stockStateService;
+	
+	@Autowired
+	private StockAdjustService stockAdjustService;
 	
 	@RequestMapping("/sl/monitoring/moStockState/moStockState.do")
 	public String stockStateList1(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session) {
@@ -43,5 +50,31 @@ public class MoStockStateController {
 		model.put("paginationInfo", paginationInfo);
 		
 		return "sl/monitoring/stockState/stockState";
+	}
+	
+	@RequestMapping("/sl/monitoring/moStockState/modifyMoStockState.do")
+	public String modifyMoStockState(@RequestParam Map<String, Object> map, ModelMap model) {
+		
+		Map<String, Object> detail = stockStateService.selectMoStoDetail(map);
+		String type = "자재";
+		List<?> materialList = stockAdjustService.selectItemList(type);
+		int loType = 2;
+		List<?> tankList = stockAdjustService.selectTankLocation(loType);
+		model.put("tankList", tankList);
+		model.put("materialList", materialList);
+		model.put("MoStoDetail", detail);
+		
+		return "sl/monitoring/stockState/stockStateModify";
+	}
+	
+	@RequestMapping("/sl/monitoring/moStockState/modifyMoStockStateOk.do")
+	public String modifyMoStockStateOk(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
+		
+		map.put("userId",session.getAttribute("user_id"));
+		
+		stockStateService.updateStockPro(map);
+		redirectAttributes.addFlashAttribute("msg","수정 되었습니다.");
+		
+		return "redirect:/sl/monitoring/moStockState/moStockState.do";
 	}
 }

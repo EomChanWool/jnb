@@ -77,6 +77,7 @@
                                             <th>품명</th>
 											<th>규격</th>
 											<th>재고(kg)</th>
+											<th>수정(탱크위치 설정)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -85,9 +86,14 @@
 	                                            <td>${result.itemName}</td>
 												<td>${result.itemStandard}</td>
 												<td>${result.itemStock}kg</td>
+												<td style="padding: 5px 0px;">
+	                                            	<a href="#" class="btn btn-warning btn-icon-split" onclick="fn_modify_moStockState_go('${result.itemCd}')">
+				                                        <span class="text">수정</span>
+				                                    </a>
+	                                            </td>
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty stockStateList}"><tr><td colspan='3'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty stockStateList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
@@ -139,6 +145,12 @@
 	function fn_searchAll_stockState(){
 		listForm.searchKeyword.value = "";
 		listForm.pageIndex.value = 1;
+		listForm.submit();
+	}
+	
+	function fn_modify_moStockState_go(itemCd){
+		listForm.itemCd.value = itemCd;
+		listForm.action = "${pageContext.request.contextPath}/sl/monitoring/moStockState/modifyMoStockState.do";
 		listForm.submit();
 	}
 	
