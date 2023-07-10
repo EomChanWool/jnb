@@ -137,7 +137,7 @@
 		}
 		
 		$(function() {
-			$('#kpiMeun').addClass("active");
+			$('#kpiMenu').addClass("active");
 			$('#kpi').addClass("show");
 			$('#kpiStateList').addClass("active");
 			
