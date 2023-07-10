@@ -41,7 +41,6 @@
 			pd_tank
 	) c ON b.pd_tank = c.pd_tank AND b.pd_idx = c.max_pd_idx
 		WHERE item_type = '자재'
-		
 		GROUP BY a.ITEM_NAME
 		ORDER BY a.item_cd DESC
 	</select>
@@ -65,7 +64,6 @@
 			pd_tank
 	) c ON b.pd_tank = c.pd_tank AND b.pd_idx = c.max_pd_idx
 		WHERE item_type = '제품'
-		
 		GROUP BY a.ITEM_NAME
 		ORDER BY a.item_cd DESC
 	</select>
