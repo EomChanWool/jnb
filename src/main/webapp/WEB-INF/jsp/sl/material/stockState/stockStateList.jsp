@@ -89,7 +89,7 @@
 												<td>${result.pdQtyPer}%</td>
 	                                        </tr>
                                     	</c:forEach>
-                                    	<c:if test="${empty stockStateList}"><tr><td colspan='2'>결과가 없습니다.</td><del></del></c:if>
+                                    	<c:if test="${empty stockStateList}"><tr><td colspan='4'>결과가 없습니다.</td><del></del></c:if>
                                     </tbody>
                                 </table>
                                 <div class="btn_page">
