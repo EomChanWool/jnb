@@ -44,7 +44,7 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		//System.out.println(str2.length);
+		System.out.println("랭쓰 : " + str2[str2.length-1]);
 		if(!str2[str2.length-1].contains("dashBoard")) {
 			//CRUD권한 체크
 			if(str2[6].contains("Ok") || str2[6].contains("delete")) {
