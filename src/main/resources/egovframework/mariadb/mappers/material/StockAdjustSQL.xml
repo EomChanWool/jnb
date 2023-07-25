@@ -32,7 +32,7 @@
 	
 	<select id="selectTankLocation" resultType="egovMap">
 	SELECT pd_tank FROM sm_plc_data
-	WHERE pd_type = #{loType}
+	WHERE pd_tank LIKE CONCAT('%', 'tk', '%')
 	GROUP BY pd_tank
 	</select>
 	
