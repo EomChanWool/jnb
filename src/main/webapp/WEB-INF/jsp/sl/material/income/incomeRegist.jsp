@@ -113,6 +113,7 @@
 													</select>
 												</td>
 											</tr>
+											
 											<tr>
 												<th>특이사항</th>
 												<td colspan="3"><textarea name="stNote">${incoeVO.stNote}</textarea></td>
@@ -184,7 +185,10 @@
 			alert("검사일을 확인 바랍니다.");
 			return;
 		}
-		
+		if($('#itemTank').val() == ''){
+			alert("탱크위치를 확인 바랍니다.");
+			return;
+		}
 		
 		registForm.submit();
 	}

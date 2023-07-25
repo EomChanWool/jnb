@@ -107,7 +107,8 @@
 
 	<update id="updateMaterialCnt">
 		UPDATE sm_item SET
-		item_stock = (item_stock + #{cnt})
+		item_stock = (item_stock + #{cnt}),
+		item_tank = #{itemTank}
 		WHERE item_cd = #{itemCd}
 	</update>
 
@@ -130,7 +131,7 @@
 		(SELECT m_name FROM sm_member WHERE m_id = (SELECT st_reg_mem FROM sm_store
 		WHERE st_idx = #{stIdx})) AS mName,
 		c.item_name,
-		d.c_name
+		d.c_name, c.item_tank
 		FROM sm_store a
 		JOIN sm_account b
 		ON a.a_idx = b.ac_code

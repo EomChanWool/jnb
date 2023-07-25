@@ -94,7 +94,7 @@
 											</tr>
 											<tr>
 												<th>위치</th>
-												<td><input type="text" class="form-control" name="stLocation" id="stLocation" list="taList" autocomplete="off" value="${incomeVO.stLocation}">
+												<td><input type="text" class="form-control" name="itemTank" id="itemTank" list="taList" autocomplete="off" value="${incomeVO.itemTank}">
 												<datalist id="taList">
 														<c:forEach var="list" items="${tankList}" varStatus="status">
 															<option value="${list.pdTank}">${list.pdTank}</option>
@@ -187,6 +187,10 @@
 			return;
 		}
 		
+		if($('#itemTank').val() == ''){
+			alert("탱크위치를 확인 바랍니다.");
+			return;
+		}
 		modifyForm.submit();
 	}
 	
