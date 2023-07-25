@@ -32,7 +32,7 @@ public class WostController {
 	@Autowired
 	private WostService wostService;
 	
-	private String filePath = "C:\\jnb\\standard\\";
+	private String filePath = "D:\\jnb\\standard\\";
 	
 	@RequestMapping("/sl/quality/wost/wostList.do")
 	public String wostList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session, MultipartFile multipart) throws Exception{

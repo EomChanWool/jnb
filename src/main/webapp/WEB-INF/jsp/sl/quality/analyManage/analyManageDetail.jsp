@@ -146,7 +146,7 @@
 											<th>검사자</th>
 											<td><span class="form-control val-area">${analyVO.tiAnalyst}</span></td>
 											<th>검사일</th>
-											<td><span class="form-control val-area">${analyVO.tiRegDte}</span></td>
+											<td><span class="form-control val-area">${analyVO.tiDte}</span></td>
 										</tr>
 
 									</tbody>

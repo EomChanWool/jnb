@@ -62,7 +62,7 @@
 		SELECT a.ti_idx,
 		a.wo_idx, a.az_idx, a.ti_state, a.ti_analyst, c.item_name, f.ac_name,
 		b.wo_pdt_cnt,
-		date_format(ti_reg_dte, '%Y-%m-%d %H:%i') AS ti_reg_dte
+		date_format(ti_dte, '%Y-%m-%d') AS ti_dte
 		FROM
 		sm_analysis_info a
 		JOIN

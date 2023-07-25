@@ -32,7 +32,7 @@ public class InstController {
 	@Autowired
 	private InstService instService;
 	
-	private String filePath = "C:\\jnb\\report\\";
+	private String filePath = "D:\\jnb\\report\\";
 	
 	@RequestMapping("/sl/quality/inst/instList.do")
 	public String instList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session, MultipartFile multipart) throws Exception{
