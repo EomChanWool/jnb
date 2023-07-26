@@ -104,16 +104,16 @@ public class DeliveryController {
 		deliveryService.modifyDelivery(map);
 		
 		
-		
-		  if(map.get("deState").equals("1")) {
-		  
-		  
-		  deliveryService.updateProduct(map); }
-		 
-		  else if(map.get("deState").equals("0")) {
-			  
-			  
-			  deliveryService.updateProduct2(map); }
+//		
+//		  if(map.get("deState").equals("1")) {
+//		  
+//		  
+//		  deliveryService.updateProduct(map); }
+//		 
+//		  else if(map.get("deState").equals("0")) {
+//			  
+//			  
+//			  deliveryService.updateProduct2(map); }
 		
 		
 		redirectAttributes.addFlashAttribute("msg", "수정 되었습니다.");
