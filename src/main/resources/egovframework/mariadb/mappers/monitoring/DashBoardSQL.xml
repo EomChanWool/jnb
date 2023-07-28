@@ -72,7 +72,7 @@
 		SELECT pd_idx, pd_tank,
 		pd_status
 		FROM sm_plc_data
-		WHERE pd_type = 1 AND (pd_tank, pd_idx) IN (
+		WHERE pd_tank like concat('%', 'MIX', '%') AND (pd_tank, pd_idx) IN (
 		SELECT pd_tank, MAX(pd_idx)
 		FROM sm_plc_data
 		GROUP BY pd_tank
