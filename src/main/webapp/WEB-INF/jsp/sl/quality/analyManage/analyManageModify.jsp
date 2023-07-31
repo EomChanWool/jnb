@@ -62,6 +62,7 @@
                             	<form action="${pageContext.request.contextPath}/sl/production/analyManage/modifyAnalyManageOk.do" name="modifyForm" method="post">
                             		<input type="hidden" name="tiIdx" value="${analyManageVO.tiIdx}">
                             		<input type="hidden" name="curDoIdx" value="${analyManageVO.doIdx}">
+                            		<input type="hidden" name="tiState" value="${analyManageVO.tiState}">
 	                                <table class="table table-bordered" id="dataTable">
 	                                    <tbody>
 											<tr>
