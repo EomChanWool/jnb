@@ -50,6 +50,11 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 	
+	<select id="selectTankList" resultType="egovMap">
+	SELECT pd_tank FROM sm_plc_data
+GROUP BY pd_tank
+	</select>
+	
 	<select id="selectCompanyList" resultType="egovMap">
 		SELECT c_idx, c_name FROM sm_company
 	</select>
@@ -79,7 +84,8 @@
 			item_uom,
 			<if test="itemNote != ''">item_note,</if>
 			item_reg_dte,
-			item_reg_mem
+			item_reg_mem,
+			item_tank
 			)
 		VALUES
 			(
@@ -105,7 +111,8 @@
 			#{itemUom},
 			<if test="itemNote != ''">#{itemNote},</if>
 			NOW(),
-			#{userId}
+			#{userId},
+			#{itemTank}
 			)
 	</insert>
 	
@@ -119,7 +126,8 @@
 			item_name,
 			item_standard,
 			item_uom,
-			item_note
+			item_note,
+			item_tank
 		FROM sm_item
 		WHERE item_cd = #{itemCd}
 	</select>
@@ -135,7 +143,8 @@
 			item_uom = #{itemUom},
 			item_note = #{itemNote},
 			item_edt_dte = NOW(),
-			item_edt_mem = #{userId}
+			item_edt_mem = #{userId},
+			item_tank = #{itemTank}
 		WHERE item_cd = #{itemCd}
 	</update>
 	

@@ -52,6 +52,8 @@ public class ItemController {
 		model.put("comnCodeList", comnCodeList);
 		List<?> accountList = itemService.selectAccountList();
 		model.put("accountList", accountList);
+		List<?> tankList = itemService.selectTankList();
+		model.put("tankList", tankList);
 		
 		return "sl/basicInfo/item/itemRegist";
 	}
@@ -84,7 +86,8 @@ public class ItemController {
 		model.put("companyList", companyList);
 		List<?> comnCodeList = itemService.selectComnCodeList();
 		model.put("comnCodeList", comnCodeList);
-		
+		List<?> tankList = itemService.selectTankList();
+		model.put("tankList", tankList);
 		
 		Map<String, Object> detail = itemService.selectItemInfo(map);
 		model.put("itemVO", detail);

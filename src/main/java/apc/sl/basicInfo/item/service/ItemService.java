@@ -18,6 +18,8 @@ public interface ItemService {
 	List<?> selectComnCodeList();
 
 	List<?> selectAccountList();
+	
+	List<?> selectTankList();
 
 	void registItem(Map<String, Object> map);
 

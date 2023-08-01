@@ -18,6 +18,8 @@ public interface ItemMapper {
 	List<?> selectComnCodeList();
 
 	List<?> selectAccountList();
+	
+	List<?> selectTankList();
 
 	int selectExistsCompany(Map<String, Object> map);
 

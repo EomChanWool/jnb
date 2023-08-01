@@ -102,6 +102,14 @@
 											<tr>
 												<th>단위 <span class="req">*</span></th>
 												<td><input type="text" class="form-control" name="itemUom" id="itemUom" value="kg"></td>
+												<th>저장탱크</th>
+												<td><input type="text" class="form-control" name="itemTank" id="itemTank" value="${itemVO.itemTank }" list="tankList" autocomplete="off">
+												<datalist id="tankList">
+												<c:forEach var="list" items="${tankList}" varStatus="status">
+												<option value="${list.pdTank }">${list.pdTank }</option>
+												</c:forEach>
+												</datalist>
+												</td>
 											</tr>
 											<tr>
 												<th>비고</th>

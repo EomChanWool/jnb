@@ -64,4 +64,9 @@ public class ItemServieImpl implements ItemService {
 		itemMapper.deleteItem(map);
 	}
 
+	@Override
+	public List<?> selectTankList() {
+		return itemMapper.selectTankList();
+	}
+
 }
