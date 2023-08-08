@@ -45,7 +45,6 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 		if(!str2[str2.length-1].contains("dashBoard")) {
 			//CRUD권한 체크
 			if(str2[6].contains("Ok") || str2[6].contains("delete")) {
-				System.out.println("CRUD권한 체크");
 				int crud = authorityService.selectAccess(userMap.get("mId")+"");
 				if(crud == 0) {
 					ScriptAlert.alertAndMovePage(response, "등록/수정/삭제 권한이 없습니다.","/sl/basicInfo/member/memberList.do");

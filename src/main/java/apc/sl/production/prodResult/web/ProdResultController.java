@@ -218,7 +218,6 @@ public class ProdResultController {
 		
 		//String[] str1 = list.get(0).toString().split(", ");
 		
-		System.out.println("eg" + str1.size());
 		//int total = Integer.parseInt(str1[0].split("=")[1]);
 		int total = Integer.parseInt(str1.get("woPdtCnt")+"");
 //		String woIdx = str1[1].split("=")[1];
@@ -241,13 +240,10 @@ public class ProdResultController {
 		
 		for(int i=2; i<str1.size(); i+=2) {
 			Map<String, Object> map = new HashMap<>();
-			System.out.println("위치체크" + i);
-			System.out.println(str1.get(str1.get(i)));
 			
 			float cnt = total/100*(Float.parseFloat(str1.get(str1.get(i+1))+""));
 			map.put("itemCd", str1.get(str1.get(i))+"");
 			map.put("cnt", cnt);
-			System.out.println("씨엔티값 : " + cnt);
 			Map<String, Object> enough = prodResultService.selectEnoughStock(map);
 			int num = Integer.parseInt(enough.get("count")+"");
 			if(num == 1) {

@@ -116,7 +116,6 @@ public class DashBoardController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String nowFor = now2.format(formatter);
 		
-		System.out.println(nowFor);
 		
 	//	List<Map<String, Object>> equipList = equipEffService.selectEquipEff();
 		

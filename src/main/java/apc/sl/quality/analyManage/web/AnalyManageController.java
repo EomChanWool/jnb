@@ -208,7 +208,6 @@ public class AnalyManageController {
 		analyManageService.deleteAnalyManage(map);
 		map.put("state", "0");
 		analyManageService.updateDocumnetState(map);
-		System.out.println("맵확인 : " + map);
 		
 		//삭제시 공정변경
 		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
@@ -261,7 +260,6 @@ public class AnalyManageController {
 		map.put("modify","true");
 		Map<String, Object> process = prodResultService.selectProcessSeqInfo(map);
 		int processSeq = Integer.parseInt(process.get("prCurSeq")+"");
-		System.out.println("확인 : " + processSeq);
 		map.put("curSeq", processSeq);
 		map.put("curStDte", "pr_st_time"+processSeq);
 		map.put("curEdDte", "pr_ed_time"+processSeq);
