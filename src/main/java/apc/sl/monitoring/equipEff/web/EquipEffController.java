@@ -48,7 +48,6 @@ public class EquipEffController {
 			searchVO.setTemp(tankNm);
 			List<?> eq = equipEffService.selectEquioEffCnt1(searchVO);
 			model.put(tankNm, eq);
-			System.out.println("확인 : " + eq);
 		}
 		
 		return "sl/monitoring/equipEff/equipEff";

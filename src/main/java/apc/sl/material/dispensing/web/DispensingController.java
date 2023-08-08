@@ -126,16 +126,12 @@ public class DispensingController {
 	public String detailDispensing(@RequestParam Map<String, Object> map, ModelMap model) {
 
 		Map<String, Object> detail = dispensingService.selectDispensingInfo(map);
-		
-		System.out.println("확인 : " + map);
-
 		// detail.put("curItemCd", detail.get("itemCd"));
 		// detail.put("curCnt", detail.get("inCnt"));
 		model.put("dispensingVO", detail);
 
 		map.put("bIdx", detail.get("bIdx"));
 		
-		System.out.println("확인2 : " + detail.get("bIdx"));
 		Map<String, Object> detailbom = bomService.selectBomInfo(map);
 		model.put("bomVO", detailbom);
 		String str = detailbom.toString().replaceAll("[{}]", "");
