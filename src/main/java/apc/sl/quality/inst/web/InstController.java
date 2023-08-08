@@ -32,7 +32,7 @@ public class InstController {
 	@Autowired
 	private InstService instService;
 	
-	private String filePath = "D:\\jnb\\report\\";
+	private String filePath = "C:\\jnb\\report\\";
 	
 	@RequestMapping("/sl/quality/inst/instList.do")
 	public String instList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model, HttpSession session, MultipartFile multipart) throws Exception{
@@ -62,6 +62,7 @@ public class InstController {
 	@RequestMapping("/sl/quality/inst/registInstOk.do")
 	public String registInstOk(@ModelAttribute("searchVO") SearchVO searchVO, @RequestParam Map<String, Object> map, 
 																RedirectAttributes redirectAttributes, HttpSession session) throws Exception{
+		System.out.println("확인0");
 		MultipartFile uploadFile = searchVO.getUploadFile();
 		String fileName = "";
 		if(!uploadFile.isEmpty()) {
@@ -71,11 +72,14 @@ public class InstController {
             fileName = uuid + "." + ext;
 			uploadFile.transferTo(new File(filePath + fileName + ""));
 		}
+		System.out.println("확인1");
 		map.put("doFilNm",fileName);
 		map.put("doOriginFilNm", uploadFile.getOriginalFilename());
 		map.put("userId", session.getAttribute("user_id"));
 		map.put("type", "검사기준서");
+		
 		instService.registDocument(map);
+		System.out.println("확인2");
 		redirectAttributes.addFlashAttribute("msg","등록 되었습니다.");
 		return "redirect:/sl/quality/inst/instList.do";
 	}
