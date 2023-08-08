@@ -70,7 +70,8 @@
 		no_idx,
 		no_title,
 		no_cont,
-		no_use
+		no_use,
+		no_reg_mem
 		FROM sm_notice
 		WHERE no_idx = #{noIdx}
 	</select>

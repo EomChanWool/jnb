@@ -56,8 +56,15 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("/sl/monitoring/notice/modifyNotice.do")
-	public String modifyNotice(@RequestParam Map<String, Object> map, ModelMap model) {
+	public String modifyNotice(@RequestParam Map<String, Object> map, ModelMap model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String seeId = session.getAttribute("user_id")+"";
+		
 		Map<String, Object> detail = noticeService.selectNoticeInfo(map);
+		if(!seeId.equals(detail.get("noRegMem"))) {
+			redirectAttributes.addFlashAttribute("msg", "등록한 ID가 아닙니다.");
+			return "redirect:/sl/monitoring/notice/noticeList.do";
+		}
+		
 		model.put("noticeVO", detail);
 		return "sl/monitoring/notice/noticeModify";
 	}
