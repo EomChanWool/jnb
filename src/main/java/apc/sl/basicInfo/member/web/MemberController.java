@@ -87,7 +87,10 @@ public class MemberController {
 	public String logout(@RequestParam Map<String,Object> info, RedirectAttributes redirectAttributes,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("memberVO");
+		Date now = new Date();
+		SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		
+		String now2 = format.format(now);
 		//시스템로그 기록
 		Map<String, Object> log = (Map<String, Object>) session.getAttribute("memberVO");
 		log.put("ip", getUserIp());
@@ -100,6 +103,14 @@ public class MemberController {
 		}
 		
 		redirectAttributes.addFlashAttribute("msg", "로그아웃되었습니다");
+		redirectAttributes.addFlashAttribute("APIID",  session.getAttribute("user_id"));
+		redirectAttributes.addFlashAttribute("API", "API");
+		redirectAttributes.addFlashAttribute("APIIP", getUserIp());
+		
+		redirectAttributes.addFlashAttribute("APINOTE", "종료");
+		redirectAttributes.addFlashAttribute("APITIME", now2);
+		
+		
 		return "redirect:/sl/main.do";
 	}
 	

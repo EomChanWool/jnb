@@ -196,7 +196,7 @@
 				var id2 = '${APINOTE}';
 				var id3 = '${APIID}';
 				var id4 = '${APIIP}';
-				loginApi(id1,id2,id3,id4);
+				//loginApi(id1,id2,id3,id4);
 			}
 			
 			
