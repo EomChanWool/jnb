@@ -144,10 +144,15 @@ public class IncomeController {
 	@RequestMapping("/sl/material/income/deleteIncome.do")
 	public String deleteIncome(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttributes, HttpSession session) {
 		incomeService.deleteIncome(map);
-		
+		System.out.println(map);
+		String scnt = map.get("stCnt")+"";
+		scnt = scnt.replace(",", "");
+		System.out.println(scnt);
 		//sm_item에서 재고 제외
-		int cnt = Integer.parseInt("-"+map.get("stCnt"));
+		//int cnt = Integer.parseInt("-"+map.get("stCnt"));
+		String cnt = "-"+scnt;
 		map.put("cnt", cnt);
+		map.put("del","del");
 		incomeService.updateMaterialCnt(map);
 		redirectAttributes.addFlashAttribute("msg","삭제 되었습니다.");
 		return "redirect:/sl/material/income/incomeList.do";

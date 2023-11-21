@@ -1,6 +1,8 @@
 package apc.sl.basicInfo.member.web;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -66,6 +68,18 @@ public class MemberController {
 //		}else {
 //			return "redirect:/sl/material/income/incomeList.do";
 //		}
+		
+		Date now = new Date();
+		SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		
+		String now2 = format.format(now);
+		
+		redirectAttributes.addFlashAttribute("API", "API");
+		redirectAttributes.addFlashAttribute("APIIP", getUserIp());
+		redirectAttributes.addFlashAttribute("APIID", member.get("mId"));
+		redirectAttributes.addFlashAttribute("APINOTE", "접속");
+		redirectAttributes.addFlashAttribute("APITIME", now2);
+		
 		return "redirect:/sl/basicInfo/member/memberList.do";
 	}
 	
